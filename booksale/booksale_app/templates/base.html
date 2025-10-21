@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>N12 - Hệ Thống Bán Sách Trực Tuyến</title>
+
+    <style>
+        .navbar-custom {
+            background-color: #223041; /* màu nền tối giống hình */
+            padding: 10px 70px;
+        }
+        .navbar-custom .nav-link {
+            color: white;
+            font-weight: 600;
+            margin-right: 20px;
+            /* width: 100px; */
+        }
+        .navbar-custom .nav-link-custom {
+          width: 115px;
+        }
+        .navbar-nav {
+          align-items: center;
+        }
+        .navbar-custom .nav-link:hover {
+            color: #ddd;
+        }
+        .search-box {
+            position: relative;
+            margin-left: 240px;
+        }
+        .search-box input {
+            border-radius: 20px;
+            padding-left: 15px;
+            width: 410px;
+        }
+        .icon-search {
+            position: absolute;
+            top: 50%;
+            right: 50px;
+            transform: translateY(-50%);
+            color: #999999;
+            cursor: pointer;
+        }
+        .icon-btn {
+            color: #ffffff;
+            font-size: 18px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+        .icon-btn:hover {
+            color: #ddd;
+        }
+        .icon-user {
+            margin-right: 30px;
+        }
+
+        .footer {
+            background-color: #223041;
+            color: white;
+            padding: 18px 0;
+        }
+
+        .footer .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 8px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        /* Màu riêng cho từng mạng xã hội */
+        .social-icons .facebook {
+            border: 1px solid #1877f2;
+            color: #1877f2;
+        }
+        .social-icons .instagram {
+            border: 1px solid #e1306c;
+            color: #e1306c;
+        }
+        .social-icons .twitter {
+            border: 1px solid #1da1f2;
+            color: #1da1f2;
+        }
+        .social-icons .google {
+            border: 1px solid #34a853;
+            color: #34a853;
+        }
+        .social-icons .youtube {
+            border: 1px solid #ff0000;
+            color: #ff0000;
+        }
+
+        /* Hover đổi nền */
+        .footer .social-icons a:hover {
+            background-color: currentColor;
+            color: #fff !important;
+        }
+
+        .contact-text {
+            margin-top: 14px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        
+    
+    </style>
+    <!-- Block để các file con thêm CSS riêng -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container-fluid">
+          <!-- Bên trái -->
+          <div class="d-flex align-items-center">
+            <a class="navbar-brand text-white" href="#"><i class="fa-solid fa-bars"></i></a>
+            <a class="nav-link" href="#"><i class="fa-solid fa-house"></i></a>
+          </div>
+      
+          <!-- Menu giữa -->
+          <div class="collapse navbar-collapse " id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link nav-link-custom" href="#">VĂN HỌC</a></li>
+              <li class="nav-item"><a class="nav-link nav-link-custom" href="#">GIÁO TRÌNH</a></li>
+              <li class="nav-item"><a class="nav-link nav-link-custom" href="#">THIẾU NHI</a></li>
+            </ul>
+            <!-- Ô tìm kiếm -->
+            <form class="d-flex ms-auto search-box align-items-left" role="search">
+              <input class="form-control" type="search" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+              <button class="btn btn-link text-white" type="submit"><i class="icon-search fa-solid fa-magnifying-glass" style="color: #999999;"></i></button>
+            </form>
+          </div>
+      
+          <!-- Icon bên phải -->
+          <div class="d-flex align-items-center icon-user">
+            <i class="fa-regular fa-bell icon-btn"></i>
+            <i class="fa-regular fa-user icon-btn"></i>
+            <i class="fa-solid fa-cart-shopping icon-btn"></i>
+          </div>
+        </div>
+    </nav>
+        
+    {% block content %} 
+        <p>Welcome to BookSale</p>
+    {% endblock %}
+    
+
+    <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <!-- Icon social -->
+          <div class="social-icons d-flex justify-content-center">
+            <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="google"><i class="fab fa-google"></i></a>
+            <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+          </div>
+
+          <!-- Text -->
+          <div class="contact-text">
+            Contact Us
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
