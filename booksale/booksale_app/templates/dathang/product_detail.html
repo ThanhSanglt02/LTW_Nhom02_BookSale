@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Chi tiết sản phẩm - Đắc Nhân Tâm{% endblock %}
+
+{% block extra_css %}
+<style>
+  .product-detail { margin-top: 120px; }
+  .product-title-detail { font-size: 1.5rem; font-weight: bold; color: #232f3e; }
+  .product-price { font-size: 1.5rem; color: #d0021b; font-weight: bold; }
+  .product-image img { border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+  .thumb { cursor: pointer; transition: transform 0.2s; }
+  .thumb:hover { transform: scale(1.1); border: 2px solid #007bff; }
+  .nav-tabs .nav-link.active { background-color: #135fb1; color: white !important; font-weight: 500; }
+  .nav-tabs .nav-link { color: #135fb1; font-weight: 500; }
+  .review-box { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+  .product-card { border: 1px solid #ddd; border-radius: 5px; padding: 10px; text-align: center; transition: transform 0.3s; position: relative; }
+  .product-card:hover { transform: scale(1.03); }
+  .product-card img { width: 100%; height: 200px; object-fit: cover; }
+  .add-to-cart { display: none; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: #135fb1; color: #fff; padding: 8px 15px; border-radius: 5px; text-decoration: none; }
+  .product-card:hover .add-to-cart { display: inline-block; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container product-detail">
+  <div class="row align-items-center">
+    <!-- Hình ảnh -->
+    <div class="col-md-5 text-center">
+      <div class="product-image mb-3">
+        <img id="mainImage" src="{% static 'images/image.jpg' %}" class="img-fluid" alt="Đắc Nhân Tâm">
+      </div>
+      <div class="d-flex justify-content-center">
+        {% for i in "123" %}
+        <img src="{% static 'images/image.jpg' %}" class="img-thumbnail mx-1 thumb" style="width:70px;" alt="Ảnh phụ">
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Thông tin -->
+    <div class="col-md-7">
+      <h4 class="product-title-detail">Combo Đắc Nhân Tâm + Khéo Ăn Nói Sẽ Có Được Cả Thiên Hạ</h4>
+      <p class="text-muted mb-1">Tác giả: Dale Carnegie | Đã bán: 8</p>
+      <p class="product-price">99.000 VND</p>
+
+      <div class="my-3">
+        <label><b>Số lượng:</b></label>
+        <div class="input-group" style="width:120px;">
+          <button class="btn btn-outline-secondary" type="button" onclick="changeQty(-1)">-</button>
+          <input id="quantity" type="number" value="1" min="1" class="form-control text-center">
+          <button class="btn btn-outline-secondary" type="button" onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap">
+        <button id="addToCartBtn" class="btn btn-outline-primary mr-2 mb-2">
+          <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ hàng
+        </button>
+        <button class="btn btn-primary mb-2">Mua ngay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mt-5" id="productTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="tomtat-tab" data-bs-toggle="tab" data-bs-target="#tomtat" type="button" role="tab">
+        Tóm tắt
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="gioithieu-tab" data-bs-toggle="tab" data-bs-target="#gioithieu" type="button" role="tab">
+        Bài viết giới thiệu
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3">
+    <div class="tab-pane fade show active" id="tomtat" role="tabpanel">
+      <p><b>Đắc Nhân Tâm</b> là cuốn sách của mọi thời đại, dạy bạn cách giao tiếp, ứng xử và gây thiện cảm chân thành.</p>
+      <p>Tác phẩm giúp người đọc học được nghệ thuật thấu hiểu người khác, xây dựng mối quan hệ tốt đẹp và đạt được thành công trong công việc.</p>
+    </div>
+    <div class="tab-pane fade" id="gioithieu" role="tabpanel">
+      <p>Cuốn sách chứa đựng những nguyên tắc vàng về giao tiếp và đối nhân xử thế, giúp bạn tự tin, bình tĩnh, và khéo léo trong mọi tình huống.</p>
+    </div>
+  </div>
+
+  <!-- Đánh giá sản phẩm -->
+  <h5 class="mt-5"><b>ĐÁNH GIÁ SẢN PHẨM</b></h5>
+
+  <div class="review-box d-flex align-items-start border rounded p-3 mb-3 shadow-sm">
+    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" width="50" class="me-3 rounded-circle border">
+
+    <div class="flex-grow-1">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <b>Tuyết Đoan</b>
+          <small class="text-muted ms-2">2025-02-10 16:19</small>
+        </div>
+        <div class="text-warning">★★★★★</div>
+      </div>
+
+      <p class="mt-2 mb-2">Sách hay, thông điệp ý nghĩa, phù hợp với tôi.</p>
+
+      <!-- Ảnh đánh giá -->
+      <div class="d-flex flex-wrap gap-2 mt-2">
+        <a href="{% static 'images/image.jpg' %}" target="_blank">
+          <img src="{% static 'images/image.jpg' %}" width="80" height="80"
+               class="rounded border" style="object-fit: cover;">
+        </a>
+        <a href="{% static 'images/image.jpg' %}" target="_blank">
+          <img src="{% static 'images/image.jpg' %}" width="80" height="80"
+               class="rounded border" style="object-fit: cover;">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-3">
+    <a href="#" class="btn btn-outline-primary btn-sm">Xem thêm các đánh giá khác</a>
+  </div>
+
+  <!-- Sản phẩm tương tự -->
+  <div class="my-5 product-section">
+    <h2 class="text-center product-title">SẢN PHẨM TƯƠNG TỰ</h2>
+    <div class="row justify-content-center">
+      {% for i in "1234" %}
+      <div class="col-6 col-md-3 text-center mb-4">
+        <div class="product-card">
+          <img src="{% static 'images/image.jpg' %}" alt="Sách mẫu {{ i }}">
+          <a href="#" class="add-to-cart">Thêm vào giỏ hàng</a>
+          <p class="product-name mt-2">Sách mẫu {{ i }}</p>
+          <p class="product-price">15.000 VND</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-2">
+      <a href="#" class="btn btn-outline-primary btn-sm">Xem thêm các sản phẩm tương tự</a>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const thumbs = document.querySelectorAll(".thumb");
+    const mainImage = document.getElementById("mainImage");
+    thumbs.forEach(img => img.addEventListener("click", () => mainImage.src = img.src));
+
+    const addToCartBtn = document.getElementById("addToCartBtn");
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener("click", function() {
+        const productName = document.querySelector(".product-title-detail").innerText;
+        const productPrice = document.querySelector(".product-price").innerText;
+        const quantity = parseInt(document.getElementById("quantity").value);
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const existingIndex = cart.findIndex(item => item.name === productName);
+        if (existingIndex > -1) {
+          cart[existingIndex].quantity += quantity;
+        } else {
+          cart.push({ name: productName, price: productPrice, quantity: quantity });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert(`Đã thêm ${quantity} "${productName}" vào giỏ hàng!`);
+      });
+    }
+  });
+
+  function changeQty(value) {
+    const input = document.getElementById("quantity");
+    let current = parseInt(input.value);
+    if (!isNaN(current)) input.value = Math.max(1, current + value);
+  }
+</script>
+{% endblock %}
