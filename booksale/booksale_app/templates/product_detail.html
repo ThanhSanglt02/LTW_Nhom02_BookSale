@@ -1,0 +1,133 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm #SP001</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/icons.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Sidebar -->
+    <div class="flex">
+        <aside class="w-64 bg-white h-screen shadow-md">
+            <div class="p-6 flex items-center space-x-2">
+                <div class="w-6 h-6 bg-blue-600 rounded"></div>
+                <span class="font-semibold text-lg">BookSale</span>
+            </div>
+            <nav class="mt-6">
+                <ul class="space-y-2">
+                    <li><a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100"><span></span><span class="ml-2">Dashboard</span></a></li>
+                    <li><a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100"><span></span><span class="ml-2">Đơn hàng</span></a></li>
+                    <li>
+                        <details open>
+                            <summary class="px-6 py-2 font-semibold text-blue-600 bg-blue-50"> Quản lý sản phẩm</summary>
+                            <ul>
+                                <li><a href="#" class="block px-12 py-2 hover:bg-gray-100">Danh mục</a></li>
+                                <li><a href="#" class="block px-12 py-2 text-blue-600 font-semibold">Sản phẩm</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li><a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100"><span></span><span class="ml-2">Quản lý địa chỉ</span></a></li>
+                    <li><a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100"><span></span><span class="ml-2">Quản lý đánh giá</span></a></li>
+                    <li><a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100"><span></span><span class="ml-2">Support</span></a></li>
+                    <li><a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100"><span></span><span class="ml-2">Settings</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-semibold">Chi tiết sản phẩm #SP001</h1>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-300"></div>
+                        <div>
+                            <p class="text-sm font-semibold">Johny Larsen</p>
+                            <p class="text-xs text-gray-500">Admin</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-gray-700 text-sm font-medium">Tên sản phẩm</label>
+                        <input type="text" value="Sách giáo trình quản trị học chương 1-4"
+                               class="w-full border border-gray-300 rounded-lg p-2 mt-1" readonly>
+                    </div>
+                    <div>
+                        <label class="text-gray-700 text-sm font-medium">Giá</label>
+                        <input type="text" value="75.000 đ" class="w-full border border-gray-300 rounded-lg p-2 mt-1 text-red-600 font-semibold" readonly>
+                    </div>
+                    <div>
+                        <label class="text-gray-700 text-sm font-medium">Danh mục</label>
+                        <input type="text" value="Sách giáo trình" class="w-full border border-gray-300 rounded-lg p-2 mt-1" readonly>
+                    </div>
+                    <div>
+                        <label class="text-gray-700 text-sm font-medium">Số lượng</label>
+                        <input type="text" value="50" class="w-full border border-gray-300 rounded-lg p-2 mt-1" readonly>
+                    </div>
+                    <div>
+                        <label class="text-gray-700 text-sm font-medium">Tác giả</label>
+                        <input type="text" value="Le-Nin" class="w-full border border-gray-300 rounded-lg p-2 mt-1" readonly>
+                    </div>
+                    <div>
+                        <label class="text-gray-700 text-sm font-medium">Nhà xuất bản</label>
+                        <input type="text" value="Kim đồng" class="w-full border border-gray-300 rounded-lg p-2 mt-1" readonly>
+                    </div>
+                    <div>
+                        <label class="text-gray-700 text-sm font-medium">Năm xuất bản</label>
+                        <input type="text" value="2016" class="w-full border border-gray-300 rounded-lg p-2 mt-1" readonly>
+                    </div>
+                </div>
+
+                <!-- Mô tả -->
+                <div class="mt-6">
+                    <label class="text-gray-700 text-sm font-medium">Mô tả sản phẩm</label>
+                    <textarea readonly class="w-full border border-gray-300 rounded-lg p-3 mt-1 h-40 text-gray-700 text-sm">
+Cảnh Sát Kể Chuyện
+Ai đang phải chạm thăm đời mặt với những bi kịch thầm kín của xã hội, ngay khi chúng vừa xảy ra?
+...
+Đọc cuốn sách này, không chỉ để biết, mà để hiểu – và thông bao giờ coi thường bóng tối phía sau ánh sáng.
+                    </textarea>
+                </div>
+
+                <!-- Hình ảnh -->
+                <div class="mt-6">
+                    <h3 class="text-sm font-semibold mb-2">Hình đại diện</h3>
+                    <div class="flex space-x-4">
+                        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=200"
+                             class="w-28 h-36 object-cover rounded-lg border border-gray-200">
+                    </div>
+
+                    <h3 class="text-sm font-semibold mt-4 mb-2">Danh sách ảnh</h3>
+                    <div class="flex space-x-4">
+                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=200"
+                             class="w-28 h-36 object-cover rounded-lg border border-gray-200">
+                        <img src="https://images.unsplash.com/photo-1528209392026-0d56e59cde7b?w=200"
+                             class="w-28 h-36 object-cover rounded-lg border border-gray-200">
+                        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200"
+                             class="w-28 h-36 object-cover rounded-lg border border-gray-200">
+                        <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=200"
+                             class="w-28 h-36 object-cover rounded-lg border border-gray-200">
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-end mt-8 space-x-4">
+                    <button class="bg-blue-700 text-white px-6 py-2 rounded-lg hover:bg-blue-800"> Sửa</button>
+                    <button class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Xóa</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
