@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import home_view, tonkho_list
+from .views import home_view, tonkho_list, product_detail
+
 # from .views.home import HomeView
 from . import views
 urlpatterns = [
