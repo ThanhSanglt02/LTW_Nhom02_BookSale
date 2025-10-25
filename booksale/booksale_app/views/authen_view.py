@@ -22,9 +22,9 @@ def login_view(request):
         # else:
         return redirect('home')   # URL name cho user
     if request.method == "POST":
-        email = request.POST.get('email')
+        username = request.POST.get('username')
         password = request.POST.get('password') 
-        user = authenticate(request, email = email, password = password)
+        user = authenticate(request, username = username, password = password)
         if user is not None:
             login(request, user)
             #  # Kiểm tra phân quyền
@@ -38,6 +38,6 @@ def login_view(request):
     print("co loi 2")
     return render(request, 'login_temp.html')
 
-# def logout_view(request):
-#     logout(request)
-    # return redirect('login')
+def logout_view(request):
+    logout(request)
+    return redirect('login')

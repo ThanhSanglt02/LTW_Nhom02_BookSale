@@ -143,9 +143,13 @@
           </div>
       
           <!-- Icon bên phải -->
-          <div class="d-flex align-items-center icon-user">
+          <div class="d-flex align-items-center   ">
             <i class="fa-regular fa-bell icon-btn"></i>
-            <i class="fa-regular fa-user icon-btn"></i>
+<!-- 
+            <i class="fa-regular fa-user icon-btn"></i>  -->
+            <span style="color: #ffffff;">{{request.user}}</span>
+            <span><a href="{% url 'logout' %}">Logout</a></span>
+
             <i class="fa-solid fa-cart-shopping icon-btn"></i>
           </div>
         </div>
