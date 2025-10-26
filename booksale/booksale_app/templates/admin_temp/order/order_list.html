@@ -66,6 +66,10 @@
             padding: 30px;
         }
 
+        td.text-center {
+            text-align: center !important;
+        }
+
    </style>
 
 {% endblock %}
@@ -78,9 +82,9 @@
         <!-- Thanh tiêu đề -->
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-semibold text-gray-800">Danh sách đơn hàng</h1>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium">
-            + Tạo đơn hàng
-            </button>
+            <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium inline-block">
+                + Tạo đơn hàng
+            </a>
         </div>
 
         <div class="table_content">
@@ -104,23 +108,33 @@
                         <th>ID</th>
                         <th>Ngày đặt</th>
                         <th>Khách hàng</th>
+                        <th>Số điện thoại</th>
                         <th>Địa chỉ</th>
                         <th>Status</th>
                         <th>Tổng tiền</th>
-                        <th></th>
+                        <th>Chi tiết</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for order in orders %}
                     <tr>
-                        <td>123123</td>
-                        <td>20-09-2025</td>
-                        <td>Khá Bảnh</td>
-                        <td>390 Nguyễn Lương Bằng</td>
-                        <td><span class="status-badge paid">Đã xác nhận</span></td>
-                        <td>110.000 đ</td>
-                        <td><a href="#" class="text-secondary">&rarr;</a></td>
+                        <td>{{order.id}}</td>
+                        <td>{{order.order_date}}</td>
+                        <td>{{order.customer.cust_name}}</td>
+                        <td>{{order.customer.phone}}</td>
+                        <td>{{order.customer.address}}</td>
+                        <td>
+                            {% if order.status == 'confirmed' %}
+                                <span class="badge bg-success">Đã xác nhận</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                            {% endif %}
+                        </td>
+                        <td>{{order.total_amount}}</td>
+                        <td class="text-center text-primary fw-bold"><a href="/adm/order_details/{{order.id}}">&#10132;</a></td>
                     </tr>
-                    <tr>
+                    {% endfor %}
+                    <!-- <tr>
                         <td>343</td>
                         <td>20-09-2025</td>
                         <td>Đàm Thị Thanh Sang</td>
@@ -137,7 +151,7 @@
                         <td><span class="status-badge confirmed">Chờ xác nhận</span></td>
                         <td>1.000.010.000 đ</td>
                         <td><a href="#" class="text-secondary">&rarr;</a></td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
 
