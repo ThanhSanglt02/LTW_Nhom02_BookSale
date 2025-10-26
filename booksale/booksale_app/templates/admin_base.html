@@ -13,6 +13,11 @@
     {% endblock %}
 
     <style>
+        body {
+            background-color: #f5f6fa;
+            font-family: "Segoe UI", sans-serif;
+            margin: 0;
+        }
         /* Ẩn mũi tên dropdown mặc định của <summary> */
         summary::-webkit-details-marker {
             display: none;
@@ -30,13 +35,110 @@
             padding-bottom: 0.5rem;
             cursor: pointer;
         }
+
+
+        .header {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 25px;
+        }
+
+        .search-box {
+        display: flex;
+        align-items: center;
+        background-color: #f3f4f6;
+        border-radius: 50px;
+        padding: 8px 16px;
+        width: 400px;
+        margin-left: 260px;
+        }
+
+        .search-box i {
+        color: #888;
+        }
+
+        .search-box input {
+        border: none;
+        outline: none;
+        background: transparent;
+        flex: 1;
+        font-size: 15px;
+        padding-left: 8px;
+        }
+
+        .user-section {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        }
+
+        .user-info {
+        text-align: right;
+        }
+
+        .user-info .name {
+        font-weight: 600;
+        font-size: 15px;
+        margin: 0;
+        }
+
+        .user-info .role {
+        color: #888;
+        font-size: 13px;
+        margin: 0;
+        }
+
+        .avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+        }
+
+        .notif {
+        background-color: #f3f4f6;
+        border-radius: 50%;
+        padding: 8px;
+        margin-right: 12px;
+        cursor: pointer;
+        }
+
+        .notif i {
+        font-size: 18px;
+        color: #444;
+        }
     </style>
 </head>
 
 <body class="bg-gray-100 font-sans">
+    <!--Header-->
+    <div class="header">
+        <!-- Thanh tìm kiếm -->
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+    
+        <!-- User -->
+        <div class="user-section">
+          <div class="notif">
+            <i class="bi bi-bell"></i>
+          </div>
+          <div class="user-info">
+            <p class="name">Johny Larsen</p>
+            <p class="role">Admin</p>
+          </div>
+          <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" class="avatar" alt="User">
+        </div>
+    </div>
+
     <!-- Sidebar -->
     <div class="flex">
-        <aside class="w-64 bg-white h-screen shadow-md">
+        <aside class="w-64 bg-white h-screen shadow-md" style="margin-top: -68px;">
             <div class="p-6 flex items-center space-x-2 border-b">
                 <div class="w-6 h-6 bg-blue-600 rounded"></div>
                 <span class="font-semibold text-lg">BookSale</span>
@@ -51,14 +153,14 @@
                     </li>
 
                     <li>
-                        <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100">
+                        <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100 isActive">
                             <span>Đơn hàng</span>
                         </a>
                     </li>
 
                     <li>
-                        <details open>
-                            <summary class="font-semibold text-blue-600 bg-blue-50 rounded">
+                        <details> <!--open-->
+                            <summary class="flex items-center px-6 py-2 hover:bg-gray-100 rounded">  <!--font-semibold text-blue-600 bg-blue-50 rounded-->
                                 Quản lý sản phẩm
                             </summary>
                             <ul>

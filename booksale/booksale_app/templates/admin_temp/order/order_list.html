@@ -1,0 +1,160 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+<!-- CSS -->
+{% block extra_css %}
+   <style>
+        .isActive {
+            font-weight: 600 !important;
+            color: rgba(41, 41, 232, 0.991) !important;
+            background-color: #eff6ff;
+        }
+        .tab-buttons {
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 15px;
+        }
+        .tab-buttons .btn {
+            border: none;
+            background: none;
+            color: #6c757d;
+            font-weight: 500;
+            border-radius: 0;
+        }
+        .tab-buttons .btn.active {
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .filter-bar input {
+            width: 300px;
+        }
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .paid { background-color: #d1e7dd; color: #0f5132; }
+        .unpaid { background-color: #f8d7da; color: #842029; }
+        .processing { background-color: #cff4fc; color: #055160; }
+        .confirmed { background-color: #fff3cd; color: #664d03; }
+        .refused { background-color: #f8d7da; color: #842029; }
+        .table thead {
+            background-color: #f1f3f5;
+            font-weight: 600;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn-create {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        .table_content {
+            background-color: #ffffff;
+            padding: 30px;
+        }
+
+   </style>
+
+{% endblock %}
+
+<!-- Content -->
+{% block content %}
+
+    <main class="flex-1 bg-gray-50 p-6">
+
+        <!-- Thanh tiêu đề -->
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-semibold text-gray-800">Danh sách đơn hàng</h1>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium">
+            + Tạo đơn hàng
+            </button>
+        </div>
+
+        <div class="table_content">
+            <!-- Tabs -->
+            <div class="tab-buttons mb-3">
+                <button class="btn active">Tất cả đơn hàng</button>
+                <button class="btn">Đơn hàng mới</button>
+                <button class="btn">Chờ xác nhận</button>
+            </div>
+
+            <!-- Filter -->
+            <div class="filter-bar">
+                <button class="btn btn-outline-secondary"><i class="bi bi-funnel"></i> Thêm điều kiện lọc</button>
+                <input type="text" class="form-control" placeholder="Tìm kiếm đơn hàng">
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ngày đặt</th>
+                        <th>Khách hàng</th>
+                        <th>Địa chỉ</th>
+                        <th>Status</th>
+                        <th>Tổng tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>123123</td>
+                        <td>20-09-2025</td>
+                        <td>Khá Bảnh</td>
+                        <td>390 Nguyễn Lương Bằng</td>
+                        <td><span class="status-badge paid">Đã xác nhận</span></td>
+                        <td>110.000 đ</td>
+                        <td><a href="#" class="text-secondary">&rarr;</a></td>
+                    </tr>
+                    <tr>
+                        <td>343</td>
+                        <td>20-09-2025</td>
+                        <td>Đàm Thị Thanh Sang</td>
+                        <td>390 Nguyễn Lương Bằng</td>
+                        <td><span class="status-badge confirmed">Chờ xác nhận</span></td>
+                        <td>110.000 đ</td>
+                        <td><a href="#" class="text-secondary">&rarr;</a></td>
+                    </tr>
+                    <tr>
+                        <td>ab32</td>
+                        <td>20-09-2025</td>
+                        <td>Huỳnh Thị Thanh Vân</td>
+                        <td>390 Nguyễn Lương Bằng</td>
+                        <td><span class="status-badge confirmed">Chờ xác nhận</span></td>
+                        <td>1.000.010.000 đ</td>
+                        <td><a href="#" class="text-secondary">&rarr;</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><span class="page-link">...</span></li>
+                    <li class="page-item"><a class="page-link" href="#">10</a></li>
+                </ul>
+            </nav>
+        </div>
+    </main>
+
+        
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.js"></script>
+{% endblock %}

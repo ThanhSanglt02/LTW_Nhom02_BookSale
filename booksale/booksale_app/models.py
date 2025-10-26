@@ -170,10 +170,21 @@ class PaymentMethod(models.TextChoices):
 
 
 class Order(models.Model):
+
+    STATUS_CHOICES = [
+        ('confirmed', 'Đã xác nhận'),
+        ('pending', 'Chờ xác nhận'),
+    ]
+
     order_date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(
         max_digits=10,
         decimal_places=2
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'  # mặc định là "Chờ xác nhận"
     )
     customer = models.ForeignKey(
         Customer,

@@ -11,3 +11,4 @@ class CreateUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
