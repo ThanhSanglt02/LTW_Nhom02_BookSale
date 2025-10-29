@@ -28,13 +28,36 @@ class Customer(models.Model):
     dob = models.DateField(
         verbose_name="Ngày sinh"
     )
+    avatar = models.ImageField(upload_to='customers/', null=True, blank=True)
     create_at = models.DateTimeField(
         verbose_name = "Ngày tạo",
         auto_now_add=True
     )
     def __str__(self):
         return self.cust_name
-    
+class Employee(models.Model):
+    user = models.OneToOneField(auth.get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
+    emp_name = models.CharField(
+        max_length = 255,
+        blank=False, null=False,
+        help_text = "Tên khách hàng"
+    )
+    email = models.EmailField(
+        max_length = 100,
+        help_text = "Email"
+    )
+    phone = models.CharField(
+        max_length = 15,
+        blank=False, null=False,
+        help_text = "Số điện thoại"
+    )
+    address = models.CharField(
+        max_length = 255,
+        blank=False, null=False,
+        help_text = "Địa chi"
+    )
+    def __str__(self):
+        return self.emp_name
 
 class Genre(models.Model):
     genre_name = models.CharField(
@@ -95,11 +118,7 @@ class Product(models.Model):
         blank=False, null=False,
         help_text = "Mô tả"
     )
-    image = models.URLField(
-        max_length = 255,
-        help_text = "Đường dẫn hình ảnh",
-        blank=False
-    )
+    image = models.ImageField(upload_to='products/', null=True, blank=True)
     cost_price = models.DecimalField(
         max_digits=10,
         decimal_places=2
@@ -170,7 +189,6 @@ class PaymentMethod(models.TextChoices):
 
 
 class Order(models.Model):
-
     STATUS_CHOICES = [
         ('confirmed', 'Đã xác nhận'),
         ('pending', 'Chờ xác nhận'),
@@ -229,10 +247,112 @@ class Review(models.Model):
         Product,
         on_delete=models.CASCADE,
         help_text="The Book that this review is for.")
+class Supplier(models.Model):
+    user = models.OneToOneField(auth.get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
+    sup_name = models.CharField(
+        max_length = 255,
+        blank=False, null=False,
+        help_text = "Tên khách hàng"
+    )
+    email = models.EmailField(
+        max_length = 100,
+        help_text = "Email"
+    )
+    phone = models.CharField(
+        max_length = 15,
+        blank=False, null=False,
+        help_text = "Số điện thoại"
+    )
+    address = models.CharField(
+        max_length = 255,
+        blank=False, null=False,
+        help_text = "Địa chi"
+    )
+    def __str__(self):
+        return self.sup_name
+class ImportOrder(models.Model):
+    import_date = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+    note = models.TextField(
+        blank=False, null=False,
+        help_text = "Mô tả"
+    )
+    create_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    product = models.ManyToManyField(
+        'Product',
+        through="ImportOrder_Item")
+    supplier = models.ForeignKey(
+        Supplier,
+        on_delete = models.PROTECT
+    )
+    employee = models.ForeignKey(
+        Employee,
+        on_delete = models.PROTECT
+    )
+class ImportOrder_Item(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete = models.PROTECT
+    )
+    importOrder = models.ForeignKey(
+        ImportOrder,
+        on_delete = models.PROTECT
+    )
+    quantity = models.PositiveIntegerField(default=0)
+    unit_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+    total_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
 
-
-
-
+class ExportOrder(models.Model):
+    export_date = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+    reason = models.TextField(
+        blank=False, null=False,
+        help_text = "Mô tả"
+    )
+    create_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    product = models.ManyToManyField(
+        'Product',
+        through="ImportOrder_Item")
+    order = models.ForeignKey(
+        Order,
+        on_delete = models.PROTECT
+    )
+    employee = models.ForeignKey(
+        Employee,
+        on_delete = models.PROTECT
+    )
+class ExportOrder_Item(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete = models.PROTECT
+    )
+    exportOrder = models.ForeignKey(
+        ExportOrder,
+        on_delete = models.PROTECT
+    )
+    quantity = models.PositiveIntegerField(default=0)
+    unit_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+    total_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
 
 
 
