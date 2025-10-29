@@ -1,31 +1,56 @@
 from django.shortcuts import render, get_object_or_404
 from booksale_app.models import Order, Customer, Order_Item
+
+from booksale_app.utils import sum_price_order
 # Create your views here.
 
-def adm_order_list(request):
-    orders =  Order.objects.select_related('customer').order_by('-order_date') # select_related('customer') để lấy luôn thông tin khách hàng
-    
+def order_list(request):
+    orders =  (Order.objects
+            .select_related('customer')
+            .order_by('-order_date')) # select_related('customer') để lấy luôn thông tin khách hàng
+    order_data = []
+    for order in orders:
+        order_items = Order_Item.objects.select_related('product').filter(order=order)
+        # Truyền vào danh sách giá * số lượng
+        prices = [item.product.sell_price * item.quantity for item in order_items]
+        total_amount = sum_price_order(prices)
+        order_data.append({
+            'order': order,
+            'total_amount': total_amount
+        })
     context = {
-        'orders': orders
+        'order_data': order_data
     }
     return render(request, 'admin_temp/order/order_list.html', context)
 
 def order_detail(request, pk):
     # Lấy thông tin đơn hàng
     order = get_object_or_404(Order.objects.select_related('customer'), pk=pk)
-
     # Lấy các sản phẩm thuộc đơn hàng đó
     order_items = Order_Item.objects.select_related('product').filter(order=order)
-
-    print("order:", order)
-    print("order_item:", order_items)
-
+    prices = [item.product.sell_price * item.quantity for item in order_items]
+    total_amount = sum_price_order(prices)
     context = {
         'order': order,
         'order_items': order_items,
+        'total_amount': total_amount
     }
-
     return render(request, 'admin_temp/order/order_detail.html', context)
+
+def order_confirm(request, pk):
+    # Lấy thông tin đơn hàng
+    order = get_object_or_404(Order.objects.select_related('customer'), pk=pk)
+    # Lấy các sản phẩm thuộc đơn hàng đó
+    order_items = Order_Item.objects.select_related('product').filter(order=order)
+    prices = [item.product.sell_price * item.quantity for item in order_items]
+    total_amount = sum_price_order(prices)
+    context = {
+        'order': order,
+        'order_items': order_items,
+        'total_amount': total_amount
+    }
+    return render(request, 'admin_temp/order/order_confirm.html', context)
+
 
 # def edit_order(request, pk = None):
 #     if pk is not None:

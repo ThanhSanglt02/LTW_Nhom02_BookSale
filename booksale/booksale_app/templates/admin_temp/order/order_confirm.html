@@ -18,16 +18,14 @@
             </h4>
             </div>
 
-            <!-- Nút Sửa và Xóa -->
+            <!-- Nút xác nhận / từ chối -->
             <div class="d-flex gap-2">
-            <button class="btn btn-primary px-4 d-flex align-items-center gap-2">
-                <i class="fa-solid fa-pen"></i>
-                <span>Sửa</span>
-            </button>
-            <button class="btn btn-danger px-4 d-flex align-items-center gap-2">
-                <i class="fa-solid fa-trash"></i>
-                <span>Xóa</span>
-            </button>
+                <button class="btn btn-success px-4 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-check"></i> <span>Xác nhận</span>
+                </button>
+                <button class="btn btn-danger px-4 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-xmark"></i> <span>Từ chối</span>
+                </button>
             </div>
         </div>
 
@@ -113,7 +111,7 @@
                         <tr>
                         <td>{{ item.product.id }}</td>
                         <td>{{ item.product.product_name }}</td>    
-                        <td>{{ item.product.sell_price }} đ</td>
+                        <td>{{ item.unit_price }} đ</td>
                         <td>{{ item.quantity }}</td>
                         </tr>
                         {% endfor %}
