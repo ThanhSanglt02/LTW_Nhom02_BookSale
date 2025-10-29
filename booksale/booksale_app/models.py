@@ -326,7 +326,7 @@ class ExportOrder(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     product = models.ManyToManyField(
         'Product',
-        through="ImportOrder_Item")
+        through="ExportOrder_Item")
     order = models.ForeignKey(
         Order,
         on_delete = models.PROTECT
