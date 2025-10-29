@@ -11,4 +11,4 @@ def product_list(request):
             'price': 75000,
         }
     ] * 7
-    return render(request, 'Product/product_list.html', {'products': products})
+    return render(request, 'admin_temp/product/product_list.html', {'products': products})

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from booksale_app.models import (Customer, Order, Product)
+from booksale_app.models import (Customer, Order, Product, Category, Publisher, Order_Item) 
 
 # Register your models here.
 class CustomerAdmin(admin.ModelAdmin):
@@ -14,4 +14,10 @@ class OrderAdmin(admin.ModelAdmin):
 # Muốn có model nào trên giao diện admin thì phải đăng ký model đó, nếu có chỉnh sửa thao tác thì phải thêm tham số class
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Order, OrderAdmin) 
-admin.site.register(Product) 
+admin.site.register(Product)
+admin.site.register(Publisher)
+admin.site.register(Category)
+admin.site.register(Order_Item)
+
+
+

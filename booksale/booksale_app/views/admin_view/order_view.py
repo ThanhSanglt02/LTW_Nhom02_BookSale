@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from booksale_app.models import Order, Customer
+from booksale_app.models import Order, Customer, Order_Item
 # Create your views here.
 
 def adm_order_list(request):
@@ -8,14 +8,25 @@ def adm_order_list(request):
     context = {
         'orders': orders
     }
-
     return render(request, 'admin_temp/order/order_list.html', context)
 
 def order_detail(request, pk):
-    order = get_object_or_404(Order, pk = pk)  # get_object_ỏr_404 dùng để lấy đối tượng cụ thể chứ không thế lấy danh sách --> nếu lấy ds thì phải model.objects.all()
-    order_info = {'order': order}
+    # Lấy thông tin đơn hàng
+    order = get_object_or_404(Order.objects.select_related('customer'), pk=pk)
 
-    return render(request, 'admin_temp/order/order_detail.html', order_info)
+    # Lấy các sản phẩm thuộc đơn hàng đó
+    order_items = Order_Item.objects.select_related('product').filter(order=order)
+
+    print("order:", order)
+    print("order_item:", order_items)
+
+    context = {
+        'order': order,
+        'order_items': order_items,
+    }
+
+    return render(request, 'admin_temp/order/order_detail.html', context)
+
 # def edit_order(request, pk = None):
 #     if pk is not None:
 #         publisher = get_object_or_404(Order, pk = pk)
