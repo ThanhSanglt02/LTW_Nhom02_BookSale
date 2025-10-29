@@ -126,13 +126,17 @@
                         <td>
                             {% if order_data.order.status == 'confirmed' %}
                                 <span class="badge bg-success">Đã xác nhận</span>
-                            {% else %}
+                            {% elif order_data.order.status == 'pending'%}
                                 <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                            {% else %}
+                                <span class="badge bg-danger text-dark">Đã hủy</span>
                             {% endif %}
                         </td>
                         <td>{{order_data.total_amount}}</td>
                         {% if order_data.order.status == 'confirmed' %}
                             <td class="text-center text-primary fw-bold"><a href="/emp/order_details/{{order_data.order.id}}">&#10132;</a></td>
+                        {% elif order_data.order.status == 'cancelled'%}
+                            <td class="text-center text-primary fw-bold"><a href="/emp/order_cancel/{{order_data.order.id}}">&#10132;</a></td>
                         {% else %}
                             <td class="text-center text-primary fw-bold"><a href="/emp/order_confirm/{{order_data.order.id}}">&#10132;</a></td>
                         {% endif %}

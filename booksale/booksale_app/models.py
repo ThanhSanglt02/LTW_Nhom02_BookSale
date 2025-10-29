@@ -192,6 +192,8 @@ class Order(models.Model):
     STATUS_CHOICES = [
         ('confirmed', 'Đã xác nhận'),
         ('pending', 'Chờ xác nhận'),
+        ('cancelled', 'Đã hủy'),
+
     ]
 
     order_date = models.DateTimeField(auto_now_add=True)
