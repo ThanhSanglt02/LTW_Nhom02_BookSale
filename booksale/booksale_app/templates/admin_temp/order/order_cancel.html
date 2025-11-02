@@ -18,18 +18,13 @@
             </h4>
             </div>
 
-            <!-- Nút Sửa và Xóa -->
-            {% if order.status == 'confirmed' %}
-            <div class="d-flex gap-2 mb-3">
-              <a href="#" class="btn btn-primary px-4"><i class="fa-solid fa-pen"></i> Sửa</a>
-              <a href="#" class="btn btn-danger px-4"><i class="fa-solid fa-trash"></i> Xóa</a>
+            <div class="d-flex gap-2">
+                <h4 class="text-2xl font-semibold text-red-800 mr-6">
+                    Đơn hàng đã bị hủy với lý do: <span class="text-primary">{{reason}}</span>
+                </h4>
             </div>
-            {% elif order.status == 'cancelled' %}
-              <div class="alert alert-warning mt-3">
-                <strong>Lý do hủy:</strong> {{ order.cancel_reason }}
-              </div>
-            {% endif %}
         </div>
+        
 
         <div class="row">
             <!-- Cột bên trái: thông tin đơn hàng -->

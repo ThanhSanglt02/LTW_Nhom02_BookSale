@@ -192,6 +192,8 @@ class Order(models.Model):
     STATUS_CHOICES = [
         ('confirmed', 'Đã xác nhận'),
         ('pending', 'Chờ xác nhận'),
+        ('cancelled', 'Đã hủy'),
+
     ]
 
     order_date = models.DateTimeField(auto_now_add=True)
@@ -204,6 +206,7 @@ class Order(models.Model):
         choices=STATUS_CHOICES,
         default='pending'  # mặc định là "Chờ xác nhận"
     )
+    cancel_reason = models.TextField(blank=True, null=True)
     customer = models.ForeignKey(
         Customer,
         on_delete = models.PROTECT

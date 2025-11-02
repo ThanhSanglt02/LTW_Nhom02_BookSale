@@ -116,22 +116,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for order in orders %}
+                    {% for order_data in order_data %}
                     <tr>
-                        <td>{{order.id}}</td>
-                        <td>{{order.order_date}}</td>
-                        <td>{{order.customer.cust_name}}</td>
-                        <td>{{order.customer.phone}}</td>
-                        <td>{{order.customer.address}}</td>
+                        <td>{{order_data.order.id}}</td>
+                        <td>{{order_data.order.order_date}}</td>
+                        <td>{{order_data.order.customer.cust_name}}</td>
+                        <td>{{order_data.order.customer.phone}}</td>
+                        <td>{{order_data.order.customer.address}}</td>
                         <td>
-                            {% if order.status == 'confirmed' %}
+                            {% if order_data.order.status == 'confirmed' %}
                                 <span class="badge bg-success">Đã xác nhận</span>
-                            {% else %}
+                            {% elif order_data.order.status == 'pending'%}
                                 <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                            {% else %}
+                                <span class="badge bg-danger text-dark">Đã hủy</span>
                             {% endif %}
                         </td>
-                        <td>{{order.total_amount}}</td>
-                        <td class="text-center text-primary fw-bold"><a href="/adm/order_details/{{order.id}}">&#10132;</a></td>
+                        <td>{{order_data.total_amount}}</td>
+                        {% if order_data.order.status == 'confirmed' %}
+                            <td class="text-center text-primary fw-bold"><a href="/emp/order_details/{{order_data.order.id}}">&#10132;</a></td>
+                        {% elif order_data.order.status == 'cancelled'%}
+                            <td class="text-center text-primary fw-bold"><a href="/emp/order_cancel/{{order_data.order.id}}">&#10132;</a></td>
+                        {% else %}
+                            <td class="text-center text-primary fw-bold"><a href="/emp/order_confirm/{{order_data.order.id}}">&#10132;</a></td>
+                        {% endif %}
+                        
                     </tr>
                     {% endfor %}
                 </tbody>

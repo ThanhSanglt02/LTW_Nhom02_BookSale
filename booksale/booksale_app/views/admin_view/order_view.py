@@ -1,31 +1,76 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from booksale_app.models import Order, Customer, Order_Item
+from django.contrib import messages
+from booksale_app.utils import sum_price_order
+from django.http import JsonResponse
+import json
+
 # Create your views here.
 
-def adm_order_list(request):
-    orders =  Order.objects.select_related('customer').order_by('-order_date') # select_related('customer') để lấy luôn thông tin khách hàng
-    
+def order_list(request):
+    orders =  (Order.objects
+            .select_related('customer')
+            .order_by('-order_date')) # select_related('customer') để lấy luôn thông tin khách hàng
+    order_data = []
+    for order in orders:
+        order_items = Order_Item.objects.select_related('product').filter(order=order)
+        # Truyền vào danh sách giá * số lượng
+        prices = [item.product.sell_price * item.quantity for item in order_items]
+        total_amount = sum_price_order(prices)
+        order_data.append({
+            'order': order,
+            'total_amount': total_amount
+        })
     context = {
-        'orders': orders
+        'order_data': order_data
     }
     return render(request, 'admin_temp/order/order_list.html', context)
 
 def order_detail(request, pk):
     # Lấy thông tin đơn hàng
     order = get_object_or_404(Order.objects.select_related('customer'), pk=pk)
-
     # Lấy các sản phẩm thuộc đơn hàng đó
     order_items = Order_Item.objects.select_related('product').filter(order=order)
-
-    print("order:", order)
-    print("order_item:", order_items)
+    prices = [item.product.sell_price * item.quantity for item in order_items]
+    total_amount = sum_price_order(prices)
 
     context = {
         'order': order,
         'order_items': order_items,
+        'total_amount': total_amount
     }
 
-    return render(request, 'admin_temp/order/order_detail.html', context)
+    # Chọn template theo trạng thái
+    if order.status == "confirmed":
+        template = 'admin_temp/order/order_detail.html'
+    elif order.status == "cancelled":
+        template = 'admin_temp/order/order_cancel.html'
+    else:
+        template = 'admin_temp/order/order_confirm.html'
+    return render(request, template, context)
+
+def order_confirm_status(request, pk):
+    """Cập nhật trạng thái thành đã xác nhận"""
+    order = get_object_or_404(Order, pk=pk)
+    if request.method == "POST":
+        order.status = "confirmed"
+        order.save()
+        messages.success(request, f"Đơn hàng #{order.id} đã được xác nhận thành công.")
+        return redirect('emp/detail', pk=order.id)
+    return redirect('emp/detail', pk=order.id)
+
+
+def order_cancel_status(request, pk):
+    """Cập nhật trạng thái thành đã hủy"""
+    if request.method == "POST":
+        reason = request.POST.get("cancel_reason", "")
+        order = Order.objects.get(id=pk)
+        order.status = "cancelled"
+        order.cancel_reason = reason
+        order.save()
+
+        return redirect('emp/detail', pk=pk)
+    
 
 # def edit_order(request, pk = None):
 #     if pk is not None:
