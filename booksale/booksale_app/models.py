@@ -206,6 +206,7 @@ class Order(models.Model):
         choices=STATUS_CHOICES,
         default='pending'  # mặc định là "Chờ xác nhận"
     )
+    cancel_reason = models.TextField(blank=True, null=True)
     customer = models.ForeignKey(
         Customer,
         on_delete = models.PROTECT

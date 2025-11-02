@@ -63,15 +63,13 @@ def order_confirm_status(request, pk):
 def order_cancel_status(request, pk):
     """Cập nhật trạng thái thành đã hủy"""
     if request.method == "POST":
-        data = json.loads(request.body)
-        reason = data.get("cancel_reason", "")
-
+        reason = request.POST.get("cancel_reason", "")
         order = Order.objects.get(id=pk)
         order.status = "cancelled"
         order.cancel_reason = reason
         order.save()
 
-    return JsonResponse({"message": "Order cancelled successfully.", "reason": reason})
+        return redirect('emp/detail', pk=pk)
     
 
 # def edit_order(request, pk = None):
