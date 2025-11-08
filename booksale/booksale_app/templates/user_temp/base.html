@@ -32,7 +32,7 @@
         }
         .search-box {
             position: relative;
-            margin-left: 240px;
+            margin-left: 110px;
         }
         .search-box input {
             border-radius: 20px;
@@ -50,11 +50,50 @@
         .icon-btn {
             color: #ffffff;
             font-size: 18px;
-            margin-left: 50px;
+            margin-left: 62px;
             cursor: pointer;
         }
         .icon-btn:hover {
             color: #ddd;
+        }
+
+        .user-menu {
+          position: relative;
+          display: inline-block;
+        }
+
+        .icon-btn {
+          font-size: 22px;
+          color: #fff;
+          cursor: pointer;
+        }
+
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: white;
+          min-width: 120px;
+          box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+          border-radius: 6px;
+          z-index: 1;
+        }
+
+        .dropdown-content a {
+          color: black;
+          padding: 10px 14px;
+          text-decoration: none;
+          display: block;
+        }
+
+        .dropdown-content a:hover {
+          background-color: #f0f0f0;
+        }
+
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
+        .login-link {
+          margin-left: 62px;
         }
         .icon-user {
             margin-right: 30px;
@@ -145,10 +184,23 @@
           <!-- Icon bên phải -->
           <div class="d-flex align-items-center   ">
             <i class="fa-regular fa-bell icon-btn"></i>
-<!-- 
-            <i class="fa-regular fa-user icon-btn"></i>  -->
-            <span style="color: #ffffff;">{{request.user}}</span>
-            <span><a href="{% url 'logout' %}">Logout</a></span>
+            <!-- <i class="fa-regular fa-user icon-btn"></i>
+
+            <!-- <span style="color: #ffffff;">{{request.user}}</span> -->
+            <!-- <span><a href="{% url 'logout' %}">Logout</a></span> -->
+            <div class="user-menu">
+              {% if user.is_authenticated %}
+                  <div class="dropdown">
+                      <i class="fa-regular fa-user icon-btn"></i>
+                      <div class="dropdown-content">
+                          <a href="#">Profile</a>  
+                          <a href="{% url 'logout' %}">Logout</a>
+                      </div>
+                  </div>
+              {% else %}
+                  <a href="{% url 'login' %}" class="login-link">Login</a>
+              {% endif %}
+            </div>
 
             <i class="fa-solid fa-cart-shopping icon-btn"></i>
           </div>
