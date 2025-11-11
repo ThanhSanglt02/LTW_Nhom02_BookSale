@@ -115,30 +115,38 @@
 </head>
 
 <body class="bg-gray-100 font-sans">
-    <!--Header-->
+    <!-- ✅ Header cố định -->
     <div class="header">
-        <!-- Thanh tìm kiếm -->
-        <div class="search-box">
-          <i class="bi bi-search"></i>
-          <input type="text" placeholder="Search...">
+        <div class="search-box hidden md:flex items-center bg-gray-100 px-4 py-2 rounded-full w-64">
+            <i class="fa fa-search text-gray-500"></i>
+            <input type="text" placeholder="Tìm kiếm..." class="bg-transparent border-0 outline-none ml-2 text-sm w-full">
         </div>
-    
-        <!-- User -->
+
         <div class="user-section">
-          <div class="notif">
-            <i class="bi bi-bell"></i>
-          </div>
-          <div class="user-info">
-            <p class="name">Johny Larsen</p>
-            <p class="role">Admin</p>
-          </div>
-          <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" class="avatar" alt="User">
+            <div><i class="fa fa-bell text-gray-600"></i></div>
+
+            {% if user.is_authenticated %}
+            <div class="user-info text-right leading-tight">
+                <p class="name font-bold text-gray-800">{{ user.username }}</p>
+                <p class="role">
+                    {% if user.is_superuser %}Quản trị viên{% else %}Người dùng{% endif %}
+                </p>
+            </div>
+
+            {% if user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}" class="avatar">
+            {% else %}
+                <img src="{% static 'images/image.jpg' %}" class="avatar">
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="text-sm text-red-500 hover:underline ml-1">Đăng xuất</a>
+            {% endif %}
         </div>
     </div>
 
     <!-- Sidebar -->
-    <div class="flex">
-        <aside class="w-64 bg-white h-screen shadow-md" style="margin-top: -68px;">
+    <div class="flex h-100">
+        <aside class="w-64 bg-white h-screen shadow-md h-auto" style="margin-top: -68px;">
             <div class="p-6 flex items-center space-x-2 border-b">
                 <div class="w-6 h-6 bg-blue-600 rounded"></div>
                 <span class="font-semibold text-lg">BookSale</span>

@@ -35,6 +35,7 @@ class Customer(models.Model):
     )
     def __str__(self):
         return self.cust_name
+    
 class Employee(models.Model):
     user = models.OneToOneField(auth.get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
     emp_name = models.CharField(
@@ -96,6 +97,7 @@ class Category(models.Model):
     )
     def __str__(self):
         return self.category_name
+
 class Publisher(models.Model):
     publisher_name = models.CharField(
         max_length = 255,
@@ -106,7 +108,8 @@ class Publisher(models.Model):
         max_length = 100,
         help_text = "Email"
     )
-    
+    def __str__(self):
+        return self.publisher_name
 
 class Product(models.Model):
     product_name = models.CharField(
@@ -193,9 +196,7 @@ class Order(models.Model):
         ('confirmed', 'Đã xác nhận'),
         ('pending', 'Chờ xác nhận'),
         ('cancelled', 'Đã hủy'),
-
     ]
-
     order_date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(
         max_digits=10,
@@ -212,6 +213,7 @@ class Order(models.Model):
         on_delete = models.PROTECT
     )
     payment_method = models.CharField(choices=PaymentMethod.choices, max_length=20)
+    
 
 class Order_Item(models.Model):
     product = models.ForeignKey(
@@ -231,9 +233,11 @@ class Order_Item(models.Model):
         max_digits=10,
         decimal_places=2
     )
+
 class Review(models.Model):
     content = models.TextField(help_text="The Review text.")
     rating = models.PositiveSmallIntegerField()
+    image = models.ImageField(upload_to='reviews/', null=True, blank=True)
     date_created = models.DateTimeField(
         auto_now_add=True,
         help_text="The date and time the review was created.")
@@ -250,12 +254,14 @@ class Review(models.Model):
         Product,
         on_delete=models.CASCADE,
         help_text="The Book that this review is for.")
+    def __str__(self):
+        return self.content
+    
 class Supplier(models.Model):
-    user = models.OneToOneField(auth.get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
     sup_name = models.CharField(
         max_length = 255,
         blank=False, null=False,
-        help_text = "Tên khách hàng"
+        help_text = "Tên nhà cung cấp"
     )
     email = models.EmailField(
         max_length = 100,
@@ -273,6 +279,7 @@ class Supplier(models.Model):
     )
     def __str__(self):
         return self.sup_name
+    
 class ImportOrder(models.Model):
     import_date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(
@@ -296,6 +303,11 @@ class ImportOrder(models.Model):
         Employee,
         on_delete = models.PROTECT
     )
+    def __str__(self):
+        # định dạng ngày giờ theo kiểu "YYYY-MM-DD HH:MM:SS"
+        formatted_date = self.import_date.strftime("%Y-%m-%d %H:%M:%S")
+        return f"ImportOrder #{self.id} - {formatted_date}"
+
 class ImportOrder_Item(models.Model):
     product = models.ForeignKey(
         Product,
@@ -338,6 +350,11 @@ class ExportOrder(models.Model):
         Employee,
         on_delete = models.PROTECT
     )
+    def __str__(self):
+        # định dạng ngày giờ theo kiểu "YYYY-MM-DD HH:MM:SS"
+        formatted_date = self.export_date.strftime("%Y-%m-%d %H:%M:%S")
+        return f"ImportOrder #{self.id} - {formatted_date}"
+    
 class ExportOrder_Item(models.Model):
     product = models.ForeignKey(
         Product,
