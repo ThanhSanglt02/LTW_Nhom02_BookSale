@@ -1,0 +1,83 @@
+{% extends 'employee/employee_base.html' %}
+{% block title %}Thêm nhà cung cấp{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <!-- Header -->
+  <div class="mb-8">
+    <h2 class="text-3xl font-bold text-gray-800">➕ Thêm nhà cung cấp</h2>
+    <p class="text-gray-500 mt-2">Điền thông tin để tạo mới và quản lý nhà cung cấp của cửa hàng.</p>
+  </div>
+
+  <!-- Form -->
+  <form method="post" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+    {% csrf_token %}
+
+    <div class="space-y-6">
+      <!-- Row 1 -->
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Tên nhà cung cấp <span class="text-red-500">*</span>
+          </label>
+          <input type="text" name="name" placeholder="VD: Nhà sách Minh Long"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 placeholder-gray-400
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Mã nhà cung cấp</label>
+          <input type="text" name="code" placeholder="VD: NCC001"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 placeholder-gray-400
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" name="email" placeholder="example@email.com"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 placeholder-gray-400
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại</label>
+          <input type="text" name="phone" placeholder="Nhập số điện thoại"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 placeholder-gray-400
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Địa chỉ</label>
+        <input type="text" name="address" placeholder="VD: 123 Nguyễn Trãi, Hà Nội"
+               class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 placeholder-gray-400
+                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+      </div>
+
+      <!-- Notes -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ghi chú</label>
+        <textarea name="note" rows="3" placeholder="Thêm ghi chú hoặc thông tin bổ sung..."
+                  class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 placeholder-gray-400
+                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end mt-8 space-x-3 border-t pt-4">
+      <a href="{% url 'supplier_list' %}"
+         class="px-5 py-2.5 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-100 transition font-medium">
+        ← Quay lại
+      </a>
+      <button type="submit"
+              class="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition">
+        💾 Lưu
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
