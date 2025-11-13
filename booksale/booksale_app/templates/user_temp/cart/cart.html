@@ -195,6 +195,202 @@
     .btn-buy:hover {
         background-color: #e52d2d;
     }
+
+    /* Responsive cho mobile */
+    @media (max-width: 768px) {
+        .breadcrumb-bar {
+            padding: 10px 0;
+        }
+
+        .breadcrumb-content {
+            width: 95%;
+            padding: 0 15px;
+        }
+
+        .breadcrumb-title {
+            font-size: 14px;
+        }
+
+        .cart-container {
+            width: 95%;
+            margin: 20px auto;
+            padding: 15px;
+        }
+
+        .cart-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Ẩn table header trên mobile */
+        table.cart-table thead {
+            display: none;
+        }
+
+        /* Chuyển table thành card layout trên mobile */
+        table.cart-table,
+        table.cart-table tbody,
+        table.cart-table tr,
+        table.cart-table td {
+            display: block;
+            width: 100%;
+        }
+
+        table.cart-table tr {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        table.cart-table td {
+            border: none;
+            padding: 8px 0;
+            text-align: left;
+            position: relative;
+            padding-left: 0;
+        }
+
+        /* Labels cho các cột trên mobile */
+        table.cart-table td:nth-child(2):before {
+            content: "Đơn giá: ";
+            font-weight: bold;
+            display: inline-block;
+            width: 80px;
+            color: #666;
+        }
+
+        table.cart-table td:nth-child(3):before {
+            content: "Số lượng: ";
+            font-weight: bold;
+            display: inline-block;
+            width: 80px;
+            color: #666;
+        }
+
+        table.cart-table td:nth-child(4):before {
+            content: "Tổng: ";
+            font-weight: bold;
+            display: inline-block;
+            width: 80px;
+            color: #666;
+        }
+
+        /* Sản phẩm */
+        table.cart-table td:first-child {
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+        }
+
+        table.cart-table td:first-child:before {
+            display: none;
+        }
+
+        table.cart-table td:nth-child(3) {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Xóa */
+        table.cart-table td:last-child {
+            text-align: right;
+            padding-top: 10px;
+        }
+
+        table.cart-table td:last-child:before {
+            display: none;
+        }
+
+        .product-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .product-info img {
+            width: 80px;
+            height: 100px;
+        }
+
+        .product-details {
+            width: 100%;
+        }
+
+        .cart-footer {
+            flex-direction: column;
+            gap: 15px;
+            align-items: stretch;
+        }
+
+        .cart-footer > div {
+            width: 100%;
+        }
+
+        .cart-footer > div:last-child {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .total-text {
+            text-align: center;
+            padding: 12px;
+        }
+
+        .btn-buy {
+            width: 100%;
+            padding: 12px;
+        }
+
+        #xoa-da-chon {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .cart-container {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 0;
+        }
+
+        .cart-title {
+            font-size: 18px;
+        }
+
+        .product-info img {
+            width: 60px;
+            height: 75px;
+        }
+
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+        }
+
+        .qty-input {
+            width: 30px;
+            font-size: 14px;
+        }
+
+        .total-text {
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        .btn-buy {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
 </style>
 
 <!-- Breadcrumb bar -->
@@ -225,7 +421,7 @@
             {% if giohang %}
                 {% for sp in giohang %}
                 <tr id="row-{{ sp.id }}">
-                    <td>
+                    <td data-label="">
                         <div class="product-info">
                             <input type="checkbox">
                             <img src="{% static 'images/'|add:sp.hinhanh %}" alt="{{ sp.ten }}">
@@ -235,14 +431,14 @@
                             </div>
                         </div>
                     </td>
-                    <td id="dongia-{{ sp.id }}" style="color:#007bff;">{{ sp.dongia|floatformat:0 }}₫</td>
-                    <td>
+                    <td data-label="Đơn giá" id="dongia-{{ sp.id }}" style="color:#007bff;">{{ sp.dongia|floatformat:0 }}₫</td>
+                    <td data-label="Số lượng">
                         <button class="qty-btn giam" data-id="{{ sp.id }}">−</button>
                         <input type="text" id="soluong-{{ sp.id }}" class="qty-input" value="{{ sp.soluong }}" readonly>
                         <button class="qty-btn tang" data-id="{{ sp.id }}">+</button>
                     </td>
-                    <td id="tong-{{ sp.id }}" style="color:#007bff;">{{ sp.dongia|floatformat:0 }}₫</td>
-                    <td><button class="delete-btn xoa" data-id="{{ sp.id }}">✖</button></td>
+                    <td data-label="Tổng" id="tong-{{ sp.id }}" style="color:#007bff;">{{ sp.dongia|floatformat:0 }}₫</td>
+                    <td data-label=""><button class="delete-btn xoa" data-id="{{ sp.id }}">✖</button></td>
                 </tr>
                 {% endfor %}
             {% else %}
@@ -317,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Nút Mua hàng
     document.querySelector('.btn-buy').addEventListener('click', function() {
-        window.location.href = '/thanhtoan/';
+        window.location.href = '/order/';
     });
 });
 </script>
