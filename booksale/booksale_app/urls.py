@@ -13,6 +13,7 @@ from booksale_app.views.admin_view import category
 from booksale_app.models import Category
 # from .views import home_view, product_detail, register_view, login_view, logout_view, order_list,order_detail,giohang, thanhtoan, donhang,category_view, category_detail_view, product_detail_user, add_to_cart
 
+from .views.employee import inventory_overview, inventory_import, inventory_export, supplier_list
 
 urlpatterns = [
     path('login/', views.login_view, name = 'login'),
@@ -33,7 +34,13 @@ urlpatterns = [
     path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),   
 #    path('product-detail/', views.product_detail, name='product_detail'),
 #    path('product/', views.product_list, name='product_list'),
-
+    path('employee/inventory_overview/', inventory_overview.inventory_list, name='inventory_list'),
+    path('employee/inventory_import/', inventory_import.inventory_import, name='inventory_import'),
+    path('employee/inventory_export/', inventory_export.inventory_export, name='inventory_export'),
+    path('employee/supplier_list/', supplier_list.supplier_list, name='supplier_list'),
+    path('employee/supplier_list/add/', supplier_list.supplier_add, name='supplier_add'),
+    path('employee/supplier_list/edit/<int:pk>/', supplier_list.supplier_edit, name='supplier_edit'),
+    path('employee/supplier_list/delete/<int:pk>/', supplier_list.supplier_delete, name='supplier_delete'),
     # CRUD sản phẩm
     path('emp/product/add/', product_add, name='product_add'),
     path('product/<int:pk>/edit/', product_edit, name='product_edit'),
