@@ -1,5 +1,5 @@
 # Import các hàm view từ home.py
-from .user_view.home import index as home_view
+from .user_view.home import home_view
 from .admin_view.sanpham import product_list
 from .admin_view.chitietsanpham import product_detail
 from .authen_view import register_view, login_view, logout_view
@@ -13,3 +13,5 @@ from .user_view.thanhtoan import thanhtoan
 from .user_view.donhang import donhang
 # Import các hàm view từ product.py
 # from .product import index as product_index, detail as product_detail
+from .admin_view.sanpham import product_list
+#from .admin_view.order import adm_order_list  # sửa theo đúng đường dẫn file chứa view

@@ -1,0 +1,119 @@
+{% extends 'admin_temp/admin_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<main class="flex-1 p-8">
+
+  <!-- Tiêu đề nằm ngoài khung -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-semibold text-gray-800">Thêm sản phẩm</h1>
+  </div>
+
+  <!-- Khung form to hơn -->
+  <div class="bg-white rounded-2xl shadow-sm p-8 max-w-7xl mx-auto">
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Hàng 1: Tên sản phẩm -->
+      <div>
+        <label class="block font-medium mb-2 text-gray-700">Tên sản phẩm</label>
+        <input type="text" name="product_name" value="{{ form.product_name.value|default_if_none:'' }}"
+               class="w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
+               placeholder="Nhập tên sản phẩm" required>
+        {% if form.product_name.errors %}
+          <p class="text-red-500 text-sm">{{ form.product_name.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Hàng 2: Danh mục, Giá nhập, Giá bán, Số lượng -->
+      <div class="grid grid-cols-4 gap-6">
+        <div>
+          <label class="block font-medium mb-2 text-gray-700">Danh mục</label>
+          {{ form.category|add_class:"w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none" }}
+          {% if form.category.errors %}
+            <p class="text-red-500 text-sm">{{ form.category.errors.0 }}</p>
+          {% endif %}
+        </div>
+        <div>
+          <label class="block font-medium mb-2 text-gray-700">Giá nhập</label>
+          <input type="number" name="cost_price" value="{{ form.cost_price.value|default_if_none:'' }}"
+                 class="w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                 placeholder="Nhập giá nhập">
+        </div>
+        <div>
+          <label class="block font-medium mb-2 text-gray-700">Giá bán</label>
+          <input type="number" name="sell_price" value="{{ form.sell_price.value|default_if_none:'' }}"
+                 class="w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                 placeholder="Nhập giá bán">
+        </div>
+        <div>
+          <label class="block font-medium mb-2 text-gray-700">Số lượng</label>
+          <input type="number" name="quantity" value="{{ form.quantity.value|default_if_none:'' }}"
+                 class="w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                 placeholder="Nhập số lượng" required>
+        </div>
+      </div>
+
+      <!-- Hàng 3: Tác giả, Nhà xuất bản, Thể loại -->
+      <div class="grid grid-cols-3 gap-6">
+        <div>
+          <label class="block font-medium mb-2 text-gray-700">Tác giả</label>
+          <input type="text" name="author" value="{{ form.author.value|default_if_none:'' }}"
+                 class="w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                 placeholder="Tên tác giả">
+        </div>
+        <div>
+          <label class="block font-medium mb-2 text-gray-700">Nhà xuất bản</label>
+          {{ form.publisher|add_class:"w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none" }}
+          {% if form.publisher.errors %}
+            <p class="text-red-500 text-sm">{{ form.publisher.errors.0 }}</p>
+          {% endif %}
+        </div>
+        <div>
+          <label class="block font-medium mb-2 text-gray-700">Thể loại</label>
+          {{ form.genre|add_class:"w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none" }}
+          {% if form.genre.errors %}
+            <p class="text-red-500 text-sm">{{ form.genre.errors.0 }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Hàng 4: Mô tả -->
+      <div>
+        <label class="block font-medium mb-2 text-gray-700">Mô tả</label>
+        <textarea name="description" rows="4"
+                  class="w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
+                  placeholder="Nhập mô tả sản phẩm...">{{ form.description.value|default_if_none:'' }}</textarea>
+      </div>
+
+      <!-- Hàng 5: Hình ảnh -->
+      <div class="mt-6">
+        <label class="block font-medium mb-2 text-gray-700" for="image">Hình sản phẩm</label>
+        <input type="file" name="image" id="image" class="border border-gray-300 rounded-lg p-2 w-full">
+
+        <!-- Nếu đang edit, hiển thị ảnh hiện có -->
+        {% if product %}
+          <div class="grid grid-cols-5 gap-4 mt-4">
+            {% for img in product.productimage_set.all %}
+              <div class="border rounded-lg overflow-hidden shadow-sm">
+                <img src="{{ img.image.url }}" class="w-full h-32 object-cover">
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Hàng 6: Nút Save / Cancel -->
+      <div class="flex justify-end items-center gap-4 mt-8">
+        <a href="{% url 'product_list' %}"
+           class="bg-red-100 text-red-600 px-6 py-2 rounded-lg hover:bg-red-200 transition">Hủy</a>
+        <button type="submit"
+                class="bg-green-500 text-white px-8 py-2 rounded-lg hover:bg-green-600 shadow-sm transition">
+          Lưu
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}
