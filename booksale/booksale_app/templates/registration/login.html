@@ -1,0 +1,47 @@
+{% extends "boostrap.html" %}
+{% load i18n static %}
+
+{% block content %}
+<section class="vh-100 d-flex align-items-center justify-content-center" style="background-color: #508bfc;">
+    <div class="card p-5 shadow-lg" style="border-radius: 1rem; max-width: 400px; width: 100%; background-color: #fff;">
+        <form method="POST" action="{% url 'accounts:login' %}">
+            {% csrf_token %}
+            <h3 class="text-center mb-4" style="font-weight: 600;">{% translate "Sign in" %}</h3>
+
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="mb-3">
+                {{ form.username.errors }}
+                <label class="form-label" for="{{ form.username.id_for_label }}">{{ "Username" }}</label>
+                {{ form.username }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.errors }}
+                <label class="form-label" for="{{ form.password.id_for_label }}">{{ "Password" }}</label>
+                {{ form.password }}
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="remember_me" id="remember_me">
+                <label class="form-check-label" for="remember_me">{{ "Remember password" }}</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3" style="border-radius: 0.75rem; background: linear-gradient(90deg, #4e9af1, #1d6fe0); border: none; font-weight: 500;">
+                {% translate "Login" %}
+            </button>
+
+            {% url 'accounts:password_reset' as password_reset_url %}
+            {% if password_reset_url %}
+                <div class="text-center">
+                    <a href="{{ password_reset_url }}" style="color: #1d6fe0; text-decoration: none;">{% translate 'Forgotten your password?' %}</a>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -7,24 +7,24 @@ import json
 
 # Create your views here.
 
-def order_list(request):
-    orders =  (Order.objects
-            .select_related('customer')
-            .order_by('-order_date')) # select_related('customer') để lấy luôn thông tin khách hàng
-    order_data = []
-    for order in orders:
-        order_items = Order_Item.objects.select_related('product').filter(order=order)
-        # Truyền vào danh sách giá * số lượng
-        prices = [item.product.sell_price * item.quantity for item in order_items]
-        total_amount = sum_price_order(prices)
-        order_data.append({
-            'order': order,
-            'total_amount': total_amount
-        })
-    context = {
-        'order_data': order_data
-    }
-    return render(request, 'admin_temp/order/order_list.html', context)
+# def order_list(request):
+#     orders =  (Order.objects
+#             .select_related('customer')
+#             .order_by('-order_date')) # select_related('customer') để lấy luôn thông tin khách hàng
+#     order_data = []
+#     for order in orders:
+#         order_items = Order_Item.objects.select_related('product').filter(order=order)
+#         # Truyền vào danh sách giá * số lượng
+#         prices = [item.product.sell_price * item.quantity for item in order_items]
+#         total_amount = sum_price_order(prices)
+#         order_data.append({
+#             'order': order,
+#             'total_amount': total_amount
+#         })
+#     context = {
+#         'order_data': order_data
+#     }
+#     return render(request, 'admin_temp/order/order_list.html', context)
 
 def order_detail(request, pk):
     # Lấy thông tin đơn hàng

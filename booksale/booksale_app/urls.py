@@ -15,17 +15,18 @@ from booksale_app.models import Category
 
 
 urlpatterns = [
-    path('login/', views.login_view, name = 'login'),
-    path('logout/', views.logout_view, name = 'logout'),
-    path('register/', views.register_view, name = 'register'),
+    # # REGISTRATION URLS
+    # path('login/', views.login_view, name = 'login'),
+    # path('logout/', views.logout_view, name = 'logout'),
+    # path('register/', views.register_view, name = 'register'),
+    
 
-
-    # USER URL
+    # USER URLS
     path('',views.home_view, name='home'),
     
 
-    # EMPLOYEE URL
-    path('emp/order_list/', views.order_list, name = 'emp/order_list'),
+    # EMPLOYEE URLS
+    # path('emp/order_list/', views.order_list, name = 'emp/order_list'),
     path('emp/order_details/<int:pk>/', views.order_detail, name = 'emp/detail'),
     path('emp/order_confirm/<int:pk>/', views.order_detail, name = 'emp/confirm'),
     path('emp/order_cancel/<int:pk>/', views.order_detail, name = 'emp/cancel'),

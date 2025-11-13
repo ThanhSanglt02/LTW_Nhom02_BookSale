@@ -1,9 +1,9 @@
 # Import các hàm view từ home.py
-from .user_view.home import home_view
+# from .user_view.home import home_view
 from .admin_view.sanpham import product_list
 from .admin_view.chitietsanpham import product_detail
-from .authen_view import register_view, login_view, logout_view
-from .admin_view.order_view import order_list, order_detail, order_cancel_status, order_confirm_status
+from .authen_view import role_redirect_view, home_view, order_list
+from .admin_view.order_view import order_detail, order_cancel_status, order_confirm_status
 from .user_view.category import category_view
 from .user_view.category import category_detail_view
 from .user_view.category import product_detail_user
