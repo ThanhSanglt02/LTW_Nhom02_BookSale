@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import home_view, product_detail, register_view, login_view, logout_view, order_list, category_view, category_detail_view, product_detail_user, add_to_cart
+from .views import home_view, product_detail, register_view, login_view, logout_view, order_list, giohang, thanhtoan, donhang
 
 # from .views.home import HomeView
 from . import views
@@ -22,8 +23,9 @@ urlpatterns = [
     path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),   
     path('product-detail/', views.product_detail, name='product_detail'),
     path('product/', views.product_list, name='product_list'),
-    
-    
+    path('giohang/', views.giohang, name='giohang'),
+    path('thanhtoan/', views.thanhtoan, name='thanhtoan'),
+    path('donhang/', views.donhang, name='donhang')
     # path('adm/order/<int:pk>/', views.edit_order, name = 'adm/edit_order'),
     # path('adm/order/new/', views.edit_order, name = 'adm/edit_order'),
     path('categories/', views.category_view, name='category'),  # trang danh mục

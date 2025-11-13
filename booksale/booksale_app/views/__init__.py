@@ -8,5 +8,8 @@ from .user_view.category import category_view
 from .user_view.category import category_detail_view
 from .user_view.category import product_detail_user
 from .user_view.add_to_cart import add_to_cart
+from .user_view.giohang import giohang
+from .user_view.thanhtoan import thanhtoan
+from .user_view.donhang import donhang
 # Import các hàm view từ product.py
 # from .product import index as product_index, detail as product_detail
