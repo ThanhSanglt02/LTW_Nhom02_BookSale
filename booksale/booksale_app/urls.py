@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import home_view, product_detail, register_view, login_view, logout_view, order_list, category_view, category_detail_view, product_detail_user, add_to_cart
 from .views import home_view, product_detail, register_view, login_view, logout_view, order_list, giohang, thanhtoan, donhang
 
 # from .views.home import HomeView
@@ -27,6 +28,11 @@ urlpatterns = [
     path('donhang/', views.donhang, name='donhang')
     # path('adm/order/<int:pk>/', views.edit_order, name = 'adm/edit_order'),
     # path('adm/order/new/', views.edit_order, name = 'adm/edit_order'),
+    path('categories/', views.category_view, name='category'),  # trang danh mục
+    path('categories/<int:pk>/', views.category_detail_view, name='category_detail'),  # chi tiết category
+    path('product-detail-user/<int:pk>/', product_detail_user, name='product_detail_user'),
+    # chi tiết sản phẩm
+    path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
 
 ]
 
