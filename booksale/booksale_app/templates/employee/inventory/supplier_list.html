@@ -1,0 +1,81 @@
+{% extends 'employee/employee_base.html' %}
+{% block content %}
+<div class="p-8 space-y-8">
+
+  <!-- Header -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-semibold text-gray-800">
+      🏷️ Danh sách nhà cung cấp
+    </h1>
+  </div>
+
+  <!-- Nếu chưa có nhà cung cấp -->
+  {% if not suppliers %}
+  <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-10 flex flex-col items-center justify-center text-center">
+    <div class="w-20 h-20 flex items-center justify-center rounded-full bg-blue-50 mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 17v-2a2 2 0 012-2h2a2 2 0 012 2v2m0 4H9a2 2 0 01-2-2v-4a2 2 0 012-2h6a2 2 0 012 2v4a2 2 0 01-2 2zM9 7h6m2 0h.01M7 7h.01" />
+      </svg>
+    </div>
+    <h2 class="text-lg font-semibold text-gray-700 mb-2">
+      Cửa hàng của bạn chưa có nhà cung cấp
+    </h2>
+    <p class="text-gray-500 mb-6 max-w-md">
+      Tạo mới nhà cung cấp để quản lý và tạo đơn nhập hàng từ các nhà cung cấp.
+    </p>
+    <a href="{% url 'supplier_add' %}"
+       class="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-medium shadow hover:bg-blue-700 transition-all">
+      ➕ Thêm nhà cung cấp
+    </a>
+  </div>
+
+  <!-- Nếu có nhà cung cấp -->
+  {% else %}
+  <div class="bg-white border border-gray-200 rounded-2xl shadow overflow-hidden">
+    <div class="flex justify-between items-center p-6 border-b bg-gray-50">
+      <h2 class="text-lg font-semibold text-gray-800">Danh sách nhà cung cấp</h2>
+      <a href="{% url 'supplier_add' %}"
+         class="px-4 py-2 bg-blue-600 text-white rounded-xl font-medium shadow hover:bg-blue-700 transition-all">
+        ➕ Thêm nhà cung cấp
+      </a>
+    </div>
+
+    <table class="w-full text-sm text-gray-700">
+      <thead class="bg-gray-50 text-gray-700 font-semibold border-b">
+        <tr>
+          <th class="p-3 text-left">#</th>
+          <th class="p-3 text-left">Tên nhà cung cấp</th>
+          <th class="p-3 text-left">Số điện thoại</th>
+          <th class="p-3 text-left">Email</th>
+          <th class="p-3 text-left">Địa chỉ</th>
+          <th class="p-3 text-center">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for supplier in suppliers %}
+        <tr class="border-b hover:bg-gray-50 transition">
+          <td class="p-3">{{ forloop.counter }}</td>
+          <td class="p-3 font-medium text-blue-600">{{ supplier.name }}</td>
+          <td class="p-3">{{ supplier.phone }}</td>
+          <td class="p-3">{{ supplier.email }}</td>
+          <td class="p-3">{{ supplier.address }}</td>
+          <td class="p-3 text-center space-x-2">
+            <a href="{% url 'supplier_edit' supplier.id %}"
+               class="text-blue-600 hover:underline">Sửa</a>
+            <a href="{% url 'supplier_delete' supplier.id %}"
+               class="text-red-500 hover:underline">Xóa</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <div class="p-4 text-sm text-gray-600 border-t bg-gray-50">
+      Trang {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

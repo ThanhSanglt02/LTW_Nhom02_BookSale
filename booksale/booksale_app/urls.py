@@ -1,5 +1,7 @@
 from django.urls import path
 from .views import home_view, product_detail, register_view, login_view, logout_view, order_list
+from .views.employee import inventory_overview, inventory_import, inventory_export
+
 
 # from .views.home import HomeView
 from . import views
@@ -22,8 +24,9 @@ urlpatterns = [
     path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),   
     path('product-detail/', views.product_detail, name='product_detail'),
     path('product/', views.product_list, name='product_list'),
-    
-    
+    path('employee/inventory_overview/', inventory_overview.inventory_list, name='inventory_list'),
+    path('employee/inventory_import/', inventory_import.inventory_import, name='inventory_import'),
+    path('employee/inventory_export/', inventory_export.inventory_export, name='inventory_export'),
     # path('adm/order/<int:pk>/', views.edit_order, name = 'adm/edit_order'),
     # path('adm/order/new/', views.edit_order, name = 'adm/edit_order'),
 
