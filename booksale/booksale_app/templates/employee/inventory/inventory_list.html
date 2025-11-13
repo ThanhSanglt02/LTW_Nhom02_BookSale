@@ -1,0 +1,91 @@
+{% extends 'employee/employee_base.html' %}
+{% block content %}
+<div class="p-8">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6 bg-blue-50 p-4 rounded-xl shadow-sm border border-blue-100">
+    <h1 class="text-2xl font-semibold text-gray-800">
+      🏷️ Quản lý kho: <span class="text-gray-600">Cửa hàng chính</span>
+    </h1>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex border-b mb-6">
+    <button class="px-4 py-2 text-blue-600 border-b-2 border-blue-600 font-medium">Tất cả</button>
+    <button class="px-4 py-2 text-gray-600 hover:text-blue-600">Còn hàng</button>
+    <button class="px-4 py-2 text-gray-600 hover:text-blue-600">Hết hàng</button>
+  </div>
+
+  <!-- Search + Filter -->
+  <div class="flex justify-between mb-4">
+    <div class="flex items-center border border-blue-200 rounded-lg w-1/3 bg-white shadow-sm hover:shadow-md transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-3 text-blue-400" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"/>
+      </svg>
+      <input type="text" placeholder="Tìm kiếm sản phẩm"
+             class="w-full px-3 py-2 border-0 focus:ring-0 bg-transparent" />
+    </div>
+
+    <!-- Nút lọc nổi bật -->
+    <button class="flex items-center px-4 py-2 bg-blue-100 text-blue-700 font-semibold
+                   border border-blue-300 rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg
+                   hover:text-blue-800 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.29.71L15 13.41V19a1 1 0 01-.55.89l-4 2A1 1 0 019 21v-7.59L3.29 6.71A1 1 0 013 6V4z"/>
+      </svg>
+      Thêm điều kiện lọc
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white shadow-md rounded-xl overflow-hidden border border-blue-100">
+    <table class="min-w-full text-sm text-left text-gray-700">
+      <!-- Giữ màu gốc (xám) cho tiêu đề -->
+      <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+        <tr>
+          <th class="px-4 py-3">ID</th>
+          <th class="px-4 py-3">Tên sản phẩm</th>
+          <th class="px-4 py-3 text-center">Tồn kho</th>
+          <th class="px-4 py-3 text-center">Có thể bán</th>
+          <th class="px-4 py-3 text-center">Đang giao dịch</th>
+          <th class="px-4 py-3 text-center">Đang về kho</th>
+          <th class="px-4 py-3 text-right">Giá bán</th>
+          <th class="px-4 py-3 text-right">Giá vốn</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in inventory %}
+        <tr class="border-b hover:bg-blue-50 transition">
+          <td class="px-4 py-3">{{ item.product_code }}</td>
+          <td class="px-4 py-3">{{ item.product_name }}</td>
+          <td class="px-4 py-3 text-center">{{ item.stock }}</td>
+          <td class="px-4 py-3 text-center">{{ item.available }}</td>
+          <td class="px-4 py-3 text-center">{{ item.in_transaction }}</td>
+          <td class="px-4 py-3 text-center">{{ item.incoming }}</td>
+          <td class="px-4 py-3 text-right">{{ item.sell_price }}đ</td>
+          <td class="px-4 py-3 text-right">{{ item.cost_price }}đ</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8" class="px-4 py-6 text-center text-gray-400">Không có sản phẩm nào</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center mt-6">
+    <nav class="flex space-x-2 text-sm">
+      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">&lt;</a>
+      <a href="#" class="px-3 py-1 border rounded bg-blue-50 text-blue-600 font-semibold shadow-sm">1</a>
+      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">2</a>
+      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">3</a>
+      <span class="px-3 py-1">...</span>
+      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">10</a>
+      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">&gt;</a>
+    </nav>
+  </div>
+</div>
+{% endblock %}

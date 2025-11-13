@@ -37,3 +37,36 @@ class ProductForm(forms.ModelForm):
                 'class': 'w-full border border-gray-300 rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none'
             }),
         }
+
+from django import forms
+from .models import Supplier
+
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ['sup_name', 'email', 'phone', 'address']
+        labels = {
+            'sup_name': 'Tên nhà cung cấp',
+            'email': 'Email',
+            'phone': 'Số điện thoại',
+            'address': 'Địa chỉ',
+        }
+        widgets = {
+            'sup_name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none',
+                'placeholder': 'VD: Nhà sách Minh Long'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none',
+                'placeholder': 'example@email.com'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none',
+                'placeholder': 'Nhập số điện thoại'
+            }),
+            'address': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none',
+                'rows': 3,
+                'placeholder': 'VD: 123 Nguyễn Trãi, Hà Nội'
+            }),
+        }
