@@ -1,0 +1,325 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Breadcrumb bar */
+    .breadcrumb-bar {
+        background-color: #f5f5f5;
+        border-top: 1px solid #007bff;
+        border-bottom: 1px solid #007bff;
+        padding: 12px 0;
+        margin-bottom: 20px;
+    }
+
+    .breadcrumb-content {
+        width: 85%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .breadcrumb-home {
+        color: #333;
+        font-size: 18px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .breadcrumb-home:hover {
+        color: #007bff;
+    }
+
+    .breadcrumb-separator {
+        width: 1px;
+        height: 20px;
+        background-color: #ccc;
+    }
+
+    .breadcrumb-title {
+        color: #6c5ce7;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .cart-container {
+        width: 85%;
+        margin: 40px auto;
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .cart-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1c2730;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+    table.cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    table.cart-table thead {
+        background-color: #1c2730;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    table.cart-table th, table.cart-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table.cart-table tbody tr {
+        background-color: #f9f9f9;
+    }
+
+    table.cart-table tbody tr:hover {
+        background-color: #f0f0f0;
+    }
+
+    .product-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-align: left;
+    }
+
+    .product-info img {
+        width: 65px;
+        height: 80px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+    }
+
+    .product-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-name {
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .product-description {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .qty-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1px solid #aaa;
+        background: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .qty-btn:hover {
+        background: #eaeaea;
+    }
+
+    .qty-input {
+        width: 35px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .delete-btn {
+        color: #ff4d4d;
+        font-size: 18px;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    .cart-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    #xoa-da-chon {
+        background-color: #ddd;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+
+    #xoa-da-chon:hover {
+        background-color: #ccc;
+    }
+
+    .total-text {
+        background-color: #f5f5f5;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .total-price {
+        color: #007bff;
+    }
+
+    .btn-buy {
+        background-color: #ff3333;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-buy:hover {
+        background-color: #e52d2d;
+    }
+</style>
+
+<!-- Breadcrumb bar -->
+<div class="breadcrumb-bar">
+    <div class="breadcrumb-content">
+        <a href="/" class="breadcrumb-home">
+            <i class="fas fa-home"></i>
+        </a>
+        <div class="breadcrumb-separator"></div>
+        <h2 class="breadcrumb-title">Giỏ hàng</h2>
+    </div>
+</div>
+
+<div class="cart-container">
+    <h2 class="cart-title">Giỏ hàng</h2>
+
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th style="width:40%;">Sản phẩm</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Tổng cộng</th>
+                <th>Xóa</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if giohang %}
+                {% for sp in giohang %}
+                <tr id="row-{{ sp.id }}">
+                    <td>
+                        <div class="product-info">
+                            <input type="checkbox">
+                            <img src="{% static 'images/'|add:sp.hinhanh %}" alt="{{ sp.ten }}">
+                            <div class="product-details">
+                                <div class="product-name">{{ sp.ten }}</div>
+                                <div class="product-description">Mô tả</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td id="dongia-{{ sp.id }}" style="color:#007bff;">{{ sp.dongia|floatformat:0 }}₫</td>
+                    <td>
+                        <button class="qty-btn giam" data-id="{{ sp.id }}">−</button>
+                        <input type="text" id="soluong-{{ sp.id }}" class="qty-input" value="{{ sp.soluong }}" readonly>
+                        <button class="qty-btn tang" data-id="{{ sp.id }}">+</button>
+                    </td>
+                    <td id="tong-{{ sp.id }}" style="color:#007bff;">{{ sp.dongia|floatformat:0 }}₫</td>
+                    <td><button class="delete-btn xoa" data-id="{{ sp.id }}">✖</button></td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" style="padding:20px; color:#666;">Giỏ hàng của bạn hiện đang trống.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <div class="cart-footer">
+        <div>
+            <input type="checkbox" id="chon-tat-ca"> <label for="chon-tat-ca">Chọn tất cả</label>
+            <button id="xoa-da-chon">Xóa</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div class="total-text">
+                Tổng cộng ({{ giohang|length }} sản phẩm):
+                <span id="tong-cong" class="total-price">{{ tong_cong }}₫</span>
+            </div>
+            <button class="btn-buy">Mua hàng</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const formatCurrency = num => num.toLocaleString('vi-VN') + '₫';
+
+    document.querySelectorAll('.tang').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const soluong = document.getElementById(`soluong-${id}`);
+            const dongia = parseInt(document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ""));
+            let sl = parseInt(soluong.value);
+            soluong.value = ++sl;
+            document.getElementById(`tong-${id}`).textContent = formatCurrency(dongia * sl);
+            capNhatTong();
+        });
+    });
+
+    document.querySelectorAll('.giam').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const soluong = document.getElementById(`soluong-${id}`);
+            const dongia = parseInt(document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ""));
+            let sl = parseInt(soluong.value);
+            if (sl > 1) soluong.value = --sl;
+            document.getElementById(`tong-${id}`).textContent = formatCurrency(dongia * sl);
+            capNhatTong();
+        });
+    });
+
+    document.querySelectorAll('.xoa').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            document.getElementById(`row-${id}`).remove();
+            capNhatTong();
+        });
+    });
+
+    function capNhatTong() {
+        let tong = 0;
+        document.querySelectorAll('tbody tr').forEach(row => {
+            const tongSp = row.querySelector('td:nth-child(4)');
+            if (tongSp && !isNaN(parseInt(tongSp.textContent.replace(/\D/g, "")))) {
+                tong += parseInt(tongSp.textContent.replace(/\D/g, ""));
+            }
+        });
+        document.getElementById('tong-cong').textContent = formatCurrency(tong);
+    }
+
+    // Nút Mua hàng
+    document.querySelector('.btn-buy').addEventListener('click', function() {
+        window.location.href = '/thanhtoan/';
+    });
+});
+</script>
+
+{% endblock %}
