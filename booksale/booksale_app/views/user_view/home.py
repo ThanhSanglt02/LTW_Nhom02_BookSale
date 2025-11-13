@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def index(request):
+def home_view(request):
     return render(request, 'user_temp/home.html')
 
 # class HomeView(View):
