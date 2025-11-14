@@ -29,9 +29,10 @@ urlpatterns = [
     path('order/', views.order, name='order'),
     path('donhang/', views.donhang, name='donhang'),
     path('categories/', views.category_view, name='category'),
-    path('categories/<int:pk>/', views.category_detail_view, name='category_detail'),
+    path('categories/<str:category_name>/', views.category_detail_view, name='category_detail'),
     path('product-detail-user/<int:pk>/', views.product_detail_user, name='product_detail_user'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path("buy-now/<int:product_id>/", views.buy_now, name="buy_now"),
 
 
     # EMPLOYEE SALE URLS

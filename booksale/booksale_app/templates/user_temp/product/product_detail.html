@@ -20,8 +20,26 @@
 .product-title { font-size: 2rem; font-weight: 700; color: #232f3e; margin-bottom: 10px; }
 .product-brand { color: #555; margin-bottom: 10px; }
 .product-price { color: #e47911; font-size: 1.6rem; font-weight: bold; margin-bottom: 20px; }
-.btn-buy { background-color: #007bff; color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer; font-weight: 600; }
+
+/* Nút mua ngay (màu xanh nền xanh chữ trắng) */
+.btn-buy { background-color: #007bff; color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s; }
 .btn-buy:hover { background-color: #0056b3; }
+
+/* Nút thêm vào giỏ hàng (chữ xanh, viền xanh, nền trắng) */
+.btn-add-cart {
+    background-color: white;
+    color: #007bff;
+    border: 2px solid #007bff;
+    padding: 12px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.btn-add-cart:hover {
+    background-color: #007bff;
+    color: white;
+}
 
 /* ======= TAB MÔ TẢ ======= */
 .tab-section { margin-top: 50px; }
@@ -48,6 +66,7 @@
 .related-item button { background-color: #007bff; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; }
 .related-item button:hover { background-color: #0056b3; }
 </style>
+
 {% endblock %}
 
 {% block content %}
@@ -82,11 +101,21 @@
         {% endif %}
       </p>
 
-      <!-- FORM MUA NGAY -->
+      <!-- FORM Thêm sản phẩm vào giỏ hàng-->
+          <div style="display:flex; gap:10px;">
+      <!-- Thêm vào giỏ hàng -->
       <form method="POST" action="{% url 'add_to_cart' product.id %}">
-        {% csrf_token %}
-        <button type="submit" class="btn-buy">Mua ngay</button>
+          {% csrf_token %}
+          <button type="submit" class="btn-add-cart">Thêm vào giỏ hàng</button>
       </form>
+
+      <!-- Mua ngay -->
+      <form method="POST" action="{% url 'buy_now' product.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn-buy">Mua ngay</button>
+      </form>
+</div>
+
     </div>
   </div>
 
