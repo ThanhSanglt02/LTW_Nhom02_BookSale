@@ -4,7 +4,10 @@
 {% block content %}
 <section class="vh-100 d-flex align-items-center justify-content-center" style="background-color: #508bfc;">
     <div class="card p-5 shadow-lg" style="border-radius: 1rem; max-width: 400px; width: 100%; background-color: #fff;">
-        <form method="POST" action="{% url 'accounts:login' %}">
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form method="POST" action="{{ action_url }}">
             {% csrf_token %}
             <h3 class="text-center mb-4" style="font-weight: 600;">{% translate "Sign in" %}</h3>
 

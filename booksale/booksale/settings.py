@@ -27,8 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Vì mặc định sau login của Django là đi đến trang Profile 
 LOGIN_REDIRECT_URL = '/accounts/role_redirect/'  # sau login sẽ vào view trung gian
-LOGIN_URL = '/accounts/login/'
 
 
 # Application definition

@@ -31,6 +31,7 @@ urlpatterns = [
 
 
     # EMPLOYEE SALE URLS
+    # path('emp/order_list/', views.order_list, name = 'emp/order_list'),
     path('emp/order_list/', views.order_list, name = 'emp/order_list'),
     path('emp/order_details/<int:pk>/', views.order_detail, name = 'emp/detail'),
     path('emp/order_confirm/<int:pk>/', views.order_detail, name = 'emp/confirm'),
