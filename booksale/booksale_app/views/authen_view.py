@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from ..forms import CreateUserForm
 from booksale_app.models import Order, Order_Item
 from booksale_app.utils import sum_price_order
@@ -67,25 +69,20 @@ def register_view(request):
     context = {'form': form}
     return render(request, 'register.html', context)
 
-# def login_view(request):
-#     if request.user.is_authenticated:
-#         # if request.user.is_superuser:
-#         #     return redirect('admin')  # URL name cho admin
-#         # else:
-#         return redirect('home')   # URL name cho user
-#     if request.method == "POST":
-#         username = request.POST.get('username')
-#         password = request.POST.get('password') 
-#         user = authenticate(request, username = username, password = password)
-#         if user is not None:
-#             login(request, user)
-#             #  # Kiểm tra phân quyền
-#             # if user.is_superuser:
-#             #     return redirect('admin')
-#             # else:
-#             print("cos loi 1")
-#             return redirect('home')
-            
-#         else: messages.info(request, 'user or password is not correct!')
-#     print("co loi 2")
-#     return render(request, 'login_temp.html')
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password') 
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.info(request, 'user or password is not correct!')
+    return render(request, 'login_temp.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
