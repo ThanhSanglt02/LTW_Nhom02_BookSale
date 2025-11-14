@@ -17,11 +17,6 @@ from .views.employee import inventory_overview, inventory_import, inventory_expo
 #     HAS_EMPLOYEE_VIEWS = False
 
 urlpatterns = [
-    # # REGISTRATION URLS
-    # path('login/', views.login_view, name = 'login'),
-    # path('logout/', views.logout_view, name = 'logout'),
-    # path('register/', views.register_view, name = 'register'),
-    
 
     # USER URLS
     path('',views.home_view, name='home'),
@@ -53,9 +48,7 @@ urlpatterns = [
     path('employee/supplier_list/add/', supplier_list.supplier_add, name='supplier_add'),
     path('employee/supplier_list/edit/<int:pk>/', supplier_list.supplier_edit, name='supplier_edit'),
     path('employee/supplier_list/delete/<int:pk>/', supplier_list.supplier_delete, name='supplier_delete'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('register/', views.register_view, name='register'),
+
 
 
     # CRUD sản phẩm

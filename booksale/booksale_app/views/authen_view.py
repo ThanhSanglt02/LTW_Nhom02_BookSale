@@ -12,8 +12,6 @@ def group_required(group_name):
     return user_passes_test(check_group, login_url='/accounts/login/')
         
 
-@login_required
-@group_required('KH')
 def home_view(request):
     return render(request, 'user_temp/home.html')
 
@@ -69,20 +67,20 @@ def register_view(request):
     context = {'form': form}
     return render(request, 'register.html', context)
 
-def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password') 
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.info(request, 'user or password is not correct!')
-    return render(request, 'login_temp.html')
+# def login_view(request):
+#     if request.user.is_authenticated:
+#         return redirect('home')
+#     if request.method == "POST":
+#         username = request.POST.get('username')
+#         password = request.POST.get('password') 
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             return redirect('home')
+#         else:
+#             messages.info(request, 'user or password is not correct!')
+#     return render(request, 'login_temp.html')
 
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+# def logout_view(request):
+#     logout(request)
+#     return redirect('login')

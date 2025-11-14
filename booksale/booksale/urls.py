@@ -18,18 +18,20 @@ from django.contrib import admin, auth
 from django.urls import path, include
 from booksale_app import views
 from django.conf import settings
-from django.contrib.auth.views import LogoutView
+# from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('booksale_app.urls')),
+    
     path("accounts/",include(("django.contrib.auth.urls", "auth"),namespace="accounts")),
-    path('accounts/logout/',LogoutView.as_view(next_page='/accounts/login/'),name='logout'),
     path("accounts/password_reset/done/",auth.views.PasswordResetDoneView.as_view(),name="password_reset_done",),
     path("accounts/reset/done/",auth.views.PasswordResetCompleteView.as_view(),name="password_reset_complete",),
     path("accounts/role_redirect/", views.role_redirect_view, name="role_redirect"),
+    ## REGISTER URL
+    path('register/', views.register_view, name = 'register'),
    
 
 ]
