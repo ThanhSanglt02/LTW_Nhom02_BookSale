@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="{% url 'admin:index' %}">{% translate 'Home' %}</a></div>{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+
+<p>{% translate "Thanks for spending some quality time with the web site today." %}</p>
+
+{# Kiểm tra xem logout từ admin hay customer #}
+{% if '/admin/' in request.path or '/admin/' in request.META.HTTP_REFERER|default:'' %}
+    {# Logout từ admin - redirect về admin login #}
+    <p><a href="{% url 'admin:index' %}">{% translate 'Log in again' %}</a></p>
+{% elif request.GET.next and '/admin/' in request.GET.next %}
+    {# Có next parameter trỏ về admin #}
+    <p><a href="{% url 'admin:index' %}">{% translate 'Log in again' %}</a></p>
+{% else %}
+    {# Logout từ customer - redirect về customer login #}
+    <p><a href="{% url 'login' %}">{% translate 'Log in again' %}</a></p>
+{% endif %}
+
+{% endblock %}
+
