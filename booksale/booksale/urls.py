@@ -30,13 +30,12 @@ urlpatterns = [
     path("accounts/password_reset/done/",auth.views.PasswordResetDoneView.as_view(),name="password_reset_done",),
     path("accounts/reset/done/",auth.views.PasswordResetCompleteView.as_view(),name="password_reset_complete",),
     path("accounts/role_redirect/", views.role_redirect_view, name="role_redirect"),
-    path('emp/order_list/', views.order_list, name = 'emp/order_list'),
-
+   
 
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
+    urlpatterns += static(settings.MEDIA_URL),
 """
 URL configuration for booksale project.
 

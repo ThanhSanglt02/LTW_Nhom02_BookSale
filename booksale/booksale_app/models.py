@@ -1,35 +1,8 @@
 from django.db import models
 from django.contrib import auth 
-from django.contrib.auth.models import AbstractUser, Permission, Group
 
 
 # Create your models here
-# class User(AbstractUser):
-#     ROLE_CHOICES = (
-#         ('customer', 'Customer'),
-#         ('sales', 'Sales'),
-#         ('warehouse', 'Warehouse'),
-#     )
-#     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
-#     # override user_permissions để tránh xung đột
-#     groups = models.ManyToManyField(
-#         Group,
-#         related_name='booksale_user_set',  # tên mới để tránh xung đột
-#         blank=True,
-#         help_text='The groups this user belongs to.',
-#         verbose_name='groups',
-#         related_query_name='booksale_user',
-#     )
-
-#     user_permissions = models.ManyToManyField(
-#         Permission,
-#         related_name='booksale_user_permissions_set',  # tên mới để tránh xung đột
-#         blank=True,
-#         help_text='Specific permissions for this user.',
-#         verbose_name='user permissions',
-#         related_query_name='booksale_user_permissions',
-#     )
-
 class Customer(models.Model):
     user = models.OneToOneField(auth.get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
     cust_name = models.CharField(

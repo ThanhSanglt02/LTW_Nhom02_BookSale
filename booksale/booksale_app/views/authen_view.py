@@ -15,6 +15,7 @@ def group_required(group_name):
 def home_view(request):
     return render(request, 'user_temp/home.html')
 
+# Bỏ Dashboard
 @login_required
 @group_required('NVBH')
 def order_list(request):
