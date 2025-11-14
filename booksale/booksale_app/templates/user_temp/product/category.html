@@ -89,52 +89,90 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    /* ===== ẢNH CỐ ĐỊNH ===== */
-    .product-card img {
-        width: 100%;              /* Ảnh full chiều ngang thẻ chứa */
-        height: 220px;            /* Chiều cao cố định — bạn có thể chỉnh 200–250px tùy giao diện */
-        object-fit: cover;        /* Cắt ảnh vừa khung, không méo */
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: 340px;       /* chiều cao card */
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+        border: 1px solid #ccc;
         border-radius: 8px;
-        margin-bottom: 10px;
-        background-color: #f8f8f8;
-    }
-
-
-    .product-name {
-        font-weight: bold;
-        font-size: 15px;
-        margin-bottom: 4px;
-        height: 38px; /* Giữ đều chiều cao dòng chữ */
         overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
+        background-color: #fff;
+        padding: 0;
     }
 
-    .product-price {
-        color: #007bff;
-        font-size: 15px;
-        margin-bottom: 6px;
+    .product-card img {
+        width: 100%;         /* full chiều ngang */
+        height: 220px;       /* chừa 120px cho tên, giá, nút */
+        object-fit: cover;   /* ảnh lấp đầy, không méo */
+    }
+
+    .product-name, .product-price {
+        margin: 5px 0;
+        padding: 0 10px;
+        text-align: center;
+    }
+
+    .add-cart-form {
+        margin-top: 5px;
     }
 
     .add-cart-btn {
-        position: absolute;
-        bottom: 15px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #223041;
-        color: #fff;
-        padding: 8px 15px;
+        display: none;
+        background-color: #fff;
+        color: #007bff;
+        border: 2px solid #007bff;
+        padding: 5px 12px;
         border-radius: 5px;
         font-size: 14px;
-        display: none;
-        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        text-align: center;
+        line-height: 1.2;
     }
 
     .product-card:hover .add-cart-btn {
         display: block;
+        background-color: #007bff;
+        color: #fff;
     }
+
+        .product-price {
+            color: #007bff;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+    .add-cart-btn {
+        display: none;               /* chỉ hiện khi hover card */
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #fff;      /* nền trắng */
+        color: #007bff;              /* chữ xanh */
+        border: 2px solid #007bff;   /* viền xanh */
+        padding: 5px 12px;           /* giảm padding để vừa chữ */
+        border-radius: 5px;
+        font-size: 14px;
+        white-space: nowrap;          /* chữ không xuống dòng */
+        cursor: pointer;
+        text-align: center;
+        line-height: 1.2;            /* căn chữ giữa */
+    }
+
+    .product-card:hover .add-cart-btn {
+        display: block;
+        background-color: #007bff;   /* nền xanh khi hover */
+        color: #fff;                 /* chữ trắng khi hover */
+    }
+
+
 
     .view-more {
         display: inline-block;
@@ -180,7 +218,7 @@
     <div class="sidebar">
         <h5>DANH MỤC SẢN PHẨM</h5>
         {% for cat in categories %}
-            <a href="{% url 'category_detail' cat.id %}">{{ cat.category_name }}</a>
+            <a href="{% url 'category_detail' cat.category_name %}">{{ cat.category_name }}</a>
         {% empty %}
             <p class="text-center text-muted">Chưa có danh mục nào.</p>
         {% endfor %}
@@ -205,7 +243,11 @@
                                     <p class="product-name">{{ product.product_name }}</p>
                                     <p class="product-price">{{ product.sell_price }} VND</p>
                                 </a>
-                                <a href="#" class="add-cart-btn">Thêm vào giỏ hàng</a>
+                                <!-- FORM Thêm vào giỏ hàng -->
+                                <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-cart-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="add-cart-btn">Thêm vào giỏ hàng</button>
+                                </form>
                             </div>
                         </div>
                     {% empty %}
@@ -214,7 +256,7 @@
                 </div>
 
                 <div class="text-center">
-                    <a href="{% url 'category_detail' cat.id %}" class="view-more">
+                    <a href="{% url 'category_detail' cat.category_name %}" class="view-more">
                         Xem thêm các ấn bản {{ cat.category_name }}
                     </a>
                 </div>
