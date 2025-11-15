@@ -1,30 +1,32 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from booksale_app.models import Order, Customer, Order_Item
+from booksale_app.models import Order, Order_Item
 from django.contrib import messages
 from booksale_app.utils import sum_price_order
-from django.http import JsonResponse
-import json
+from django.contrib.auth.decorators import login_required
+from ..authen_view import group_required
 
 # Create your views here.
 
-# def order_list(request):
-#     orders =  (Order.objects
-#             .select_related('customer')
-#             .order_by('-order_date')) # select_related('customer') để lấy luôn thông tin khách hàng
-#     order_data = []
-#     for order in orders:
-#         order_items = Order_Item.objects.select_related('product').filter(order=order)
-#         # Truyền vào danh sách giá * số lượng
-#         prices = [item.product.sell_price * item.quantity for item in order_items]
-#         total_amount = sum_price_order(prices)
-#         order_data.append({
-#             'order': order,
-#             'total_amount': total_amount
-#         })
-#     context = {
-#         'order_data': order_data
-#     }
-#     return render(request, 'admin_temp/order/order_list.html', context)
+@login_required(login_url="/accounts/login/staff/")
+@group_required('NVBH', login_url="/accounts/login/staff/") # Nếu user không thuộc NVBH → redirect về login staff.
+def order_list(request):
+    orders =  (Order.objects
+            .select_related('customer')
+            .order_by('-order_date')) # select_related('customer') để lấy luôn thông tin khách hàng
+    order_data = []
+    for order in orders:
+        order_items = Order_Item.objects.select_related('product').filter(order=order)
+        # Truyền vào danh sách giá * số lượng
+        prices = [item.product.sell_price * item.quantity for item in order_items]
+        total_amount = sum_price_order(prices)
+        order_data.append({
+            'order': order,
+            'total_amount': total_amount
+        })
+    context = {
+        'order_data': order_data
+    }
+    return render(request, 'admin_temp/order/order_list.html', context)
 
 def order_detail(request, pk):
     # Lấy thông tin đơn hàng

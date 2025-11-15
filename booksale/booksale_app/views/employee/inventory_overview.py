@@ -1,8 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from ..authen_view import group_required
 from django.db.models import Sum
-from booksale_app.models import Product, Order_Item, Order, ImportOrder_Item, ImportOrder
+from ..authen_view import group_required
+from booksale_app.models import Product, Order_Item, ImportOrder_Item, ImportOrder
 
+@login_required(login_url="/accounts/login/warehouse/")
+@group_required('NVTK', login_url="/accounts/login/warehouse/") # Nếu user không thuộc NVTK → redirect về login/warehouse.
 def inventory_list(request):
     query = request.GET.get('q', '')
     products = Product.objects.filter(product_name__icontains=query)

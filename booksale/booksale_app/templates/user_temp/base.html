@@ -1,597 +1,584 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Bootstrap CSS -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+        />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <title>N12 - Hệ Thống Bán Sách Trực Tuyến</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <title>N12 - Hệ Thống Bán Sách Trực Tuyến</title>
 
-    <style>
-      .navbar-custom {
-        background-color: #223041; /* màu nền tối giống hình */
-        padding: 10px 70px;
-      }
-      .navbar-custom .nav-link {
-        color: white;
-        font-weight: 600;
-        margin-right: 20px;
-        /* width: 100px; */
-      }
-      .navbar-custom .nav-link-custom {
-        white-space: nowrap;
-        padding: 8px 12px;
-        min-width: auto;
-      }
-      .navbar-nav {
-        align-items: center;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-      }
-      .navbar-nav .nav-item {
-        white-space: nowrap;
-      }
-      .navbar-custom .nav-link:hover {
-        color: #ddd;
-      }
-      .search-box {
-        position: relative;
-        margin-left: 110px;
-      }
-      .search-box input {
-        border-radius: 20px;
-        padding-left: 15px;
-        width: 410px;
-      }
-      .icon-search {
-        position: absolute;
-        top: 50%;
-        right: 50px;
-        transform: translateY(-50%);
-        color: #999999;
-        cursor: pointer;
-      }
-      .icon-btn {
-        color: #ffffff;
-        font-size: 18px;
-        margin-left: 62px;
-        cursor: pointer;
-      }
-      .icon-btn:hover {
-        color: #ddd;
-      }
+        <style>
+            .navbar-custom {
+                background-color: #223041; /* màu nền tối giống hình */
+                padding: 10px 70px;
+            }
+            .navbar-custom .nav-link {
+                color: white;
+                font-weight: 600;
+                margin-right: 20px;
+                /* width: 100px; */
+            }
+            .navbar-custom .nav-link-custom {
+                white-space: nowrap;
+                padding: 8px 12px;
+                min-width: auto;
+            }
+            .navbar-nav {
+                align-items: center;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+            .navbar-nav .nav-item {
+                white-space: nowrap;
+            }
+            .navbar-custom .nav-link:hover {
+                color: #ddd;
+            }
+            .search-box {
+                position: relative;
+                margin-left: 110px;
+            }
+            .search-box input {
+                border-radius: 20px;
+                padding-left: 15px;
+                width: 410px;
+            }
+            .icon-search {
+                position: absolute;
+                top: 50%;
+                right: 50px;
+                transform: translateY(-50%);
+                color: #999999;
+                cursor: pointer;
+            }
+            .icon-btn {
+                color: #ffffff;
+                font-size: 18px;
+                margin-left: 62px;
+                cursor: pointer;
+            }
+            .icon-btn:hover {
+                color: #ddd;
+            }
 
-      .user-menu {
-        position: relative;
-        display: inline-block;
-      }
+            .user-menu {
+                position: relative;
+                display: inline-block;
+            }
 
-      .icon-btn {
-        font-size: 22px;
-        color: #fff;
-        cursor: pointer;
-      }
+            .icon-btn {
+                font-size: 22px;
+                color: #fff;
+                cursor: pointer;
+            }
 
-      /* Cart badge */
-      .cart-icon-wrapper {
-        position: relative;
-        display: inline-block;
-      }
+            /* Cart badge */
+            .cart-icon-wrapper {
+                position: relative;
+                display: inline-block;
+            }
 
-      .cart-badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background-color: #ff3333;
-        color: white;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-      }
+            .cart-badge {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background-color: #ff3333;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                line-height: 1;
+            }
 
-      /* Mobile menu toggle button */
-      .navbar-toggler-custom {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 20px;
-        cursor: pointer;
-        padding: 5px 10px;
-      }
+            /* Mobile menu toggle button */
+            .navbar-toggler-custom {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 20px;
+                cursor: pointer;
+                padding: 5px 10px;
+            }
 
-      .navbar-toggler-custom:focus {
-        outline: none;
-      }
+            .navbar-toggler-custom:focus {
+                outline: none;
+            }
 
-      /* Sidebar cho mobile */
-      .mobile-sidebar {
-        position: fixed;
-        top: 0;
-        left: -280px;
-        width: 280px;
-        height: 100vh;
-        background-color: #223041;
-        z-index: 1050;
-        transition: left 0.3s ease;
-        overflow-y: auto;
-        padding-top: 60px;
-      }
+            /* Sidebar cho mobile */
+            .mobile-sidebar {
+                position: fixed;
+                top: 0;
+                left: -280px;
+                width: 280px;
+                height: 100vh;
+                background-color: #223041;
+                z-index: 1050;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+                padding-top: 60px;
+            }
 
-      .mobile-sidebar.show {
-        left: 0;
-      }
+            .mobile-sidebar.show {
+                left: 0;
+            }
 
-      .mobile-sidebar-header {
-        padding: 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+            .mobile-sidebar-header {
+                padding: 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-      .mobile-sidebar-title {
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        margin: 0;
-      }
+            .mobile-sidebar-title {
+                color: white;
+                font-size: 18px;
+                font-weight: bold;
+                margin: 0;
+            }
 
-      .mobile-sidebar-close {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 0;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+            .mobile-sidebar-close {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+                padding: 0;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
-      .mobile-sidebar-close:focus {
-        outline: none;
-      }
+            .mobile-sidebar-close:focus {
+                outline: none;
+            }
 
-      .mobile-sidebar-nav {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
+            .mobile-sidebar-nav {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
 
-      .mobile-sidebar-nav .nav-item {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
+            .mobile-sidebar-nav .nav-item {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
 
-      .mobile-sidebar-nav .nav-item:last-child {
-        border-bottom: none;
-      }
+            .mobile-sidebar-nav .nav-item:last-child {
+                border-bottom: none;
+            }
 
-      .mobile-sidebar-nav .nav-link {
-        color: white;
-        padding: 15px 20px;
-        display: block;
-        text-decoration: none;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-      }
+            .mobile-sidebar-nav .nav-link {
+                color: white;
+                padding: 15px 20px;
+                display: block;
+                text-decoration: none;
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+            }
 
-      .mobile-sidebar-nav .nav-link:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: white;
-      }
+            .mobile-sidebar-nav .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+            }
 
-      /* Overlay khi sidebar mở */
-      .sidebar-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1040;
-        display: none;
-      }
+            /* Overlay khi sidebar mở */
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1040;
+                display: none;
+            }
 
-      .sidebar-overlay.show {
-        display: block;
-      }
+            .sidebar-overlay.show {
+                display: block;
+            }
 
-      /* Responsive cho mobile */
-      @media (max-width: 768px) {
-        .navbar-custom {
-          padding: 10px 15px;
-        }
+            /* Responsive cho mobile */
+            @media (max-width: 768px) {
+                .navbar-custom {
+                    padding: 10px 15px;
+                }
 
-        .navbar-collapse {
-          display: none !important;
-        }
+                .navbar-collapse {
+                    display: none !important;
+                }
 
-        .search-box {
-          margin-left: 0;
-          margin-top: 10px;
-          width: 100%;
-          order: 3;
-        }
+                .search-box {
+                    margin-left: 0;
+                    margin-top: 10px;
+                    width: 100%;
+                    order: 3;
+                }
 
-        .search-box input {
-          width: 100%;
-        }
+                .search-box input {
+                    width: 100%;
+                }
 
-        .icon-btn {
-          margin-left: 10px;
-          font-size: 18px;
-        }
+                .icon-btn {
+                    margin-left: 10px;
+                    font-size: 18px;
+                }
 
-        .login-link {
-          margin-left: 10px;
-          font-size: 14px;
-        }
+                .login-link {
+                    margin-left: 10px;
+                    font-size: 14px;
+                }
 
-        .cart-badge {
-          width: 18px;
-          height: 18px;
-          font-size: 11px;
-          top: -6px;
-          right: -6px;
-        }
-      }
+                .cart-badge {
+                    width: 18px;
+                    height: 18px;
+                    font-size: 11px;
+                    top: -6px;
+                    right: -6px;
+                }
+            }
 
-      @media (max-width: 576px) {
-        .navbar-custom {
-          padding: 8px 10px;
-        }
+            @media (max-width: 576px) {
+                .navbar-custom {
+                    padding: 8px 10px;
+                }
 
-        .icon-btn {
-          margin-left: 8px;
-          font-size: 16px;
-        }
+                .icon-btn {
+                    margin-left: 8px;
+                    font-size: 16px;
+                }
 
-        .nav-link-custom {
-          font-size: 14px;
-        }
-      }
+                .nav-link-custom {
+                    font-size: 14px;
+                }
+            }
 
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: white;
-        min-width: 120px;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-        border-radius: 6px;
-        z-index: 1;
-      }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 120px;
+                box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+                border-radius: 6px;
+                z-index: 1;
+            }
 
-      .dropdown-content a {
-        color: black;
-        padding: 10px 14px;
-        text-decoration: none;
-        display: block;
-      }
+            .dropdown-content a {
+                color: black;
+                padding: 10px 14px;
+                text-decoration: none;
+                display: block;
+            }
 
-      .dropdown-content a:hover {
-        background-color: #f0f0f0;
-      }
+            .dropdown-content a:hover {
+                background-color: #f0f0f0;
+            }
 
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-      .login-link {
-        margin-left: 62px;
-      }
-      .icon-user {
-        margin-right: 30px;
-      }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            .login-link {
+                margin-left: 62px;
+            }
+            .icon-user {
+                margin-right: 30px;
+            }
 
-      .footer {
-        background-color: #223041;
-        color: white;
-        padding: 18px 0;
-      }
+            .footer {
+                background-color: #223041;
+                color: white;
+                padding: 18px 0;
+            }
 
-      .footer .social-icons a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin: 0 8px;
-        font-size: 18px;
-        transition: all 0.3s ease;
-      }
+            .footer .social-icons a {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                margin: 0 8px;
+                font-size: 18px;
+                transition: all 0.3s ease;
+            }
 
-      /* Màu riêng cho từng mạng xã hội */
-      .social-icons .facebook {
-        border: 1px solid #1877f2;
-        color: #1877f2;
-      }
-      .social-icons .instagram {
-        border: 1px solid #e1306c;
-        color: #e1306c;
-      }
-      .social-icons .twitter {
-        border: 1px solid #1da1f2;
-        color: #1da1f2;
-      }
-      .social-icons .google {
-        border: 1px solid #34a853;
-        color: #34a853;
-      }
-      .social-icons .youtube {
-        border: 1px solid #ff0000;
-        color: #ff0000;
-      }
+            /* Màu riêng cho từng mạng xã hội */
+            .social-icons .facebook {
+                border: 1px solid #1877f2;
+                color: #1877f2;
+            }
+            .social-icons .instagram {
+                border: 1px solid #e1306c;
+                color: #e1306c;
+            }
+            .social-icons .twitter {
+                border: 1px solid #1da1f2;
+                color: #1da1f2;
+            }
+            .social-icons .google {
+                border: 1px solid #34a853;
+                color: #34a853;
+            }
+            .social-icons .youtube {
+                border: 1px solid #ff0000;
+                color: #ff0000;
+            }
 
-      /* Hover đổi nền */
-      .footer .social-icons a:hover {
-        background-color: currentColor;
-        color: #fff !important;
-      }
+            /* Hover đổi nền */
+            .footer .social-icons a:hover {
+                background-color: currentColor;
+                color: #fff !important;
+            }
 
-      .contact-text {
-        margin-top: 14px;
-        font-size: 16px;
-        font-weight: 500;
-      }
+            .contact-text {
+                margin-top: 14px;
+                font-size: 16px;
+                font-weight: 500;
+            }
 
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
 
-      body {
-        display: flex;
-        flex-direction: column;
-        padding-top: 60px; /* Để tránh content bị che bởi navbar fixed */
-      }
+            body {
+                display: flex;
+                flex-direction: column;
+                padding-top: 60px; /* Để tránh content bị che bởi navbar fixed */
+            }
 
-      /* Wrapper cho content */
-      .content-wrapper {
-        flex: 1;
-        /* min-height: calc(100vh - 200px); Đảm bảo có chiều cao tối thiểu */
-        /* padding: 20px 0; Thêm padding nếu cần */
-      }
+            /* Wrapper cho content */
+            .content-wrapper {
+                flex: 1;
+                /* min-height: calc(100vh - 200px); Đảm bảo có chiều cao tối thiểu */
+                /* padding: 20px 0; Thêm padding nếu cần */
+            }
 
-      /* Đảm bảo footer luôn ở dưới */
-      .footer {
-        margin-top: auto;
-      }
-    </style>
-    <!-- Block để các file con thêm CSS riêng -->
-    {% block extra_css %} {% endblock %}
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-      <div class="container-fluid">
-        <!-- Bên trái -->
-        <div class="d-flex align-items-center">
-          <button
-            class="navbar-toggler-custom d-lg-none"
-            type="button"
-            id="mobileMenuToggle"
-            aria-label="Toggle navigation"
-          >
-            <i class="fa-solid fa-bars"></i>
-          </button>
-          <a class="navbar-brand text-white d-none d-lg-block" href="#"
-            ><i class="fa-solid fa-bars"></i
-          ></a>
-          <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
-        </div>
+            /* Đảm bảo footer luôn ở dưới */
+            .footer {
+                margin-top: auto;
+            }
+        </style>
+        <!-- Block để các file con thêm CSS riêng -->
+        {% block extra_css %} {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+            <div class="container-fluid">
+                <!-- Bên trái -->
+                <div class="d-flex align-items-center">
+                    <button
+                        class="navbar-toggler-custom d-lg-none"
+                        type="button"
+                        id="mobileMenuToggle"
+                        aria-label="Toggle navigation"
+                    >
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand text-white d-none d-lg-block" href="#"><i class="fa-solid fa-bars"></i></a>
+                    <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
+                </div>
 
-        <!-- Menu giữa -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav mr-auto">
-            {% for category in categories %}
-            <li class="nav-item">
-              <a class="nav-link nav-link-custom" href="{% url 'category_detail' category.id %}">{{ category.category_name|upper }}</a>
-            </li>
-            {% empty %}
-            <li class="nav-item">
-              <a class="nav-link nav-link-custom" href="#">VĂN HỌC</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link nav-link-custom" href="#">GIÁO TRÌNH</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link nav-link-custom" href="#">THIẾU NHI</a>
-            </li>
-            {% endfor %}
-          </ul>
-          <!-- Ô tìm kiếm -->
-          <form
-            class="d-flex ms-auto search-box align-items-left"
-            role="search"
-          >
-            <input
-              class="form-control"
-              type="search"
-              placeholder="Tìm kiếm sản phẩm"
-              aria-label="Search"
-            />
-            <button class="btn btn-link text-white" type="submit">
-              <i
-                class="icon-search fa-solid fa-magnifying-glass"
-                style="color: #999999"
-              ></i>
-            </button>
-          </form>
-        </div>
+                <!-- Menu giữa -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mr-auto">
+                        {% for category in categories %}
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" href="{% url 'category_detail' category.id %}"
+                                >{{ category.category_name|upper }}</a
+                            >
+                        </li>
+                        {% empty %}
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" href="#">VĂN HỌC</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" href="#">GIÁO TRÌNH</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" href="#">THIẾU NHI</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <!-- Ô tìm kiếm -->
+                    <form class="d-flex ms-auto search-box align-items-left" role="search">
+                        <input class="form-control" type="search" placeholder="Tìm kiếm sản phẩm" aria-label="Search" />
+                        <button class="btn btn-link text-white" type="submit">
+                            <i class="icon-search fa-solid fa-magnifying-glass" style="color: #999999"></i>
+                        </button>
+                    </form>
+                </div>
 
-        <!-- Icon bên phải -->
-        <div class="d-flex align-items-center">
-          <i class="fa-regular fa-bell icon-btn"></i>
-          <!-- <i class="fa-regular fa-user icon-btn"></i> -->
-       
-          <div class="user-menu">
-            {% if user.is_authenticated %}
-            <div class="dropdown">
-              <i class="fa-regular fa-user icon-btn"></i>
-              <div class="dropdown-content">
-                <a href="#">Profile</a>
-                <a href="{% url 'accounts:logout' %}">Logout</a>
-              </div>
+                <!-- Icon bên phải -->
+                <div class="d-flex align-items-center">
+                    <i class="fa-regular fa-bell icon-btn"></i>
+                    <!-- <i class="fa-regular fa-user icon-btn"></i> -->
+
+                    <div class="user-menu">
+                        {% if user.is_authenticated and is_kh %}
+                        <div class="dropdown">
+                            <i class="fa-regular fa-user icon-btn"></i>
+                            <div class="dropdown-content">
+                                <a href="#">{{ user.username }}</a>
+                                <a href="{% url 'accounts:logout' %}">Logout</a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <a href="{% url 'login_kh' %}" class="login-link">Login</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="cart-icon-wrapper">
+                        <i class="fa-solid fa-cart-shopping icon-btn"></i>
+                        {% if cart_count > 0 %}
+                        <span class="cart-badge">{{ cart_count }}</span>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            {% else %}
-            <a href="{% url 'login_kh' %}" class="login-link">Login</a>
-            {% endif %}
-          </div>
+        </nav>
 
-          <div class="cart-icon-wrapper">
-            <i class="fa-solid fa-cart-shopping icon-btn"></i>
-            {% if cart_count > 0 %}
-            <span class="cart-badge">{{ cart_count }}</span>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </nav>
+        <!-- Sidebar overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- Mobile Sidebar -->
-    <div class="mobile-sidebar" id="mobileSidebar">
-      <div class="mobile-sidebar-header">
-        <h3 class="mobile-sidebar-title">Danh mục</h3>
-        <button class="mobile-sidebar-close" id="mobileSidebarClose">
-          <i class="fa-solid fa-times"></i>
-        </button>
-      </div>
-      <ul class="mobile-sidebar-nav">
-        {% for category in categories %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'category_detail' category.id %}">{{ category.category_name|upper }}</a>
-        </li>
-        {% empty %}
-        <li class="nav-item">
-          <a class="nav-link" href="#">VĂN HỌC</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">GIÁO TRÌNH</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">THIẾU NHI</a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-
-    <div class="content-wrapper">
-      {% if messages %}
-        <div class="container mt-3">
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-              {{ message }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+        <!-- Mobile Sidebar -->
+        <div class="mobile-sidebar" id="mobileSidebar">
+            <div class="mobile-sidebar-header">
+                <h3 class="mobile-sidebar-title">Danh mục</h3>
+                <button class="mobile-sidebar-close" id="mobileSidebarClose">
+                    <i class="fa-solid fa-times"></i>
+                </button>
             </div>
-          {% endfor %}
+            <ul class="mobile-sidebar-nav">
+                {% for category in categories %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category_detail' category.id %}"
+                        >{{ category.category_name|upper }}</a
+                    >
+                </li>
+                {% empty %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">VĂN HỌC</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">GIÁO TRÌNH</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">THIẾU NHI</a>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
-      {% endif %}
-      {% block content %}
-      <p>Welcome to BookSale</p>
-      {% endblock %}
-    </div>
-    <footer class="footer text-center">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <!-- Icon social -->
-            <div class="social-icons d-flex justify-content-center">
-              <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
-              <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="google"><i class="fab fa-google"></i></a>
-              <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+
+        <div class="content-wrapper">
+            {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
             </div>
-
-            <!-- Text -->
-            <div class="contact-text">Contact Us</div>
-          </div>
+            {% endif %} {% block content %}
+            <p>Welcome to BookSale</p>
+            {% endblock %}
         </div>
-      </div>
-    </footer>
-    <!-- Footer -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const cartIcon = document.querySelector(".fa-cart-shopping");
-        if (cartIcon) {
-          cartIcon.addEventListener("click", function () {
-            window.location.href = "{% url 'cart' %}";
-          });
-        }
+        <footer class="footer text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Icon social -->
+                        <div class="social-icons d-flex justify-content-center">
+                            <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="google"><i class="fab fa-google"></i></a>
+                            <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+                        </div>
 
-        // Mobile sidebar toggle
-        const mobileMenuToggle = document.getElementById("mobileMenuToggle");
-        const mobileSidebar = document.getElementById("mobileSidebar");
-        const mobileSidebarClose = document.getElementById("mobileSidebarClose");
-        const sidebarOverlay = document.getElementById("sidebarOverlay");
+                        <!-- Text -->
+                        <div class="contact-text">Contact Us</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const cartIcon = document.querySelector('.fa-cart-shopping');
+                if (cartIcon) {
+                    cartIcon.addEventListener('click', function () {
+                        window.location.href = "{% url 'cart' %}";
+                    });
+                }
 
-        function openSidebar() {
-          mobileSidebar.classList.add("show");
-          sidebarOverlay.classList.add("show");
-          document.body.style.overflow = "hidden";
-        }
+                // Mobile sidebar toggle
+                const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+                const mobileSidebar = document.getElementById('mobileSidebar');
+                const mobileSidebarClose = document.getElementById('mobileSidebarClose');
+                const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-        function closeSidebar() {
-          mobileSidebar.classList.remove("show");
-          sidebarOverlay.classList.remove("show");
-          document.body.style.overflow = "";
-        }
+                function openSidebar() {
+                    mobileSidebar.classList.add('show');
+                    sidebarOverlay.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
 
-        if (mobileMenuToggle) {
-          mobileMenuToggle.addEventListener("click", function() {
-            openSidebar();
-          });
-        }
+                function closeSidebar() {
+                    mobileSidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
 
-        if (mobileSidebarClose) {
-          mobileSidebarClose.addEventListener("click", function() {
-            closeSidebar();
-          });
-        }
+                if (mobileMenuToggle) {
+                    mobileMenuToggle.addEventListener('click', function () {
+                        openSidebar();
+                    });
+                }
 
-        if (sidebarOverlay) {
-          sidebarOverlay.addEventListener("click", function() {
-            closeSidebar();
-          });
-        }
+                if (mobileSidebarClose) {
+                    mobileSidebarClose.addEventListener('click', function () {
+                        closeSidebar();
+                    });
+                }
 
-        // Đóng sidebar khi click vào category link trên mobile
-        const mobileCategoryLinks = document.querySelectorAll(".mobile-sidebar-nav .nav-link");
-        mobileCategoryLinks.forEach(function(link) {
-          link.addEventListener("click", function() {
-            closeSidebar();
-          });
-        });
-      });
-    </script>
+                if (sidebarOverlay) {
+                    sidebarOverlay.addEventListener('click', function () {
+                        closeSidebar();
+                    });
+                }
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  </body>
+                // Đóng sidebar khi click vào category link trên mobile
+                const mobileCategoryLinks = document.querySelectorAll('.mobile-sidebar-nav .nav-link');
+                mobileCategoryLinks.forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        closeSidebar();
+                    });
+                });
+            });
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    </body>
 </html>

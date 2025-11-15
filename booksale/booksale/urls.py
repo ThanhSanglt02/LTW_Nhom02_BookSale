@@ -26,7 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('booksale_app.urls')),
 
-    # Home page KH
     path("accounts/",include(("django.contrib.auth.urls", "auth"),namespace="accounts")),
 
     # Password reset
@@ -46,13 +45,19 @@ urlpatterns = [
          ),
          name="login_kh"),
 
-    # Login Nhân viên
+    # Login Nhân viên Bán hàng
     path("accounts/login/staff/", 
          views.RoleLoginView.as_view(
              extra_context={"required_group": "NVBH"}
          ),
          name="login_staff"),
-   
+
+    # Login Nhân viên tồn kho
+    path("accounts/login/warehouse/", 
+            views.RoleLoginView.as_view(
+                extra_context={"required_group": "NVTK"}
+            ),
+            name="login_warehouse"),
 
 ]
 

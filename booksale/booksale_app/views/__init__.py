@@ -3,8 +3,8 @@ from .user_view.home import home_view
 # Import các hàm view từ product.py
 # from .product import index as product_index, detail as product_detail
 from .admin_view.chitietsanpham import product_detail
-from .authen_view import role_redirect_view, home_view, order_list, register_view, RoleLoginView
-from .admin_view.order_view import order_detail, order_cancel_status, order_confirm_status
+from .authen_view import role_redirect_view, register_view, RoleLoginView
+from .admin_view.order_view import order_detail, order_cancel_status, order_confirm_status, order_list
 from .user_view.add_to_cart import add_to_cart
 from .admin_view.sanpham import product_list
 from .admin_view.chitietsanpham import product_detail

@@ -8,9 +8,6 @@ from booksale_app.utils import sum_price_order
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect
 
-def home_view(request):
-    return render(request, 'user_temp/home.html')
-
 class RoleLoginView(LoginView):
     # Đây là tên file template mà LoginView sẽ dùng để render form login. --> Mỗi khi LoginView cần render template (GET ban đầu hoặc POST lỗi), nó sẽ load file này
     template_name = "registration/login.html"
@@ -57,35 +54,11 @@ def role_redirect_view(request):
         return redirect('/emp/order_list/')
 
     # Nhân viên thủ kho
-    # if user.groups.filter(name='NVTK').exists():
-    #     return redirect('warehouse_dashboard')
+    if user.groups.filter(name='NVTK').exists():
+        return redirect('/employee/inventory_overview/')
 
     # Không thuộc nhóm nào → báo lỗi
     return redirect('/accounts/login/')
-
-
-
-# Bỏ Dashboard
-@login_required(login_url="/accounts/login/staff/")
-@group_required('NVBH', login_url="/accounts/login/staff/") # Nếu user không thuộc NVBH → redirect về login staff.
-def order_list(request):
-    orders =  (Order.objects
-            .select_related('customer')
-            .order_by('-order_date')) # select_related('customer') để lấy luôn thông tin khách hàng
-    order_data = []
-    for order in orders:
-        order_items = Order_Item.objects.select_related('product').filter(order=order)
-        # Truyền vào danh sách giá * số lượng
-        prices = [item.product.sell_price * item.quantity for item in order_items]
-        total_amount = sum_price_order(prices)
-        order_data.append({
-            'order': order,
-            'total_amount': total_amount
-        })
-    context = {
-        'order_data': order_data
-    }
-    return render(request, 'admin_temp/order/order_list.html', context)
 
     
 def register_view(request):

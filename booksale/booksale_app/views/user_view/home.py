@@ -1,6 +1,8 @@
 from django.views import View
 from django.shortcuts import render
 from booksale_app.models import Category, Product
+from django.contrib.auth.decorators import login_required
+from ..authen_view import group_required
 
 # Create your views here.
 
@@ -15,6 +17,12 @@ from django.shortcuts import render
 # Create your views here.
 
 def home_view(request):
+    user = request.user
+    is_kh = False
+
+    if user.is_authenticated:
+        is_kh = user.groups.filter(name="KH").exists()
+
     # Lấy tất cả categories
     categories = Category.objects.all()[:3]  # Lấy 3 categories đầu tiên
     
@@ -29,7 +37,8 @@ def home_view(request):
     
     context = {
         'categories': categories,
-        'categories_with_products': categories_with_products
+        'categories_with_products': categories_with_products,
+        "is_kh": is_kh,
     }
     
     return render(request, 'user_temp/home.html', context)
