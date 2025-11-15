@@ -2,21 +2,22 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import logout
 from ..forms import CreateUserForm
-from booksale_app.models import Order, Order_Item
-from booksale_app.utils import sum_price_order
+from django.contrib.auth.models import Group
 
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView,LogoutView
 from django.shortcuts import redirect
 
+## Điều chỉnh lại việc chức năng Login theo nhóm role
 class RoleLoginView(LoginView):
     # Đây là tên file template mà LoginView sẽ dùng để render form login. --> Mỗi khi LoginView cần render template (GET ban đầu hoặc POST lỗi), nó sẽ load file này
     template_name = "registration/login.html"
-
     def get_context_data(self, **kwargs):
         #super().get_context_data(**kwargs): là hàm của LoginView. Nó trả về một dictionary chứa các biến template mà Django login view mặc định truyền xuống template.
         context = super().get_context_data(**kwargs)
+
         # Truyền URL action xuống template --> thêm key action_url vào biến context với value là path mà request gửi đi
         context['action_url'] = self.request.path  # Hoặc self.extra_context.get("action_url")
+
         # Truyền group (tuỳ chọn để hiển thị thông báo)
         context['required_group'] = self.extra_context.get("required_group", None)
         return context
@@ -24,7 +25,6 @@ class RoleLoginView(LoginView):
     def form_valid(self, form):
         user = form.get_user()
         required_group = self.extra_context.get("required_group", None)
-
         if required_group and not user.groups.filter(name=required_group).exists():
             logout(self.request)
             return self.render_to_response({
@@ -32,11 +32,30 @@ class RoleLoginView(LoginView):
                 "error": "Tài khoản không hợp lệ"
             })
         return super().form_valid(form)
+    
+## Điều chỉnh lại việc chức năng logout và điều hướng màn hình theo nhóm role
+class CustomLogoutView(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        user = request.user
+        # Lưu kết quả vì sau khi logout user sẽ mất
+        is_nvbh = False
+        if user.is_authenticated:
+            is_nvbh = user.groups.filter(name="NVBH").exists()
+
+        # Gọi logout gốc của Django
+        response = super().dispatch(request, *args, **kwargs)
+
+        # Redirect theo nhóm
+        if is_nvbh:
+            return redirect('/accounts/login/staff')
+        else:
+            return redirect('/')
+
+        return response
 
 def group_required(group_name, login_url=None):
     if login_url is None:
         login_url = '/accounts/login/'
-
     def check_group(user):
         return user.groups.filter(name=group_name).exists()
     return user_passes_test(check_group, login_url=login_url)
@@ -66,10 +85,16 @@ def register_view(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
-        print("cos loi xay ra")
+            user = form.save()
+
+            # Tự động thêm user vào nhóm KH
+            group = Group.objects.get(name='KH')
+            user.groups.add(group)
+
+            return redirect('/accounts/login/kh')
+        else:
+            print(form.errors)
     context = {'form': form}
-    return render(request, 'register.html', context)
+    return render(request, 'registration/register.html', context)
 
 

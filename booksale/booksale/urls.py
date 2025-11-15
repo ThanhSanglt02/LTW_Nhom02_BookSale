@@ -36,28 +36,30 @@ urlpatterns = [
     path("accounts/role_redirect/", views.role_redirect_view, name="role_redirect"),
     
     ## REGISTER URL
-    path('register/', views.register_view, name = 'register'),
+    path('accounts/register/', views.register_view, name = 'register'),
 
+    ## LOGIN URLS
     # Login KH
     path("accounts/login/kh/", 
          views.RoleLoginView.as_view(
              extra_context={"required_group": "KH"}
          ),
          name="login_kh"),
-
     # Login Nhân viên Bán hàng
     path("accounts/login/staff/", 
          views.RoleLoginView.as_view(
              extra_context={"required_group": "NVBH"}
          ),
          name="login_staff"),
-
     # Login Nhân viên tồn kho
     path("accounts/login/warehouse/", 
             views.RoleLoginView.as_view(
                 extra_context={"required_group": "NVTK"}
             ),
             name="login_warehouse"),
+
+    # LOGOUT URLS
+    path('logout/', views.CustomLogoutView.as_view(), name='logout'),
 
 ]
 

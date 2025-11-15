@@ -28,6 +28,7 @@ def order_list(request):
     }
     return render(request, 'admin_temp/order/order_list.html', context)
 
+@login_required(login_url="/accounts/login/staff/")
 def order_detail(request, pk):
     # Lấy thông tin đơn hàng
     order = get_object_or_404(Order.objects.select_related('customer'), pk=pk)
@@ -51,6 +52,7 @@ def order_detail(request, pk):
         template = 'admin_temp/order/order_confirm.html'
     return render(request, template, context)
 
+@login_required(login_url="/accounts/login/staff/")
 def order_confirm_status(request, pk):
     """Cập nhật trạng thái thành đã xác nhận"""
     order = get_object_or_404(Order, pk=pk)
@@ -61,7 +63,7 @@ def order_confirm_status(request, pk):
         return redirect('emp/detail', pk=order.id)
     return redirect('emp/detail', pk=order.id)
 
-
+@login_required(login_url="/accounts/login/staff/")
 def order_cancel_status(request, pk):
     """Cập nhật trạng thái thành đã hủy"""
     if request.method == "POST":
