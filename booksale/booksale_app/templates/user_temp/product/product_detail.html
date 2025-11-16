@@ -8,24 +8,65 @@
 /* ======= KHUNG CHUNG ======= */
 .product-page { margin-top: 120px; padding-bottom: 50px; }
 .product-main { display: flex; flex-wrap: wrap; gap: 40px; }
-.product-img-main { flex: 1; min-width: 300px; text-align: center; }
-.product-img-main img { width: 100%; max-width: 400px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: 0.3s; }
-.product-img-main img:hover { transform: scale(1.02); }
-.thumb-list { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
-.thumb-list img { width: 60px; height: 60px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: 0.3s; }
-.thumb-list img:hover { border-color: #007bff; transform: scale(1.1); }
 
-/* ======= THÔNG TIN ======= */
+/* ======= ẢNH SẢN PHẨM ======= */
+.product-img-main {
+    flex: 1;
+    min-width: 320px;
+    text-align: center;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+.product-img-main img {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 12px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.product-img-main img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+}
+
+/* ======= THUMBNAILS ======= */
+.thumb-list {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+.thumb-list img {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.3s;
+    object-fit: cover;
+}
+.thumb-list img:hover,
+.thumb-list img.active {
+    border-color: #007bff;
+    transform: scale(1.1);
+}
+
+/* ======= THÔNG TIN SẢN PHẨM ======= */
 .product-info { flex: 2; min-width: 250px; display: flex; flex-direction: column; justify-content: flex-start; }
 .product-title { font-size: 2rem; font-weight: 700; color: #232f3e; margin-bottom: 10px; }
 .product-brand { color: #555; margin-bottom: 10px; }
 .product-price { color: #e47911; font-size: 1.6rem; font-weight: bold; margin-bottom: 20px; }
 
-/* Nút mua ngay (màu xanh nền xanh chữ trắng) */
+/* Nút mua ngay */
 .btn-buy { background-color: #007bff; color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s; }
 .btn-buy:hover { background-color: #0056b3; }
 
-/* Nút thêm vào giỏ hàng (chữ xanh, viền xanh, nền trắng) */
+/* Nút thêm vào giỏ hàng */
 .btn-add-cart {
     background-color: white;
     color: #007bff;
@@ -57,16 +98,32 @@
 /* ======= SẢN PHẨM TƯƠNG TỰ ======= */
 .related-section { margin-top: 60px; }
 .related-title { font-weight: 700; font-size: 1.3rem; text-align: center; margin-bottom: 25px; }
-.related-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
-.related-item { text-align: center; background: #fafafa; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: 0.3s; }
-.related-item:hover { transform: translateY(-5px); }
-.related-item img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+.related-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 22px; }
+.related-item {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    padding: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.related-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.related-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 .related-item h6 { margin: 0 0 5px; font-size: 0.95rem; color: #333; }
 .related-price { color: #e47911; font-weight: bold; margin-bottom: 5px; }
 .related-item button { background-color: #007bff; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; }
 .related-item button:hover { background-color: #0056b3; }
 </style>
-
 {% endblock %}
 
 {% block content %}
@@ -79,12 +136,12 @@
            alt="{{ product.product_name }}">
       <div class="thumb-list">
         {% if product.image %}
-          <img src="{{ product.image.url }}" onclick="document.getElementById('mainImg').src=this.src">
+          <img src="{{ product.image.url }}" class="active" onclick="changeImage(this)">
         {% else %}
-          <img src="{% static 'images/default-product.jpg' %}" onclick="document.getElementById('mainImg').src=this.src">
+          <img src="{% static 'images/default-product.jpg' %}" class="active" onclick="changeImage(this)">
         {% endif %}
         {% for img in product.extra_images.all %}
-          <img src="{{ img.image.url }}" onclick="document.getElementById('mainImg').src=this.src">
+          <img src="{{ img.image.url }}" onclick="changeImage(this)">
         {% endfor %}
       </div>
     </div>
@@ -101,52 +158,56 @@
         {% endif %}
       </p>
 
-      <!-- FORM Thêm sản phẩm vào giỏ hàng-->
-          <div style="display:flex; gap:10px;">
-      <!-- Thêm vào giỏ hàng -->
-      <form method="POST" action="{% url 'add_to_cart' product.id %}">
+      <!-- Nút thêm vào giỏ hàng & mua ngay -->
+      <div style="display:flex; gap:10px;">
+        <form method="POST" action="{% url 'add_to_cart' product.id %}">
           {% csrf_token %}
           <button type="submit" class="btn-add-cart">Thêm vào giỏ hàng</button>
-      </form>
-
-      <!-- Mua ngay -->
-      <form method="POST" action="{% url 'buy_now' product.id %}">
+        </form>
+        <form method="POST" action="{% url 'buy_now' product.id %}">
           {% csrf_token %}
           <button type="submit" class="btn-buy">Mua ngay</button>
-      </form>
-</div>
-
+        </form>
+      </div>
     </div>
   </div>
 
   <!-- MÔ TẢ SẢN PHẨM -->
   <div class="tab-section">
-    <h4 class="tab-title">Tóm tắt và giới thiệu</h4>
+    <h4 class="tab-title">Tóm tắt</h4>
     <p class="product-desc">{{ product.description|linebreaks }}</p>
   </div>
 
   <!-- ĐÁNH GIÁ SẢN PHẨM -->
-  <div class="review-section">
-    <h4 class="tab-title">Đánh giá sản phẩm</h4>
-    {% for review in product.review_set.all %}
-      <div class="review-item">
-        <div class="review-header">
-          <div>
-            <span class="review-user">{{ review.creator.username }}</span>
-            <span class="review-date">{{ review.date_created|date:"Y-m-d H:i" }}</span>
-          </div>
-          <div class="review-stars">
-            {% for i in "12345"|make_list %}
-              {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
-            {% endfor %}
-          </div>
-        </div>
-        <p>{{ review.content }}</p>
+<div class="review-section">
+  <h4 class="tab-title">Đánh giá sản phẩm</h4>
+
+  {% for review in product.review_set.all %}
+  <div class="review-item">
+    <div class="review-header">
+      <div>
+        <span class="review-user">{{ review.creator.username }}</span>
+        <span class="review-date">{{ review.date_created|date:"Y-m-d H:i" }}</span>
       </div>
-    {% empty %}
-      <p>Chưa có đánh giá nào cho sản phẩm này.</p>
-    {% endfor %}
+      <div class="review-stars">
+        {% for i in "12345"|make_list %}
+          {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <p>{{ review.content }}</p>
+    {% if review.image %}
+      <img src="{{ review.image.url }}" alt="Ảnh đánh giá" style="max-width:150px; margin-top:10px;">
+    {% endif %}
   </div>
+  {% empty %}
+    <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+  {% endfor %}
+
+  <!-- Include form đánh giá -->
+  {% include "user_temp/product/review.html" %}
+</div>
+
 
   <!-- SẢN PHẨM TƯƠNG TỰ -->
   <div class="related-section">
@@ -167,7 +228,7 @@
           </p>
           <form method="POST" action="{% url 'add_to_cart' item.id %}">
             {% csrf_token %}
-            <button type="submit" class="btn-buy">Mua ngay</button>
+            <button type="submit" class="btn-buy">Thêm vào giỏ hàng</button>
           </form>
         </div>
       {% endfor %}
@@ -176,9 +237,11 @@
 </div>
 
 <script>
-// Click thumbnail thay ảnh chính
-const thumbs = document.querySelectorAll('.thumb-list img');
-const mainImg = document.getElementById('mainImg');
-thumbs.forEach(t => t.addEventListener('click', () => mainImg.src = t.src));
+// Click thumbnail thay ảnh chính & active border
+function changeImage(el) {
+    document.getElementById('mainImg').src = el.src;
+    document.querySelectorAll('.thumb-list img').forEach(img => img.classList.remove('active'));
+    el.classList.add('active');
+}
 </script>
 {% endblock %}
