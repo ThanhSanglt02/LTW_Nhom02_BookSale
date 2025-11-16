@@ -1,12 +1,15 @@
 #giohang.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from ..authen_view import group_required
 from django.utils import timezone
 from booksale_app.models import Cart, Cart_Item, Customer
 
-@login_required
+@login_required(login_url="/accounts/login/kh/")
+@group_required('KH', login_url="/accounts/login/kh/") 
 def cart(request):
     
+   
     if not request.user.is_authenticated:
         return render(request, 'user_temp/cart/cart.html', {
             'giohang': [],
@@ -66,5 +69,6 @@ def cart(request):
     
     return render(request, 'user_temp/cart/cart.html', {
         'giohang': giohang,
-        'tong_cong': int(tong_cong)
+        'tong_cong': int(tong_cong), 
+        
     })

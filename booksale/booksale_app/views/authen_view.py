@@ -92,8 +92,6 @@ def register_view(request):
             user.groups.add(group)
 
             return redirect('/accounts/login/kh')
-        else:
-            print(form.errors)
     context = {'form': form}
     return render(request, 'registration/register.html', context)
 

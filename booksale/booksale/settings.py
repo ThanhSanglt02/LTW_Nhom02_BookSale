@@ -69,6 +69,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'booksale_app.context_processors.categories_and_cart',
+                # THÊM DÒNG NÀY
+                'booksale_app.context_processors.global_user_context',
             ],
         },
     },

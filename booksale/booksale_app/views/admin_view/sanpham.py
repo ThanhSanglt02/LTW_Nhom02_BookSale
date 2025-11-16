@@ -41,6 +41,8 @@ def product_list(request):
         'publishers': publishers,
     }
     return render(request, 'admin_temp/product/product_list.html', context)
+
+
 @login_required(login_url='login')
 def product_add(request):
     if request.method == 'POST':
