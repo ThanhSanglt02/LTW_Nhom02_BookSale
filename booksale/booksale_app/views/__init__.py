@@ -15,4 +15,5 @@ from .user_view.order import order
 from .user_view.donhang import donhang
 from .user_view.buy_now import buy_now
 from .user_view.search import search_view
+from .user_view.review import submit_review
 
