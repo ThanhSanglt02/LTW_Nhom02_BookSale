@@ -28,6 +28,8 @@ urlpatterns = [
     path('product-detail-user/<int:pk>/', views.product_detail_user, name='product_detail_user'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path("buy-now/<int:product_id>/", views.buy_now, name="buy_now"),
+    path('search/', views.search_view, name='search'),
+
 
 
     # EMPLOYEE SALE URLS
