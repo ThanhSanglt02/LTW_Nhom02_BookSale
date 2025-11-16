@@ -10,10 +10,12 @@ from .admin_view.sanpham import product_list
 from .admin_view.chitietsanpham import product_detail
 from .user_view.category import category_view, category_detail_view, product_detail_user
 from .user_view.add_to_cart import add_to_cart
-from .user_view.cart import cart
-from .user_view.order import order
-from .user_view.donhang import donhang
+from .user_view.cart import cart, delete_cart_items, proceed_to_order
+from .user_view.order import order, create_order
+from .user_view.order_confirm import order_confirm, cancel_order
 from .user_view.buy_now import buy_now
 from .user_view.search import search_view
 from .user_view.review import submit_review
+from .user_view.profile import profile
+from .user_view.my_orders import my_orders
 

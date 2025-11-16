@@ -1,0 +1,50 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">Thông tin tài khoản</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            {% if customer.avatar %}
+                                <img src="{{ customer.avatar.url }}" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                            {% else %}
+                                <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+                                    <i class="fa-solid fa-user fa-3x text-white"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <h4 class="mb-3">{{ customer.cust_name }}</h4>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td width="150"><strong>Email:</strong></td>
+                                    <td>{{ customer.email|default:"Chưa cập nhật" }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Số điện thoại:</strong></td>
+                                    <td>{{ customer.phone|default:"Chưa cập nhật" }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Địa chỉ:</strong></td>
+                                    <td>{{ customer.address|default:"Chưa cập nhật" }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ngày sinh:</strong></td>
+                                    <td>{{ customer.dob|date:"d/m/Y"|default:"Chưa cập nhật" }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

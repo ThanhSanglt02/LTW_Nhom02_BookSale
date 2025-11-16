@@ -21,8 +21,12 @@ urlpatterns = [
     # USER URLS
     path('',views.home_view, name='home'),
     path('cart/', views.cart, name='cart'),
+    path('cart/delete/', views.delete_cart_items, name='delete_cart_items'),
+    path('cart/proceed-to-order/', views.proceed_to_order, name='proceed_to_order'),
     path('order/', views.order, name='order'),
-    path('donhang/', views.donhang, name='donhang'),
+    path('order/create/', views.create_order, name='create_order'),
+    path('order_confirm/<int:order_id>/', views.order_confirm, name='order_confirm'),
+    path('order_confirm/<int:order_id>/cancel/', views.cancel_order, name='cancel_order'),
     path('categories/', views.category_view, name='category'),
     path('categories/<str:category_name>/', views.category_detail_view, name='category_detail'),
     path('product-detail-user/<int:pk>/', views.product_detail_user, name='product_detail_user'),
@@ -30,6 +34,8 @@ urlpatterns = [
     path("buy-now/<int:product_id>/", views.buy_now, name="buy_now"),
     path('search/', views.search_view, name='search'),
     path('product-detail-user/<int:product_id>/review/', views.submit_review, name='submit_review'),
+    path('profile/', views.profile, name='profile'),
+    path('my-orders/', views.my_orders, name='my_orders'),
 
 
 

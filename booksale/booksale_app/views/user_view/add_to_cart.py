@@ -1,10 +1,13 @@
 from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from booksale_app.models import Product, Cart, Cart_Item, Customer
 from decimal import Decimal
+from ..authen_view import group_required
 
-
+@login_required(login_url="/accounts/login/kh/")
+@group_required('KH', login_url="/accounts/login/kh/")
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
