@@ -391,7 +391,9 @@
                     >
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <a class="navbar-brand text-white d-none d-lg-block" href="#"><i class="fa-solid fa-bars"></i></a>
+                    <a class="navbar-brand text-white d-none d-lg-block" href="{% url 'category' %}">
+                        <i class="fa-solid fa-bars"></i>
+                    </a>
                     <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
                 </div>
 
@@ -400,9 +402,9 @@
                     <ul class="navbar-nav mr-auto">
                         {% for category in categories %}
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom" href="{% url 'category_detail' category.id %}"
-                                >{{ category.category_name|upper }}</a
-                            >
+                            <a class="nav-link nav-link-custom" href="{% url 'category_detail' category.category_name %}">
+                                {{ category.category_name|upper }}
+                            </a>
                         </li>
                         {% empty %}
                         <li class="nav-item">
@@ -417,13 +419,15 @@
                         {% endfor %}
                     </ul>
                     <!-- Ô tìm kiếm -->
-                    <form class="d-flex ms-auto search-box align-items-left" role="search">
-                        <input class="form-control" type="search" placeholder="Tìm kiếm sản phẩm" aria-label="Search" />
+                    <form class="d-flex ms-auto search-box align-items-left" role="search"
+                          method="GET" action="{% url 'search' %}">
+                        <input class="form-control" type="search" placeholder="Tìm kiếm sản phẩm"
+                               aria-label="Search" name="q" required />
                         <button class="btn btn-link text-white" type="submit">
-                            <i class="icon-search fa-solid fa-magnifying-glass" style="color: #999999"></i>
+                            <i class="icon-search fa-solid fa-magnifying-glass"></i>
                         </button>
                     </form>
-                </div>
+
 
                 <!-- Icon bên phải -->
                 <div class="d-flex align-items-center">
@@ -468,10 +472,9 @@
             <ul class="mobile-sidebar-nav">
                 {% for category in categories %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'category_detail' category.id %}"
-                        >{{ category.category_name|upper }}</a
-                    >
-                </li>
+                    <a class="nav-link" href="{% url 'category_detail' category.category_name %}">
+                        {{ category.category_name|upper }}
+                    </a>
                 {% empty %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">VĂN HỌC</a>

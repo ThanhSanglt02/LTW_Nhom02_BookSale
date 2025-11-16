@@ -1,0 +1,103 @@
+{% extends "user_temp/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        border-radius: 12px;
+        overflow: hidden;
+        transition: 0.3s ease;
+        background: #ffffff;
+        height: 390px;           /* tăng chiều cao */
+        padding: 0;
+        border: 1px solid #ddd;
+    }
+
+    .product-card img {
+        height: 210px;           /* ảnh thấp lại để chừa chỗ cho nút */
+        object-fit: cover;
+        width: 100%;
+        border-bottom: 1px solid #eee;
+    }
+
+    .card-body {
+        width: 100%;
+        padding: 12px 14px;
+        text-align: center;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        min-height: 40px;
+        max-height: 40px;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+
+    .product-price {
+        font-size: 16px;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 12px;
+    }
+
+    .btn-detail {
+        margin-top: auto;   /* đẩy nút xuống đáy */
+        width: 100%;
+        border-radius: 8px;
+    }
+</style>
+
+
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <h3 class="search-title">Kết quả tìm kiếm cho:
+        "<span class="text-primary">{{ query }}</span>"
+    </h3>
+
+    <div class="row mt-4">
+
+        {% for product in products %}
+        <div class="col-md-3 mb-4">
+            <div class="product-card">
+
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.product_name }}">
+                {% else %}
+                    <img src="{% static 'images/default.jpg' %}" alt="Không có ảnh">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.product_name }}</h5>
+
+                    <p class="product-price">
+                        {{ product.sell_price|floatformat:0 }} VND
+                    </p>
+
+                    <a href="{% url 'product_detail_user' product.id %}" class="btn btn-primary btn-detail">
+                        Xem chi tiết
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <p>Không tìm thấy sản phẩm nào.</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}
