@@ -115,21 +115,32 @@
         margin-bottom: 6px;
     }
 
-    .add-cart-btn {
+    .add-cart-form {
         position: absolute;
         bottom: 15px;
         left: 50%;
         transform: translateX(-50%);
+        display: none;
+        margin: 0;
+    }
+
+    .add-cart-btn {
         background-color: #223041;
         color: #fff;
         padding: 8px 12px;
+        border: none;
         border-radius: 5px;
         font-size: 14px;
-        display: none;
-        text-decoration: none;
+        cursor: pointer;
+        transition: 0.3s;
+        width: 100%;
     }
 
-    .product-card:hover .add-cart-btn {
+    .add-cart-btn:hover {
+        background-color: #1a2530;
+    }
+
+    .product-card:hover .add-cart-form {
         display: block;
     }
 
@@ -159,6 +170,54 @@
         .col-md-3, .col-6 {
             flex: 1 1 100%;
             max-width: 100%;
+        }
+    }
+
+    /* Cải thiện hiển thị alert thông báo */
+    .alert {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 300px;
+        max-width: 500px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideInRight 0.3s ease-out;
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .alert-success {
+        background-color: #28a745;
+        color: white;
+        border: none;
+    }
+
+    .alert-success .close {
+        color: white;
+        opacity: 0.8;
+    }
+
+    .alert-success .close:hover {
+        opacity: 1;
+    }
+
+    /* Responsive cho alert */
+    @media (max-width: 768px) {
+        .alert {
+            right: 10px;
+            left: 10px;
+            min-width: auto;
+            max-width: none;
         }
     }
 </style>
@@ -200,7 +259,10 @@
                             <p class="product-name">{{ product.product_name }}</p>
                             <p class="product-price">{{ product.sell_price }} VND</p>
                         </a>
-                        <a href="#" class="add-cart-btn">Thêm vào giỏ hàng</a>
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-cart-form">
+                            {% csrf_token %}
+                            <button type="submit" class="add-cart-btn">Thêm vào giỏ hàng</button>
+                        </form>
                     </div>
                 </div>
             {% empty %}
@@ -214,4 +276,19 @@
 
     </div>
 </div>
+
+<script>
+// Tự động ẩn alert sau 5 giây
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        // Tự động ẩn sau 5 giây
+        setTimeout(function() {
+            $(alert).fadeOut('slow', function() {
+                $(this).alert('close');
+            });
+        }, 5000);
+    });
+});
+</script>
 {% endblock %}

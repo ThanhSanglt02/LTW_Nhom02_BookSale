@@ -1,0 +1,537 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .breadcrumb-bar {
+        background-color: #f5f5f5;
+        padding: 15px 20px;
+        margin-bottom: 0;
+        position: relative;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .breadcrumb-bar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
+    }
+
+    .breadcrumb-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .breadcrumb-home {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: 2px solid #007bff;
+        border-radius: 4px;
+        color: #007bff;
+        text-decoration: none;
+        background: transparent;
+        transition: all 0.3s;
+    }
+
+    .breadcrumb-home:hover {
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+    }
+
+    .breadcrumb-home i {
+        font-size: 16px;
+    }
+
+    .breadcrumb-separator {
+        display: none;
+    }
+
+    .breadcrumb-title {
+        font-size: 16px;
+        font-weight: 500;
+        color: #007bff;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background-color: #f5f5f5;
+    }
+
+    .my-orders-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    /* Top Header Bar */
+    .top-header-bar {
+        background-color: #4a5568;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0;
+    }
+
+    .user-header-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+    }
+
+    .user-header-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #718096;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .user-header-name {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .header-filter-tabs {
+        display: flex;
+        gap: 0;
+        align-items: center;
+    }
+
+    .header-filter-tab {
+        padding: 8px 16px;
+        background-color: transparent;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-radius: 0;
+    }
+
+    .header-filter-tab:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+        color: white;
+    }
+
+    .header-filter-tab.active {
+        background-color: #2d3748;
+        color: white;
+    }
+
+    /* Main Layout */
+    .main-layout {
+        display: flex;
+        gap: 0;
+        background: white;
+        min-height: calc(100vh - 60px);
+    }
+
+    /* Sidebar */
+    .account-sidebar {
+        width: 280px;
+        background: white;
+        border-right: 1px solid #e2e8f0;
+        padding: 20px;
+        min-height: calc(100vh - 60px);
+    }
+
+    .account-sidebar h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #2d3748;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        margin-bottom: 5px;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        color: #4a5568;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+
+    .sidebar-menu a i {
+        margin-right: 12px;
+        width: 20px;
+        font-size: 16px;
+    }
+
+    .sidebar-menu a.active {
+        background-color: transparent;
+        color: #e53e3e;
+        font-weight: 600;
+    }
+
+    .sidebar-menu a:hover:not(.active) {
+        background-color: #f7fafc;
+        color: #2d3748;
+    }
+
+    /* Content Area */
+    .content-area {
+        flex: 1;
+        padding: 30px;
+        background: white;
+    }
+
+    /* Order List */
+    .order-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .order-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 20px;
+        background: white;
+    }
+
+    .order-status-badge {
+        font-size: 14px;
+        font-weight: 600;
+        color: #3182ce;
+        margin-bottom: 15px;
+    }
+
+    .order-status-badge.pending {
+        color: #d69e2e;
+    }
+
+    .order-status-badge.cancelled {
+        color: #e53e3e;
+    }
+
+    .order-product-info {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .order-product-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .order-product-details {
+        flex: 1;
+    }
+
+    .order-product-name {
+        font-size: 14px;
+        color: #2d3748;
+        margin-bottom: 5px;
+        line-height: 1.5;
+    }
+
+    .order-product-quantity {
+        font-size: 13px;
+        color: #718096;
+        margin-bottom: 5px;
+    }
+
+    .order-product-address {
+        font-size: 13px;
+        color: #718096;
+        margin-bottom: 5px;
+    }
+
+    .order-product-price {
+        font-size: 14px;
+        color: #4a5568;
+        font-weight: 500;
+    }
+
+    .order-total {
+        font-size: 15px;
+        font-weight: 600;
+        color: #3182ce;
+        margin-bottom: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .order-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-buy-again {
+        padding: 8px 16px;
+        background-color: #4a5568;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+    }
+
+    .btn-buy-again:hover {
+        background-color: #2d3748;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-view-reviews {
+        padding: 8px 16px;
+        background-color: white;
+        color: #4a5568;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+    }
+
+    .btn-view-reviews:hover {
+        background-color: #f7fafc;
+        color: #2d3748;
+        text-decoration: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #a0aec0;
+    }
+
+    .empty-state i {
+        font-size: 64px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .main-layout {
+            flex-direction: column;
+        }
+
+        .account-sidebar {
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid #e2e8f0;
+            min-height: auto;
+        }
+
+        .top-header-bar {
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .header-filter-tabs {
+            width: 100%;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+
+        .order-product-info {
+            flex-direction: column;
+        }
+
+        .order-product-image {
+            width: 100%;
+            height: auto;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="my-orders-container">
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb-content">
+            <a href="/" class="breadcrumb-home">
+                <i class="fas fa-home"></i>
+            </a>
+            <div class="breadcrumb-separator"></div>
+            <h2 class="breadcrumb-title">Xem tài khoản</h2>
+        </div>
+    </div>
+    <!-- Top Header Bar -->
+    <div class="top-header-bar">
+        <div class="user-header-info">
+            <div class="user-header-avatar">
+                {{ customer.cust_name|first|upper }}
+            </div>
+            <span class="user-header-name">{{ customer.cust_name }}</span>
+        </div>
+        <div class="header-filter-tabs">
+            <a href="?status=all" class="header-filter-tab {% if status_filter == 'all' %}active{% endif %}">
+                Tất cả
+            </a>
+            <a href="?status=pending" class="header-filter-tab {% if status_filter == 'pending' %}active{% endif %}">
+                Chờ lấy hàng
+            </a>
+            <a href="?status=confirmed" class="header-filter-tab {% if status_filter == 'confirmed' %}active{% endif %}">
+                Hoàn thành
+            </a>
+            <a href="?status=cancelled" class="header-filter-tab {% if status_filter == 'cancelled' %}active{% endif %}">
+                Đã hủy
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <div class="account-sidebar">
+            <h3>Tài khoản của tôi</h3>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{% url 'my_orders' %}" class="active">
+                        <i class="fa-solid fa-file-invoice"></i>
+                        Đơn mua
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-bell"></i>
+                        Thông báo
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="order-list">
+                {% if order_list %}
+                    {% for order_data in order_list %}
+                    <div class="order-card">
+                        <div class="order-status-badge {{ order_data.order.status }}">
+                            {% if order_data.order.status == 'pending' %}
+                                Chờ lấy hàng
+                            {% elif order_data.order.status == 'confirmed' %}
+                                Hoàn thành đơn hàng
+                            {% elif order_data.order.status == 'cancelled' %}
+                                Đã hủy
+                            {% endif %}
+                        </div>
+
+                        <div class="order-product-info">
+                            <img src="{% static 'images/'|add:order_data.image %}" alt="{{ order_data.product_display }}" class="order-product-image">
+                            <div class="order-product-details">
+                                <div class="order-product-name">{{ order_data.product_display }}</div>
+                                <!-- {% if order_data.first_item %}
+                                <div class="order-product-quantity">x{{ order_data.first_item.quantity }}</div>
+                                {% endif %} -->
+                                <!-- <div class="order-product-price" data-value="{{ order_data.first_item.unit_price|default:0 }}">
+                                    {% if order_data.first_item %}
+                                        {{ order_data.first_item.unit_price|floatformat:0 }}₫
+                                    {% else %}
+                                        {{ order_data.total|floatformat:0 }}₫
+                                    {% endif %}
+                                </div> -->
+                                <div class="order-product-quantity"><strong>Tên:</strong> {{ order_data.name }}</div>
+                                <div class="order-product-address"><strong>SĐT:</strong> {{ order_data.phone }}</div>
+                                <div class="order-product-address"><strong>Địa chỉ:</strong> {{ order_data.address }}</div>
+                            </div>
+                        </div>
+
+                        <div class="order-total" data-value="{{ order_data.total }}">
+                            Thành tiền: {{ order_data.total|floatformat:0 }}₫
+                        </div>
+
+                        <div class="order-actions">
+                            {% if order_data.order.status == 'confirmed' %}
+                            <a href="#" class="btn-buy-again">Mua lại</a>
+                            <a href="#" class="btn-view-reviews">Xem đánh giá người mua</a>
+                            {% endif %}
+                            <a href="{% url 'order_confirm' order_data.order.id %}" class="btn-view-reviews">Xem chi tiết</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-box-open"></i>
+                        <p>Chưa có đơn hàng nào</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const formatCurrency = num => {
+        if (typeof num === 'string') {
+            num = parseFloat(num.replace(/[^\d.-]/g, '')) || 0;
+        }
+        // Format với dấu chấm phân cách hàng nghìn
+        return num.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + '₫';
+    };
+
+    // Format giá tiền
+    document.querySelectorAll('[data-value]').forEach(element => {
+        const value = parseFloat(element.getAttribute('data-value')) || 0;
+        const currentText = element.textContent;
+        // Chỉ format nếu chưa được format
+        if (!currentText.includes('.')) {
+            element.textContent = formatCurrency(value);
+        } else {
+            // Nếu đã có dấu chấm, chỉ cần đảm bảo format đúng
+            const price = parseFloat(currentText.replace(/[^\d.-]/g, '')) || 0;
+            element.textContent = formatCurrency(price);
+        }
+    });
+
+    // Format order-total
+    document.querySelectorAll('.order-total').forEach(element => {
+        const value = parseFloat(element.getAttribute('data-value')) || 0;
+        const formatted = formatCurrency(value);
+        element.innerHTML = 'Thành tiền: <span>' + formatted + '</span>';
+    });
+});
+</script>
+{% endblock %}

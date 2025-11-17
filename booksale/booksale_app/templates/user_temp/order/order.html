@@ -369,30 +369,32 @@
     <div class="checkout-container">
         <!-- Cột trái: Form thông tin -->
         <div class="checkout-left">
-            <!-- Thông tin giao hàng -->
-            <div class="checkout-section">
-                <h3 class="section-title">Thông tin giao hàng</h3>
-                
-                <div class="form-group">
-                    <label>Số điện thoại *</label>
-                    <input type="tel" placeholder="Nhập số điện thoại" required>
+            <form method="POST" action="{% url 'create_order' %}" id="checkout-form">
+                {% csrf_token %}
+                <!-- Thông tin giao hàng -->
+                <div class="checkout-section">
+                    <h3 class="section-title">Thông tin giao hàng</h3>
+                    
+                    <div class="form-group">
+                        <label>Số điện thoại *</label>
+                        <input type="tel" name="phone" placeholder="Nhập số điện thoại" value="{{ customer.phone|default:'' }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Nhập email (tùy chọn)" value="{{ customer.email|default:'' }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Địa chỉ giao hàng *</label>
+                        <input type="text" name="address" placeholder="Số nhà, tên đường" value="{{ customer.address|default:'' }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ghi chú đơn hàng</label>
+                        <textarea name="note" rows="3" placeholder="Ghi chú cho người giao hàng (tùy chọn)"></textarea>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" placeholder="Nhập email (tùy chọn)">
-                </div>
-                
-                <div class="form-group">
-                    <label>Địa chỉ giao hàng *</label>
-                    <input type="text" placeholder="Số nhà, tên đường" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Ghi chú đơn hàng</label>
-                    <textarea rows="3" placeholder="Ghi chú cho người giao hàng (tùy chọn)"></textarea>
-                </div>
-            </div>
 
             <!-- Phương thức vận chuyển -->
             <div class="checkout-section">
@@ -401,51 +403,64 @@
                 <!-- Nội dung sẽ được thêm sau -->
             </div>
 
-            <!-- Phương thức thanh toán -->
-            <div class="checkout-section">
-                <h3 class="section-title">Phương thức thanh toán</h3>
-                <div class="payment-methods">
-                    <div class="payment-option">
-                        <input type="radio" name="payment" id="cod" value="cod" checked>
-                        <label for="cod">Thanh toán khi nhận hàng (COD)</label>
-                        <i class="fas fa-money-bill-wave payment-icon"></i>
+                <!-- Phương thức thanh toán -->
+                <div class="checkout-section">
+                    <h3 class="section-title">Phương thức thanh toán</h3>
+                    <div class="payment-methods">
+                        <div class="payment-option">
+                            <input type="radio" name="payment" id="cod" value="cash" checked>
+                            <label for="cod">Thanh toán khi nhận hàng (COD)</label>
+                            <i class="fas fa-money-bill-wave payment-icon"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Nút đặt hàng -->
-            <button class="btn-checkout" onclick="handleCheckout()">Đặt hàng</button>
+                <!-- Nút đặt hàng -->
+                <button type="submit" class="btn-checkout">Đặt hàng</button>
+            </form>
         </div>
 
         <!-- Cột phải: Tóm tắt đơn hàng -->
         <div class="checkout-right">
             <div class="checkout-section">
-                <!-- Chi tiết sản phẩm -->
-                <div class="product-detail">
-                    <img src="{% static 'images/image.jpg' %}" alt="Sách quản trị học">
-                    <div class="product-info">
-                        <div class="product-title">Sách quản trị học</div>
-                        <div class="product-meta">
-                            <div><strong>Tác giả:</strong> Frederich winslow Taylor</div>
-                            <div><strong>Năm xuất bản:</strong> 2017</div>
-                            <div><strong>Nhà xuất bản:</strong> NXB Đại Học Quốc Gia Hà Nội</div>
-                        </div>
-                        <div class="product-price-row">
-                            <span class="product-price">15.000 VND</span>
-                            <div class="quantity-control">
-                                <button class="qty-btn" onclick="decreaseQty()">−</button>
-                                <input type="text" class="qty-input" id="quantity" value="1" readonly>
-                                <button class="qty-btn" onclick="increaseQty()">+</button>
+                <h3 class="section-title">Sản phẩm đặt hàng</h3>
+                
+                {% if giohang %}
+                    {% for sp in giohang %}
+                    <!-- Chi tiết sản phẩm -->
+                    <div class="product-detail">
+                        <img src="{% static 'images/'|add:sp.hinhanh %}" alt="{{ sp.ten }}">
+                        <div class="product-info">
+                            <div class="product-title">{{ sp.ten }}</div>
+                            <div class="product-meta">
+                                {% if sp.product.publisher %}
+                                <div><strong>Nhà xuất bản:</strong> {{ sp.product.publisher.publisher_name }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="product-price-row">
+                                <span class="product-price" data-value="{{ sp.dongia }}">{{ sp.dongia|floatformat:0 }}₫</span>
+                                <div class="quantity-control">
+                                    <span style="font-weight: 600; color: #666;">x{{ sp.soluong }}</span>
+                                </div>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                                <strong style="color: #007bff;">Tổng: <span data-value="{{ sp.tong }}">{{ sp.tong|floatformat:0 }}₫</span></strong>
                             </div>
                         </div>
                     </div>
-                </div>
+                    {% if not forloop.last %}
+                    <div class="section-divider"></div>
+                    {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>Không có sản phẩm nào trong giỏ hàng.</p>
+                {% endif %}
 
                 <!-- Tóm tắt đơn hàng -->
                 <div class="order-summary">
                     <div class="summary-row">
                         <span>Tạm tính:</span>
-                        <span class="summary-value" id="subtotal">15.000 VND</span>
+                        <span class="summary-value" id="subtotal" data-value="{{ tong_cong }}">{{ tong_cong|floatformat:0 }}₫</span>
                     </div>
                     <div class="summary-row">
                         <span>Phí vận chuyển:</span>
@@ -453,7 +468,7 @@
                     </div>
                     <div class="summary-row total">
                         <span>Tổng:</span>
-                        <span class="summary-value total-price" id="total">15.000 VND</span>
+                        <span class="summary-value total-price" id="total" data-value="{{ tong_cong }}">{{ tong_cong|floatformat:0 }}₫</span>
                     </div>
                 </div>
             </div>
@@ -462,52 +477,44 @@
 </div>
 
 <script>
-let quantity = 1;
-const unitPrice = 15000;
-
-function increaseQty() {
-    quantity++;
-    updateQuantity();
-}
-
-function decreaseQty() {
-    if (quantity > 1) {
-        quantity--;
-        updateQuantity();
-    }
-}
-
-function updateQuantity() {
-    document.getElementById('quantity').value = quantity;
-    const subtotal = quantity * unitPrice;
-    document.getElementById('subtotal').textContent = formatCurrency(subtotal);
-    document.getElementById('total').textContent = formatCurrency(subtotal);
-}
-
-function formatCurrency(amount) {
-    return amount.toLocaleString('vi-VN') + ' VND';
-}
-
-function handleCheckout() {
-    const requiredFields = document.querySelectorAll('input[required], select[required]');
-    let isValid = true;
-    
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            isValid = false;
-            field.style.borderColor = '#ff3333';
-        } else {
-            field.style.borderColor = '#ddd';
+document.addEventListener('DOMContentLoaded', function() {
+    const formatCurrency = num => {
+        if (typeof num === 'string') {
+            num = parseFloat(num.replace(/[^\d.-]/g, '')) || 0;
         }
+        return num.toLocaleString('vi-VN') + '₫';
+    };
+
+    // Format tất cả giá trị tiền khi load trang
+    document.querySelectorAll('[data-value]').forEach(element => {
+        const value = parseFloat(element.getAttribute('data-value')) || 0;
+        element.textContent = formatCurrency(value);
     });
 
-    if (!isValid) {
-        alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
-        return;
-    }
+    // Validate form trước khi submit
+    const checkoutForm = document.getElementById('checkout-form');
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', function(e) {
+            // Chỉ validate các field trong form checkout
+            const requiredFields = checkoutForm.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#ff3333';
+                } else {
+                    field.style.borderColor = '#ddd';
+                }
+            });
 
-    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-    alert('Đơn hàng của bạn đã được đặt thành công!');
-}
+            if (!isValid) {
+                e.preventDefault();
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                return false;
+            }
+        });
+    }
+});
 </script>
 {% endblock %}
