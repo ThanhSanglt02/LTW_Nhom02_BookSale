@@ -195,6 +195,7 @@ class Order(models.Model):
         ('confirmed', 'Đã xác nhận'),
         ('pending', 'Chờ xác nhận'),
         ('cancelled', 'Đã hủy'),
+        ('completed', 'Hoàn thành')
     ]
     order_date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(
