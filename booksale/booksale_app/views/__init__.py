@@ -4,7 +4,7 @@ from .user_view.home import home_view
 # from .product import index as product_index, detail as product_detail
 from .admin_view.chitietsanpham import product_detail
 from .authen_view import role_redirect_view, register_view, RoleLoginView, CustomLogoutView
-from .admin_view.order_view import order_detail, order_cancel_status, order_confirm_status, order_list
+from .admin_view.order_view import order_detail, order_cancel_status, order_confirm_status, order_list, order_create_emp
 from .user_view.add_to_cart import add_to_cart
 from .admin_view.sanpham import product_list
 from .admin_view.chitietsanpham import product_detail

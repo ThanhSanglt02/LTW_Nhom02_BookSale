@@ -1,12 +1,69 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from booksale_app.models import Order, Order_Item
+from booksale_app.models import Order, Order_Item, Customer
 from django.contrib import messages
 from booksale_app.utils import sum_price_order
 from django.contrib.auth.decorators import login_required
 from ..authen_view import group_required
+from booksale_app.forms import OrderForm, OrderItemFormSet
 from django.utils import timezone
 
 # Create your views here.
+# @login_required(login_url="/accounts/login/staff/")
+# @group_required('NVBH', login_url="/accounts/login/staff/") 
+def order_create_emp(request, pk = None):
+    customers = Customer.objects.all().order_by('cust_name')
+
+    # Lấy customer từ query param (GET) để prefill và hiển thị phone/address
+    customer_id = request.GET.get("customer")
+    phone = ""
+    address = ""
+    selected_customer = None
+
+    if customer_id:
+        try:
+            selected_customer = Customer.objects.get(pk=customer_id)
+            phone = selected_customer.phone
+            address = selected_customer.address
+        except Customer.DoesNotExist:
+            selected_customer = None
+            phone = ""
+            address = ""
+
+    if pk is not None:
+        order = get_object_or_404(Order, pk = pk)
+    else:
+        order = None
+
+    # Nếu POST — xử lý lưu order
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        # formset = OrderItemFormSet(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)   # TẠO ORDER CHƯA LƯU
+            order.total_amount = 0            # GÁN GIÁ TRỊ TRÁNH LỖI
+            order.save()                      # LƯU LẠI
+            return redirect("emp/order_create_item", pk=order.pk)
+    else:
+        # Khi GET load form: nếu đã chọn customer qua query param,
+        # set initial cho form để customer field có giá trị (sẽ render as_hidden)
+        initial = {}
+        if selected_customer:
+            initial['customer'] = selected_customer.pk
+        form = OrderForm(initial=initial)
+        # formset = OrderItemFormSet()
+
+    context = {
+        'form': form,
+        # 'formset': formset,
+        'customers': customers,
+        'selected_customer': customer_id,
+        'phone': phone,
+        'address': address,
+    }
+    return render(request, 'admin_temp/order/create_order.html', context)
+
+# def add_items(request, pk = None):
+
 
 @login_required(login_url="/accounts/login/staff/")
 @group_required('NVBH', login_url="/accounts/login/staff/") # Nếu user không thuộc NVBH → redirect về login staff.

@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 from booksale_app.views.admin_view.sanpham import (
-    product_list,
     product_add,
     product_edit,
     product_delete,
@@ -40,6 +39,8 @@ urlpatterns = [
 
     # EMPLOYEE SALE URLS
     # path('emp/order_list/', views.order_list, name = 'emp/order_list'),
+    path('emp/order_create/', views.order_create_emp, name='emp/order_create'),
+    path('emp/order_create/item/<int:pk>/', views.order_create_emp, name='emp/order_create_item'),
     path('emp/order_list/', views.order_list, name = 'emp/order_list'),
     path('emp/order_details/<int:pk>/', views.order_detail, name = 'order_detail'),
     path('emp/order_confirm/<int:pk>/', views.order_detail, name = 'emp/confirm'),

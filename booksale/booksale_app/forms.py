@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.forms import inlineformset_factory
 from .models import Product, Genre, Supplier, Order, Order_Item
 
 class CreateUserForm(UserCreationForm):
@@ -74,4 +75,21 @@ class SupplierForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['status', 'shipping_date', 'note']
+        fields = ['customer', 'note', 'status', 'payment_method']
+        widgets = {
+            'note': forms.Textarea(attrs={'rows': 2, 'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
+            'payment_method': forms.Select(attrs={'class': 'form-select'}),
+            'customer': forms.Select(attrs={'class': 'form-select'})
+        }
+
+OrderItemFormSet = inlineformset_factory(
+    Order,
+    Order_Item,
+    fields=['product', 'quantity'],
+    extra=1,  # mặc định thêm 1 dòng mới
+    widgets={
+        'product': forms.Select(attrs={'class': 'form-select'}),
+        'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+    }
+)
