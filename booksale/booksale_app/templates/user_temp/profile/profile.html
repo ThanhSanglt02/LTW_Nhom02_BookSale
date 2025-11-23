@@ -1,50 +1,291 @@
-{% extends 'user_temp/base.html' %}
-{% load static %}
+{% extends 'user_temp/base.html' %} {% load static %} {% block extra_css %}
+<style>
+    .container {
+        max-width: 600px;
+        margin: 40px auto;
+    }
 
-{% block content %}
-<div class="container mt-4 mb-5">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 class="mb-4">Thông tin tài khoản</h2>
-            
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 text-center">
-                            {% if customer.avatar %}
-                                <img src="{{ customer.avatar.url }}" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                            {% else %}
-                                <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
-                                    <i class="fa-solid fa-user fa-3x text-white"></i>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-9">
-                            <h4 class="mb-3">{{ customer.cust_name }}</h4>
-                            <table class="table table-borderless">
-                                <tr>
-                                    <td width="150"><strong>Email:</strong></td>
-                                    <td>{{ customer.email|default:"Chưa cập nhật" }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Số điện thoại:</strong></td>
-                                    <td>{{ customer.phone|default:"Chưa cập nhật" }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Địa chỉ:</strong></td>
-                                    <td>{{ customer.address|default:"Chưa cập nhật" }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Ngày sinh:</strong></td>
-                                    <td>{{ customer.dob|date:"d/m/Y"|default:"Chưa cập nhật" }}</td>
-                                </tr>
-                            </table>
-                        </div>
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .btn-change-password {
+        background-color: #00a8ff;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 13px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .profile-card {
+        background-color: #d9d9d9;
+        padding: 30px;
+        border-radius: 8px;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .btn-edit {
+        background-color: #00a8ff;
+        color: white;
+        border: none;
+        padding: 6px 20px;
+        border-radius: 20px;
+        font-size: 13px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .card-subtitle {
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 30px;
+    }
+
+    .form-container {
+        display: flex;
+        gap: 40px;
+    }
+
+    .form-left {
+        flex: 1;
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        width: 120px;
+        font-size: 14px;
+        color: #333;
+        font-weight: 500;
+        text-align: right;
+        padding-right: 15px;
+    }
+
+    .form-input {
+        flex: 1;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: white;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #00a8ff;
+    }
+
+    .form-right {
+        width: 140px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10px;
+    }
+
+    .avatar-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: white;
+        border: 2px solid #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .avatar-icon {
+        width: 50px;
+        height: 50px;
+        background-color: transparent;
+        border-radius: 50%;
+        border: 2px solid #999;
+        position: relative;
+    }
+
+    .avatar-icon::before {
+        content: '';
+        width: 24px;
+        height: 24px;
+        background-color: #999;
+        border-radius: 50%;
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .avatar-icon::after {
+        content: '';
+        width: 40px;
+        height: 20px;
+        background-color: #999;
+        border-radius: 20px 20px 0 0;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .avatar-text {
+        font-size: 12px;
+        color: #666;
+        text-align: center;
+    }
+
+    .btn-submit {
+        background-color: #ff3b3b;
+        color: white;
+        border: none;
+        padding: 10px 40px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 500;
+        margin-top: 20px;
+        display: block;
+        margin-left: 135px;
+    }
+
+    .btn-submit:hover {
+        background-color: #e63333;
+    }
+
+    @media (max-width: 600px) {
+        .form-container {
+            flex-direction: column;
+        }
+
+        .form-right {
+            width: 100%;
+            order: -1;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .form-label {
+            width: 100%;
+            text-align: left;
+            padding-right: 0;
+            margin-bottom: 5px;
+        }
+
+        .btn-submit {
+            margin-left: 0;
+            width: 100%;
+        }
+    }
+</style>
+
+{% endblock %} {% block content %}
+<div class="container">
+    <div class="header">
+        <h1>Thông tin tài khoản</h1>
+        <button class="btn-change-password">ĐỔI MẬT KHẨU</button>
+    </div>
+
+    <div class="profile-card">
+        <div class="card-header">
+            <h2 class="card-title">Hồ sơ của tôi</h2>
+            <button class="btn-edit">SỬA</button>
+        </div>
+        <p class="card-subtitle">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+
+        <form method="POST">
+            <div class="form-container">
+                <div class="form-left">
+                    <div class="form-group">
+                        <label class="form-label">Tên đăng nhập</label>
+                        <input
+                            type="text"
+                            class="form-input"
+                            name="username"
+                            value="tuyetdoan"
+                            placeholder="tuyetdoan"
+                        />
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input
+                            type="email"
+                            class="form-input"
+                            name="email"
+                            value="tuyetdoan@gmail.com"
+                            placeholder="tuyetdoan@gmail.com"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" class="form-input" name="phone" value="**********" placeholder="**********" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Địa chỉ</label>
+                        <input
+                            type="text"
+                            class="form-input"
+                            name="address"
+                            value="****/2005"
+                            placeholder="****/2005"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ngày sinh</label>
+                        <input
+                            type="text"
+                            class="form-input"
+                            name="birthday"
+                            value="****/2005"
+                            placeholder="****/2005"
+                        />
+                    </div>
+                    <button type="submit" class="btn-submit">LƯU</button>
+                </div>
+
+                <div class="form-right">
+                    <div class="avatar-circle">
+                        <div class="avatar-icon"></div>
+                    </div>
+                    <p class="avatar-text">Chọn ảnh</p>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 {% endblock %}
-
