@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import Product, Genre
+from .models import Product, Genre, Supplier, Order, Order_Item
 
 class CreateUserForm(UserCreationForm):
     class Meta:
@@ -38,8 +38,7 @@ class ProductForm(forms.ModelForm):
             }),
         }
 
-from django import forms
-from .models import Supplier
+
 
 class SupplierForm(forms.ModelForm):
     class Meta:
@@ -70,3 +69,9 @@ class SupplierForm(forms.ModelForm):
                 'placeholder': 'VD: 123 Nguyễn Trãi, Hà Nội'
             }),
         }
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['status', 'shipping_date', 'note']

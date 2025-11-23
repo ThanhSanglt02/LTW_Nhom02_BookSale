@@ -62,6 +62,7 @@ TEMPLATES = [
         'DIRS': [BASE_DIR / 'booksale_app' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
+            ## Context Processor là một hàm cho phép truyền dữ liệu vào tất cả template
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',

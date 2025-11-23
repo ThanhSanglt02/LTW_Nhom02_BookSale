@@ -208,6 +208,8 @@ class Order(models.Model):
         default='pending'  # mặc định là "Chờ xác nhận"
     )
     cancel_reason = models.TextField(blank=True, null=True)
+    shipping_date = models.DateField(verbose_name= "Ngày giao hàng", blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
     customer = models.ForeignKey(
         Customer,
         on_delete = models.PROTECT
