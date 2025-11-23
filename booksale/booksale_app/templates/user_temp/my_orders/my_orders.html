@@ -485,7 +485,7 @@
                         <div class="order-actions">
                             {% if order_data.order.status == 'confirmed' %}
                             <a href="#" class="btn-buy-again">Mua lại</a>
-                            <a href="#" class="btn-view-reviews">Xem đánh giá người mua</a>
+                            <a href="{% url 'review_order' order_data.order.id %}" class="btn-buy-again">Đánh giá</a>
                             {% endif %}
                             <a href="{% url 'order_confirm' order_data.order.id %}" class="btn-view-reviews">Xem chi tiết</a>
                         </div>

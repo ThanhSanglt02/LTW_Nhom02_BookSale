@@ -35,6 +35,9 @@ urlpatterns = [
     path('product-detail-user/<int:product_id>/review/', views.submit_review, name='submit_review'),
     path('profile/', views.profile, name='profile'),
     path('my-orders/', views.my_orders, name='my_orders'),
+    path('order/<int:order_id>/review/', views.review_order, name='review_order'),
+    path('review/<int:review_id>/edit/', views.edit_review, name='edit_review'),
+    path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
 
 
     # EMPLOYEE SALE URLS
