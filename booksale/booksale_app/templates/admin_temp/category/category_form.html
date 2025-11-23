@@ -1,10 +1,6 @@
-{% extends "admin_temp/admin_base.html" %}
-{% block content %}
+{% extends "admin_temp/admin_base.html" %} {% block content %}
 <main class="flex-1 p-8 text-sm">
-
-    <h1 class="text-2xl font-semibold mb-6">
-        {{ title }}
-    </h1>
+    <h1 class="text-2xl font-semibold mb-6">{{ title }}</h1>
 
     <form method="POST" enctype="multipart/form-data" class="bg-white shadow p-6 rounded-lg">
         {% csrf_token %}
@@ -12,28 +8,29 @@
         <!-- Tên danh mục -->
         <div class="mb-4">
             <label class="block font-medium mb-1">Tên danh mục</label>
-            <input type="text" name="category_name" value="{{ category.category_name }}"
-                   class="w-full border px-3 py-2 rounded-lg" required>
+            <input
+                type="text"
+                name="category_name"
+                value="{{ category.category_name }}"
+                class="w-full border px-3 py-2 rounded-lg"
+                required
+            />
         </div>
 
         <!-- Mô tả danh mục -->
         <div class="mb-4">
             <label class="block font-medium mb-1">Mô tả</label>
-            <textarea name="description" rows="4"
-                      class="w-full border px-3 py-2 rounded-lg">{{ category.description }}</textarea>
+            <textarea name="description" rows="4" class="w-full border px-3 py-2 rounded-lg">
+{{ category.description }}</textarea
+            >
         </div>
 
-
         <div class="flex justify-end gap-3 mt-6">
-            <a href="{% url 'category_list' %}" class="px-4 py-2 border rounded-lg">
-                Hủy
-            </a>
-            <button type="submit"
-                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <a href="{% url 'category_list' %}" class="px-4 py-2 border rounded-lg"> Hủy </a>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                 Lưu danh mục
             </button>
         </div>
     </form>
-
 </main>
 {% endblock %}
