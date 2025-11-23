@@ -5,9 +5,10 @@ from booksale_app.views.admin_view.sanpham import (
     product_add,
     product_edit,
     product_delete,
-    product_detail
+    product_detail,
+    product_bulk_delete
 )
-from booksale_app.views.admin_view import category
+from booksale_app.views.admin_view import category, genre
 from .views.employee import inventory_overview, inventory_import, inventory_export, supplier_list
 
 # try:
@@ -63,16 +64,24 @@ urlpatterns = [
 
     # CRUD sản phẩm
     path('emp/product/add/', product_add, name='product_add'),
-    path('product/<int:pk>/edit/', product_edit, name='product_edit'),
+    path('emp/product/<int:pk>/edit/', product_edit, name='product_edit'),
     path('emp/product/<int:pk>/delete/', product_delete, name='product_delete'),
     path('emp/product', views.product_list, name='product_list'),
     path('emp/product-detail/<int:pk>/', product_detail, name='product_detail'),
+    path('emp/product/delete/bulk/', product_bulk_delete, name='product_bulk_delete'),
 
     path("emp/category", category.category_list, name="category_list"),
     path("emp/category/add/", category.category_add, name="category_add"),
     path("emp/category/<int:pk>/delete/", category.category_delete, name="category_delete"),
     path('emp/category/<int:pk>/', category.category_detail, name='category_detail'),
+    path('emp/category/delete/bulk/', category.category_bulk_delete, name='category_bulk_delete'),
 
+    path('emp/genre/', genre.genre_list, name='genre_list'),
+    path('emp/genre/add/', genre.genre_add, name='genre_add'),
+    path('emp/genre/detail/<int:pk>', genre.genre_detail, name='genre_detail'),
+    path('emp/genre/<int:pk>/edit', genre.genre_edit, name='genre_edit'),
+    path('emp/genre/<int:pk>/delete', genre.genre_delete, name='genre_delete'),
+    path('emp/genre/delete/bulk/', genre.genre_bulk_delete, name='genre_bulk_delete')
     # path('product-detail/', views.product_detail, name='product_detail'),
 
     # path('product/', views.product_list, name='product_list'),

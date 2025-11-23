@@ -21,7 +21,7 @@ from django.conf import settings
 # from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 
-
+from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('booksale_app.urls')),
@@ -60,7 +60,7 @@ urlpatterns = [
 
     # LOGOUT URLS
     path('logout/', views.CustomLogoutView.as_view(), name='logout'),
-
+    path('login/', auth_views.LoginView.as_view(), name='login')
 ]
 
 if settings.DEBUG:
