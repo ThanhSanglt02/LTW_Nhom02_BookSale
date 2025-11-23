@@ -1,0 +1,199 @@
+{% extends "user_temp/base.html" %}
+
+{% block content %}
+<div class="review-wrapper">
+    <div class="review-card">
+
+        <h2 class="title">Đánh giá sách</h2>
+        <p class="subtitle">{{ product.product_name }}</p>
+
+        <form method="POST" enctype="multipart/form-data" class="review-form">
+            {% csrf_token %}
+
+            <!-- Rating Stars -->
+            <label class="label">Chọn số sao:</label>
+
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5">
+                <label for="star5" title="5 sao">★</label>
+
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4" title="4 sao">★</label>
+
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3" title="3 sao">★</label>
+
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2" title="2 sao">★</label>
+
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1" title="1 sao">★</label>
+            </div>
+
+            <!-- Content -->
+            <label class="label">Nội dung đánh giá:</label>
+            <textarea name="content" class="input-area" rows="4"
+                placeholder="Hãy chia sẻ cảm nhận của bạn về cuốn sách..." required></textarea>
+
+            <!-- Image -->
+            <label class="label">Ảnh đính kèm:</label>
+            <input type="file" name="image" id="imageInput" class="input-file">
+
+            <!-- Preview Image -->
+            <div class="image-preview" id="previewBox">
+                <img id="previewImg" src="" alt="">
+            </div>
+
+            <button type="submit" class="submit-btn">Gửi đánh giá</button>
+        </form>
+
+    </div>
+</div>
+
+<style>
+    /* Background */
+    .review-wrapper {
+        background: linear-gradient(135deg, #dff2ff, #f5faff);
+        min-height: 90vh;
+        padding: 60px 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Card */
+    .review-card {
+        width: 600px;
+        background: #fff;
+        padding: 35px 40px;
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        animation: fadeIn 0.6s ease;
+    }
+
+    .title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #2d3e50;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 15px;
+        color: #5c6c7f;
+        margin-bottom: 25px;
+    }
+
+    .label {
+        font-weight: 600;
+        color: #34495e;
+        margin-top: 15px;
+        display: block;
+    }
+
+    /* Stars */
+    .star-rating {
+        direction: rtl;
+        display: inline-flex;
+        gap: 10px;
+        font-size: 40px;
+        margin-bottom: 15px;
+        user-select: none;
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        color: #ddd;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    /* Hover màu vàng + phóng to */
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #ffc107;
+        transform: scale(1.18);
+    }
+
+    /* Khi chọn sao */
+    .star-rating input:checked ~ label {
+        color: #ffca2c;
+    }
+
+    /* Input Area */
+    .input-area {
+        width: 100%;
+        border: 1px solid #d0d7de;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: 0.2s;
+    }
+
+    .input-area:focus {
+        border-color: #4aa3ff;
+        box-shadow: 0 0 0 3px rgba(74, 163, 255, 0.25);
+    }
+
+    .input-file {
+        margin-top: 5px;
+        font-size: 15px;
+    }
+
+    /* Image preview */
+    .image-preview {
+        margin-top: 15px;
+        display: none;
+    }
+    .image-preview img {
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    /* Button */
+    .submit-btn {
+        width: 100%;
+        margin-top: 25px;
+        padding: 14px;
+        font-size: 17px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #007bff, #005fcc);
+        color: #fff;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    .submit-btn:hover {
+        background: linear-gradient(135deg, #005fcc, #004099);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0, 123, 255, 0.4);
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+</style>
+
+<script>
+    // Preview ảnh
+    document.getElementById("imageInput").addEventListener("change", function () {
+        const previewBox = document.getElementById("previewBox");
+        const previewImg = document.getElementById("previewImg");
+        const file = this.files[0];
+
+        if (file) {
+            previewBox.style.display = "block";
+            previewImg.src = URL.createObjectURL(file);
+        }
+    });
+</script>
+{% endblock %}
