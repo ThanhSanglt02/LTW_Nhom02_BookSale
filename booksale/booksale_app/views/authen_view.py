@@ -24,6 +24,10 @@ class RoleLoginView(LoginView):
 
     def form_valid(self, form):
         user = form.get_user()
+         ## truyền tham số cấu hình cho Login View ở đây là extra_context --> nó là 1 thuộc tính được truyền vào LoginView và { "required_group": "KH" } được gán vào thuộc tính đó
+        ## required_group: KH, NVBH, NVTK
+
+        ## Có yêu cầu nhóm và user không thuộc nhóm đó --> từ chối đăng nhập --> return message lỗi
         required_group = self.extra_context.get("required_group", None)
         if required_group and not user.groups.filter(name=required_group).exists():
             logout(self.request)
@@ -31,6 +35,7 @@ class RoleLoginView(LoginView):
                 **self.get_context_data(form=form),
                 "error": "Tài khoản không hợp lệ"
             })
+        ## pass -> cho phép đăng nhập
         return super().form_valid(form)
     
 ## Điều chỉnh lại việc chức năng logout và điều hướng màn hình theo nhóm role
