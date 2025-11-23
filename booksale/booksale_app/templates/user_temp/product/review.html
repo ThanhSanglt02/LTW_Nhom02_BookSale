@@ -1,31 +1,143 @@
-{% if user.is_authenticated %}
-<div class="review-form mt-3 p-3 border rounded" style="background-color:#f9f9f9;">
-  <h5>Đánh giá sản phẩm</h5>
-  <form method="POST" action="{% url 'submit_review' product.id %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="rating">Đánh giá (1-5 sao):</label>
-      <select name="rating" id="rating" class="form-control w-auto" required>
-        <option value="">Chọn số sao</option>
-        {% for i in "12345"|make_list %}
-        <option value="{{ i }}">{{ i }} ★</option>
-        {% endfor %}
-      </select>
-    </div>
+{% extends "user_temp/base.html" %}
 
-    <div class="form-group">
-      <label for="content">Nhận xét:</label>
-      <textarea name="content" id="content" class="form-control" rows="3" placeholder="Viết nhận xét..." required></textarea>
-    </div>
+{% block content %}
+<div class="review-wrapper">
 
-    <div class="form-group">
-      <label for="image">Ảnh đánh giá (tùy chọn):</label>
-      <input type="file" name="image" id="image" class="form-control-file">
-    </div>
+    <form method="POST" enctype="multipart/form-data" class="review-form">
+        {% csrf_token %}
 
-    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-  </form>
+        <div class="review-card">
+
+            <h2 class="title">Đánh giá sản phẩm</h2>
+            <p class="subtitle">Hãy đánh giá các sản phẩm bạn đã mua</p>
+
+            {% for item in products %}
+            <div class="product-block" data-index="{{ forloop.counter }}">
+
+                <!-- TÊN SÁCH NỔI BẬT -->
+                <h3 class="product-name">
+                    📘 {{ item.product.product_name }}
+                </h3>
+
+                <!-- ID sản phẩm -->
+                <input type="hidden" name="product_id_{{ forloop.counter }}" value="{{ item.product.id }}">
+
+                <!-- Rating -->
+                <label class="label">Chọn số sao:</label>
+
+                <div class="star-rating">
+                    <input type="radio" id="star5_{{ forloop.counter }}" name="rating_{{ forloop.counter }}" value="5">
+                    <label for="star5_{{ forloop.counter }}">★</label>
+
+                    <input type="radio" id="star4_{{ forloop.counter }}" name="rating_{{ forloop.counter }}" value="4">
+                    <label for="star4_{{ forloop.counter }}">★</label>
+
+                    <input type="radio" id="star3_{{ forloop.counter }}" name="rating_{{ forloop.counter }}" value="3">
+                    <label for="star3_{{ forloop.counter }}">★</label>
+
+                    <input type="radio" id="star2_{{ forloop.counter }}" name="rating_{{ forloop.counter }}" value="2">
+                    <label for="star2_{{ forloop.counter }}">★</label>
+
+                    <input type="radio" id="star1_{{ forloop.counter }}" name="rating_{{ forloop.counter }}" value="1">
+                    <label for="star1_{{ forloop.counter }}">★</label>
+                </div>
+
+                <!-- Content -->
+                <label class="label">Nội dung đánh giá:</label>
+                <textarea name="content_{{ forloop.counter }}" class="input-area" rows="3"></textarea>
+
+                <!-- Thông báo lỗi -->
+                <div class="error-text" id="error_{{ forloop.counter }}" style="display:none;">
+                    ⚠️ Vui lòng nhập đầy đủ nội dung và chọn rating.
+                </div>
+
+                <!-- Image -->
+                <label class="label">Ảnh đính kèm:</label>
+                <input type="file"
+                       name="image_{{ forloop.counter }}"
+                       class="input-file"
+                       onchange="previewImage(event, {{ forloop.counter }})">
+
+                <!-- Preview -->
+                <div class="image-preview" id="previewBox_{{ forloop.counter }}" style="display:none;">
+                    <img id="previewImg_{{ forloop.counter }}" src="" alt="">
+                </div>
+
+            </div>
+            {% endfor %}
+
+            <!-- NÚT GỬI CHUNG -->
+            <button type="submit" class="submit-btn">
+                Gửi tất cả đánh giá
+            </button>
+
+        </div>
+
+    </form>
+
 </div>
-{% else %}
-<p class="text-warning">Bạn cần đăng nhập để đánh giá sản phẩm.</p>
-{% endif %}
+
+<style>
+/* === CSS giữ nguyên như bạn gửi === */
+.review-wrapper {background: linear-gradient(135deg, #dff2ff, #f5faff); min-height:90vh; padding:60px 20px; display:flex; justify-content:center; flex-direction:column; gap:30px;}
+.review-card {width:700px; background:#fff; padding:35px 40px; margin:0 auto; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,0.12); animation:fadeIn 0.6s ease;}
+.title {font-size:28px; font-weight:700; color:#2d3e50; text-align:center; margin-bottom:5px;}
+.subtitle {text-align:center; font-size:15px; color:#5c6c7f; margin-bottom:30px;}
+.product-block {margin-bottom:25px;}
+.product-name {font-size:20px; font-weight:700; color:#003d99; background: linear-gradient(135deg, #e6f0ff, #d4e2ff); display:inline-block; padding:10px 18px; border-radius:12px; margin-bottom:15px; box-shadow:0 4px 10px rgba(0,80,180,0.15);}
+.label {font-weight:600; color:#34495e; margin-top:15px; display:block;}
+.star-rating {direction: rtl; display:inline-flex; gap:10px; font-size:40px; margin-bottom:15px; user-select:none;}
+.star-rating input { display:none; }
+.star-rating label { color:#ddd; cursor:pointer; transition:0.25s;}
+.star-rating label:hover, .star-rating label:hover ~ label { color:#ffc107; transform: scale(1.18);}
+.star-rating input:checked ~ label { color:#ffca2c; }
+.input-area { width:100%; border:1px solid #d0d7de; padding:12px 14px; border-radius:10px; font-size:15px; transition:0.2s;}
+.input-area:focus { border-color:#4aa3ff; box-shadow:0 0 0 3px rgba(74,163,255,0.25);}
+.image-preview {width:140px; height:140px; border:1px dashed #b9c4d4; border-radius:12px; margin-top:10px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#f1f5fb;}
+.image-preview img {width:100%; height:100%; object-fit:cover;}
+.submit-btn {width:100%; margin-top:25px; padding:14px; font-size:17px; font-weight:600; border:none; border-radius:12px; background:linear-gradient(135deg,#007bff,#005fcc); color:#fff; cursor:pointer; transition:0.25s;}
+.submit-btn:hover {background:linear-gradient(135deg,#005fcc,#004099); transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,123,255,0.4);}
+@keyframes fadeIn {from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);}}
+.error-text {color:red; font-size:13px; margin-top:5px;}
+</style>
+
+<script>
+function previewImage(event, index) {
+    const file = event.target.files[0];
+    const img = document.getElementById(`previewImg_${index}`);
+    const box = document.getElementById(`previewBox_${index}`);
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            img.src = e.target.result;
+            box.style.display = "flex";
+        }
+        reader.readAsDataURL(file);
+    } else {
+        img.src = "";
+        box.style.display = "none";
+    }
+}
+
+// Validate trước khi submit
+document.querySelector(".review-form")?.addEventListener("submit", function(e){
+    let valid = true;
+    const blocks = document.querySelectorAll(".product-block");
+    blocks.forEach(block => {
+        const idx = block.getAttribute("data-index");
+        const content = block.querySelector(`textarea[name="content_${idx}"]`).value.trim();
+        const rating = block.querySelector(`input[name="rating_${idx}"]:checked`);
+        const errorDiv = block.querySelector(`#error_${idx}`);
+        if(!content || !rating) {
+            errorDiv.style.display = "block";
+            valid = false;
+        } else {
+            errorDiv.style.display = "none";
+        }
+    });
+    if(!valid) e.preventDefault();
+});
+</script>
+
+{% endblock %}

@@ -62,8 +62,6 @@ def order_create_emp(request, pk = None):
     }
     return render(request, 'admin_temp/order/create_order.html', context)
 
-# def add_items(request, pk = None):
-
 
 @login_required(login_url="/accounts/login/staff/")
 @group_required('NVBH', login_url="/accounts/login/staff/") # Nếu user không thuộc NVBH → redirect về login staff.
@@ -184,6 +182,3 @@ def order_cancel_status(request, pk):
 #         form = OrderForm(instance=order)
 #     return render(request, "form_example.html", {"method": request.method, "form": form})
 
-# class HomeView(View):
-#     def get(self, request):
-#         return render(request, 'home.html')

@@ -82,6 +82,23 @@
     color: white;
 }
 
+/* Nút sửa đánh giá */
+.btn-edit-review {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    margin-top: 8px;
+}
+.btn-edit-review:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
 /* ======= TAB MÔ TẢ ======= */
 .tab-section { margin-top: 50px; }
 .tab-title { font-weight: 700; border-bottom: 2px solid #007bff; display: inline-block; margin-bottom: 15px; }
@@ -178,34 +195,58 @@
     <p class="product-desc">{{ product.description|linebreaks }}</p>
   </div>
 
-  <!-- ĐÁNH GIÁ SẢN PHẨM -->
+
+<!-- ĐÁNH GIÁ SẢN PHẨM -->
+<!-- ĐÁNH GIÁ SẢN PHẨM -->
 <div class="review-section">
   <h4 class="tab-title">Đánh giá sản phẩm</h4>
 
-  {% for review in product.review_set.all %}
-  <div class="review-item">
-    <div class="review-header">
-      <div>
-        <span class="review-user">{{ review.creator.username }}</span>
-        <span class="review-date">{{ review.date_created|date:"Y-m-d H:i" }}</span>
-      </div>
-      <div class="review-stars">
-        {% for i in "12345"|make_list %}
-          {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
-        {% endfor %}
-      </div>
-    </div>
-    <p>{{ review.content }}</p>
-    {% if review.image %}
-      <img src="{{ review.image.url }}" alt="Ảnh đánh giá" style="max-width:150px; margin-top:10px;">
-    {% endif %}
-  </div>
-  {% empty %}
-    <p>Chưa có đánh giá nào cho sản phẩm này.</p>
-  {% endfor %}
+  {% if product.review_set.exists %}
+    {% for review in product.review_set.all %}
+      <div class="review-item">
+        <div class="review-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span class="review-user">{{ review.creator.username }}</span>
+            <span class="review-date">{{ review.date_created|date:"Y-m-d H:i" }}</span>
+          </div>
+          <div class="review-stars">
+            {% for i in "12345"|make_list %}
+              {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+            {% endfor %}
+          </div>
+        </div>
 
-  <!-- Include form đánh giá -->
-  {% include "user_temp/product/review.html" %}
+        <p>{{ review.content }}</p>
+
+        {% if review.image %}
+          <div class="review-image-wrapper" style="margin-top:10px;">
+            <img src="{{ review.image.url }}" alt="Ảnh đánh giá" style="max-width:150px; border-radius:8px;">
+          </div>
+        {% endif %}
+
+        {% if review.creator == user %}
+          <!-- Nút Sửa & Xóa -->
+          <div style="margin-top:8px; display:flex; gap:8px;">
+            <!-- Nút Sửa -->
+            <a href="{% url 'edit_review' review.id %}" class="btn-edit-review">Sửa</a>
+
+            <!-- Nút Xóa -->
+            <form method="POST" action="{% url 'delete_review' review.id %}"
+                  onsubmit="return confirm('Bạn có chắc muốn xóa đánh giá này?');"
+                  style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn-edit-review"
+                      style="background-color:#ff4b4b;">Xóa</button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+  {% endif %}
+</div>
+
 </div>
 
 

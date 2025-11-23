@@ -3,7 +3,7 @@ from booksale_app.models import (Customer, Order, Product, Category, Publisher, 
 
 # Register your models here.
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('cust_name', 'email','phone')
+    list_display = ('cust_name', 'email','phone', 'avatar')
     list_filter = ('cust_name',)
     search_fields = ('cust_name',)
    

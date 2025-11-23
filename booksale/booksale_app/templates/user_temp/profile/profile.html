@@ -180,6 +180,10 @@
         background-color: #e63333;
     }
 
+    #avatar {
+        margin-top: 15px;
+    }
+
     @media (max-width: 600px) {
         .form-container {
             flex-direction: column;
@@ -214,75 +218,102 @@
 <div class="container">
     <div class="header">
         <h1>Thông tin tài khoản</h1>
-        <button class="btn-change-password">ĐỔI MẬT KHẨU</button>
+        <!-- <button class="btn-change-password">ĐỔI MẬT KHẨU</button> -->
     </div>
 
     <div class="profile-card">
         <div class="card-header">
             <h2 class="card-title">Hồ sơ của tôi</h2>
-            <button class="btn-edit">SỬA</button>
+            {% if not request.GET.edit %}
+            <a href="?edit=true" class="btn btn-primary px-4"><i class="fa-solid fa-pen"></i> SỬA</a>
+            {% endif %} {% if request.GET.edit %}
+            <a href="{% url 'profile' %}" class="btn btn-danger px-4"> HỦY</a>
+            {% endif %}
         </div>
         <p class="card-subtitle">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="form-container">
                 <div class="form-left">
                     <div class="form-group">
                         <label class="form-label">Tên đăng nhập</label>
-                        <input
-                            type="text"
-                            class="form-input"
-                            name="username"
-                            value="tuyetdoan"
-                            placeholder="tuyetdoan"
-                        />
+                        <input type="text" class="form-input" name="username" value="{{user}}" readonly />
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Email</label>
-                        <input
-                            type="email"
-                            class="form-input"
-                            name="email"
-                            value="tuyetdoan@gmail.com"
-                            placeholder="tuyetdoan@gmail.com"
-                        />
+                        {% if request.GET.edit %}
+                        <input type="email" class="form-input" name="email" value="{{customer.email}}" />
+                        {% else %}
+                        <input type="email" class="form-input" name="email" value="{{customer.email}}" readonly />
+                        {% endif %}
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Số điện thoại</label>
-                        <input type="tel" class="form-input" name="phone" value="**********" placeholder="**********" />
+                        {% if request.GET.edit %}
+                        <input type="tel" class="form-input" name="phone" value="{{customer.phone}}" />
+                        {% else %}
+                        <input type="tel" class="form-input" name="phone" value="{{customer.phone}}" readonly />
+                        {% endif %}
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Địa chỉ</label>
-                        <input
-                            type="text"
-                            class="form-input"
-                            name="address"
-                            value="****/2005"
-                            placeholder="****/2005"
-                        />
+                        {% if request.GET.edit %}
+                        <input type="text" class="form-input" name="address" value="{{customer.address}}" />
+                        {% else %}
+                        <input type="text" class="form-input" name="address" value="{{customer.address}}" readonly />
+                        {% endif %}
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Ngày sinh</label>
+                        {% if request.GET.edit %}
+                        <!--format ngày sinh đúng với type="date" là YYYY-MM-DD-->
                         <input
-                            type="text"
+                            type="date"
                             class="form-input"
                             name="birthday"
-                            value="****/2005"
-                            placeholder="****/2005"
+                            value="{% if customer.dob %}{{ customer.dob|date:'Y-m-d' }}{% endif %}"
                         />
+                        {% else %}
+                        <input
+                            type="date"
+                            class="form-input"
+                            name="birthday"
+                            value="{% if customer.dob %}{{ customer.dob|date:'Y-m-d' }}{% endif %}"
+                            readonly
+                        />
+                        {% endif %}
                     </div>
+                    {% if request.GET.edit %}
                     <button type="submit" class="btn-submit">LƯU</button>
+                    {% endif %}
                 </div>
 
                 <div class="form-right">
                     <div class="avatar-circle">
+                        {% if customer.avatar %}
+                        <img src="{{ customer.avatar.url }}" alt="Avatar" id="avatar" class="avatar-circle" />
+                        {% else %}
                         <div class="avatar-icon"></div>
+                        {% endif %}
                     </div>
-                    <p class="avatar-text">Chọn ảnh</p>
+
+                    {% if request.GET.edit %}
+                    <input type="file" name="avatar" id="avatarInput" style="display: none" />
+                    <label
+                        for="avatarInput"
+                        class="avatar-text"
+                        style="cursor: pointer; color: #00a8ff; font-weight: 600"
+                    >
+                        Chọn ảnh
+                    </label>
+                    {% else %}
+                    <p class="avatar-text">Ảnh đại diện</p>
+                    {% endif %}
                 </div>
             </div>
         </form>
