@@ -2,10 +2,13 @@
 /venv/
 
 # SQLite database
-/booksale/db.sqlite3
+
+/db.sqlite3/
 
 # Django stuff
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+## change git ignore
