@@ -42,7 +42,7 @@ def order_create_emp(request, pk = None):
             order = form.save(commit=False)   # TẠO ORDER CHƯA LƯU
             order.total_amount = 0            # GÁN GIÁ TRỊ TRÁNH LỖI
             order.save()                      # LƯU LẠI
-            return redirect("/emp/order_create_item", pk=order.pk)
+            return redirect("emp/order_create_item", pk=order.pk)
     else:
         # Khi GET load form: nếu đã chọn customer qua query param,
         # set initial cho form để customer field có giá trị (sẽ render as_hidden)
@@ -114,7 +114,7 @@ def order_detail(request, pk):
         order.save()
 
         # Redirect để tránh gửi lại form khi F5
-        return redirect("/emp/order_detail/", pk=pk)
+        return redirect("emp/completed", pk=pk)
 
     # Truyền dữ liệu qua template
     context = {
@@ -145,10 +145,9 @@ def order_confirm_status(request, pk):
         order.status = "confirmed"
         order.save()
         messages.success(request, f"Đơn hàng #{order.id} đã được xác nhận thành công.")
-        return redirect('/emp/order_detail', pk=order.id)
-    return redirect('/emp/order_detail', pk=order.id)
+        return redirect('order_detail', pk=order.id)
+    return redirect('order_detail', pk=order.id)
 
-# TO DO
 @login_required(login_url="/accounts/login/staff/")
 def order_cancel_status(request, pk):
     """Cập nhật trạng thái thành đã hủy"""
@@ -159,9 +158,7 @@ def order_cancel_status(request, pk):
         order.cancel_reason = reason
         order.save()
 
-        return redirect('/emp/order_detail', pk=pk)
-    
-
+        return redirect('order_detail', pk=pk)
     
 # @login_required(login_url="/accounts/login/staff/")
 # def edit_order(request, pk = None):
