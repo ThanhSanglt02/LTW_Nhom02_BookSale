@@ -1,0 +1,124 @@
+{% extends "user_temp/base.html" %}
+
+{% block content %}
+<div class="review-wrapper">
+
+    <form method="POST" enctype="multipart/form-data" class="review-form">
+        {% csrf_token %}
+
+        <div class="review-card">
+
+            <h2 class="title">Chỉnh sửa đánh giá</h2>
+            <p class="subtitle">Cập nhật đánh giá của bạn về sản phẩm</p>
+
+            <div class="product-block" data-index="1">
+
+                <!-- Tên sản phẩm -->
+                <h3 class="product-name">
+                    📘 {{ review.product.product_name }}
+                </h3>
+
+                <!-- Rating -->
+                <label class="label">Chọn số sao:</label>
+                <div class="star-rating">
+                    {% for i in "54321"|make_list %}
+                        <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" {% if review.rating|stringformat:"s" == i %}checked{% endif %}>
+                        <label for="star{{ i }}">★</label>
+                    {% endfor %}
+                </div>
+
+                <!-- Nội dung đánh giá -->
+                <label class="label">Nội dung đánh giá:</label>
+                <textarea name="content" class="input-area" rows="3">{{ review.content }}</textarea>
+
+                <!-- Thông báo lỗi -->
+                <div class="error-text" id="error" style="display:none;">
+                    ⚠️ Vui lòng nhập đầy đủ nội dung và chọn rating.
+                </div>
+
+                <!-- Ảnh đánh giá -->
+                <label class="label">Ảnh đính kèm:</label>
+                <input type="file" name="images" class="input-file" multiple onchange="previewImages(event)">
+
+                <div class="image-preview-wrapper" id="previewWrapper">
+                    {% if review.image %}
+                        <div class="image-preview">
+                            <img src="{{ review.image.url }}" alt="">
+                        </div>
+                    {% endif %}
+                    <!-- Thêm các ảnh mới sẽ hiển thị ở đây -->
+                </div>
+
+            </div>
+
+            <!-- Nút cập nhật -->
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button type="submit" class="submit-btn">Cập nhật đánh giá</button>
+                </form>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+<style>
+/* CSS giống review.html + thêm delete-btn */
+.review-wrapper {background: linear-gradient(135deg, #dff2ff, #f5faff); min-height:90vh; padding:60px 20px; display:flex; justify-content:center; flex-direction:column; gap:30px;}
+.review-card {width:700px; background:#fff; padding:35px 40px; margin:0 auto; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,0.12);}
+.title {font-size:28px; font-weight:700; color:#2d3e50; text-align:center; margin-bottom:5px;}
+.subtitle {text-align:center; font-size:15px; color:#5c6c7f; margin-bottom:30px;}
+.product-block {margin-bottom:25px;}
+.product-name {font-size:20px; font-weight:700; color:#003d99; background: linear-gradient(135deg, #e6f0ff, #d4e2ff); display:inline-block; padding:10px 18px; border-radius:12px; margin-bottom:15px;}
+.label {font-weight:600; color:#34495e; margin-top:15px; display:block;}
+.star-rating {direction: rtl; display:inline-flex; gap:10px; font-size:40px; margin-bottom:15px; user-select:none;}
+.star-rating input { display:none; }
+.star-rating label { color:#ddd; cursor:pointer; transition:0.25s;}
+.star-rating label:hover, .star-rating label:hover ~ label { color:#ffc107; transform: scale(1.18);}
+.star-rating input:checked ~ label { color:#ffca2c; }
+.input-area { width:100%; border:1px solid #d0d7de; padding:12px 14px; border-radius:10px; font-size:15px; transition:0.2s;}
+.input-area:focus { border-color:#4aa3ff; box-shadow:0 0 0 3px rgba(74,163,255,0.25);}
+.image-preview-wrapper {display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+.image-preview {width:140px; height:140px; border:1px dashed #b9c4d4; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#f1f5fb;}
+.image-preview img {width:100%; height:100%; object-fit:cover;}
+.submit-btn {flex:1; padding:14px; font-size:17px; font-weight:600; border:none; border-radius:12px; background:linear-gradient(135deg,#007bff,#005fcc); color:#fff; cursor:pointer; transition:0.25s;}
+.submit-btn:hover {background:linear-gradient(135deg,#005fcc,#004099);}
+.delete-btn {background: linear-gradient(135deg,#ff4b4b,#c70000);}
+.delete-btn:hover {background: linear-gradient(135deg,#c70000,#900000);}
+.error-text {color:red; font-size:13px; margin-top:5px;}
+</style>
+
+<script>
+function previewImages(event) {
+    const files = event.target.files;
+    const wrapper = document.getElementById("previewWrapper");
+    wrapper.innerHTML = ""; // Xóa ảnh cũ
+    for(let i=0;i<files.length;i++){
+        const reader = new FileReader();
+        reader.onload = e => {
+            const div = document.createElement("div");
+            div.classList.add("image-preview");
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            div.appendChild(img);
+            wrapper.appendChild(div);
+        }
+        reader.readAsDataURL(files[i]);
+    }
+}
+
+// Validate form
+document.querySelector(".review-form")?.addEventListener("submit", function(e){
+    const content = document.querySelector("textarea[name='content']").value.trim();
+    const rating = document.querySelector("input[name='rating']:checked");
+    const errorDiv = document.getElementById("error");
+    if(!content || !rating) {
+        errorDiv.style.display = "block";
+        e.preventDefault();
+    } else {
+        errorDiv.style.display = "none";
+    }
+});
+</script>
+{% endblock %}
