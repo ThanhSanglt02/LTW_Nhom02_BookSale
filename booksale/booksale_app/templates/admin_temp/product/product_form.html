@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<main class="flex-1 p-8">
+<main class="flex-1 p-8 text-sm">
 
   <!-- Tiêu đề nằm ngoài khung -->
   <div class="flex justify-between items-center mb-6">
@@ -91,6 +91,9 @@
       <div class="mt-6">
         <label class="block font-medium mb-2 text-gray-700" for="image">Hình sản phẩm</label>
         <input type="file" name="image" id="image" class="border border-gray-300 rounded-lg p-2 w-full">
+        <div class="mt-2 image-preview" id="previewBox" style="display:none;">
+            <img id="previewImg" src="" alt="Preview" class="w-48 h-48 object-cover border rounded-lg">
+        </div>
 
         <!-- Nếu đang edit, hiển thị ảnh hiện có -->
         {% if product %}
@@ -115,5 +118,26 @@
       </div>
     </form>
   </div>
+    <script>
+    const imageInput = document.getElementById('image');
+    const previewBox = document.getElementById('previewBox');
+    const previewImg = document.getElementById('previewImg');
+
+    imageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewBox.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            previewImg.src = '';
+            previewBox.style.display = 'none';
+        }
+    });
+    </script>
+
 </main>
 {% endblock %}

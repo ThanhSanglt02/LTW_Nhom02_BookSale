@@ -3,9 +3,17 @@ from booksale_app.models import Category, Product
 from django.contrib import messages
 
 def category_list(request):
-    categories = Category.objects.all()
-    return render(request, 'admin_temp/category/category_list.html', {'categories': categories})
+    search = request.GET.get("search", "")
 
+    categories = Category.objects.all()
+
+    if search:
+        categories = categories.filter(category_name__icontains=search)
+
+    context = {
+        "categories": categories,
+    }
+    return render(request, "admin_temp/category/category_list.html", context)
 
 def category_add(request):
     if request.method == "POST":
@@ -56,4 +64,29 @@ def category_detail(request, pk):
     return render(request, 'admin_temp/category/category_detail.html', {
         'category': category,
         'products': products,
-    })  
+    })
+
+
+def category_bulk_delete(request):
+    """
+    Xử lý yêu cầu POST để xóa nhiều danh mục cùng lúc.
+    """
+    # 1. Kiểm tra phải là phương thức POST không
+    if request.method == 'POST':
+        # 2. Lấy danh sách ID từ các checkbox đã chọn
+        # 'category_ids' là thuộc tính name của các input checkbox trong HTML
+        category_ids = request.POST.getlist('category_ids')
+
+        # 3. Thực hiện xóa hàng loạt trong cơ sở dữ liệu
+        if category_ids:
+            # Lọc các đối tượng Category có ID nằm trong danh sách và gọi hàm .delete()
+            Category.objects.filter(id__in=category_ids).delete()
+
+            # (Tùy chọn) Thêm thông báo thành công
+            # messages.success(request, f"Đã xóa thành công {len(category_ids)} danh mục.")
+
+        # 4. Chuyển hướng người dùng trở lại trang danh sách danh mục
+        return redirect('category_list')
+
+        # Nếu truy cập bằng GET, chuyển hướng về trang danh sách (hoặc trả về lỗi 405)
+    return redirect('category_list')
