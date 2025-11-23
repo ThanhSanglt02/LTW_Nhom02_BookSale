@@ -155,13 +155,10 @@
                 <nav class="mt-6">
                     <ul class="space-y-2">
                         <li>
-                            <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100">
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100 isActive">
+                            <a
+                                href="{% url 'emp/order_list'%}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 isActive"
+                            >
                                 <span>Đơn hàng</span>
                             </a>
                         </li>
@@ -175,39 +172,26 @@
                                 </summary>
                                 <ul>
                                     <li>
-                                        <a href="{% url 'category_list' %}" class="block px-12 py-2 hover:bg-gray-100">Danh mục</a>
+                                        <a href="{% url 'category_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                            >Danh mục</a
+                                        >
                                     </li>
                                     <li>
-                                        <a href="{% url 'genre_list' %}" class="block px-12 py-2 hover:bg-gray-100">Thể loại</a>
+                                        <a href="{% url 'genre_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                            >Thể loại</a
+                                        >
                                     </li>
                                     <li>
-                                        <a href="{% url 'product_list' %}" class="block px-12 py-2 hover:bg-gray-100">Sản phẩm</a>
+                                        <a href="{% url 'product_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                            >Sản phẩm</a
+                                        >
                                     </li>
                                 </ul>
                             </details>
                         </li>
-
-                        <li>
-                            <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100">
-                                <span>Quản lý địa chỉ</span>
-                            </a>
-                        </li>
-
                         <li>
                             <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100">
                                 <span>Quản lý đánh giá</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100">
-                                <span>Support</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100">
-                                <span>Settings</span>
                             </a>
                         </li>
                     </ul>
@@ -217,7 +201,7 @@
             {% block content %} {% endblock %}
         </div>
 
-        <script>
+        <!-- <script>
             const toggle = document.getElementById('productMenuToggle');
             const submenu = document.getElementById('productSubmenu');
             if (toggle && submenu) {
@@ -225,6 +209,6 @@
                     submenu.classList.toggle('show');
                 });
             }
-        </script>
+        </script> -->
     </body>
 </html>

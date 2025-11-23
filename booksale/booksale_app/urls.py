@@ -37,6 +37,9 @@ urlpatterns = [
     path('product-detail-user/<int:product_id>/review/', views.submit_review, name='submit_review'),
     path('profile/', views.profile, name='profile'),
     path('my-orders/', views.my_orders, name='my_orders'),
+    path('order/<int:order_id>/review/', views.review_order, name='review_order'),
+    path('review/<int:review_id>/edit/', views.edit_review, name='edit_review'),
+    path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
 
 
     # EMPLOYEE SALE URLS
@@ -50,19 +53,6 @@ urlpatterns = [
     path('emp/order_completed/<int:pk>/', views.order_detail, name = 'emp/completed'),
     path('emp/order_confirm_status/<int:pk>/', views.order_confirm_status, name='emp/order_confirm_status'),
     path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),  
-
-
-    # EMPLOYEE STOCK URLS
-    #    path('product-detail/', views.product_detail, name='product_detail'),
-    #    path('product/', views.product_list, name='product_list'),
-    path('employee/inventory_overview/', inventory_overview.inventory_list, name='inventory_list'),
-    path('employee/inventory_import/', inventory_import.inventory_import, name='inventory_import'),
-    path('employee/inventory_export/', inventory_export.inventory_export, name='inventory_export'),
-    path('employee/supplier_list/', supplier_list.supplier_list, name='supplier_list'),
-    path('employee/supplier_list/add/', supplier_list.supplier_add, name='supplier_add'),
-    path('employee/supplier_list/edit/<int:pk>/', supplier_list.supplier_edit, name='supplier_edit'),
-    path('employee/supplier_list/delete/<int:pk>/', supplier_list.supplier_delete, name='supplier_delete'),
-
     # CRUD sản phẩm
     path('emp/product/add/', product_add, name='product_add'),
     path('emp/product/<int:pk>/edit/', product_edit, name='product_edit'),
@@ -82,7 +72,22 @@ urlpatterns = [
     path('emp/genre/detail/<int:pk>', genre.genre_detail, name='genre_detail'),
     path('emp/genre/<int:pk>/edit', genre.genre_edit, name='genre_edit'),
     path('emp/genre/<int:pk>/delete', genre.genre_delete, name='genre_delete'),
-    path('emp/genre/delete/bulk/', genre.genre_bulk_delete, name='genre_bulk_delete')
+    path('emp/genre/delete/bulk/', genre.genre_bulk_delete, name='genre_bulk_delete'),
+
+    
+
+    # EMPLOYEE STOCK URLS
+    #    path('product-detail/', views.product_detail, name='product_detail'),
+    #    path('product/', views.product_list, name='product_list'),
+    path('employee/inventory_overview/', inventory_overview.inventory_list, name='inventory_list'),
+    path('employee/inventory_import/', inventory_import.inventory_import, name='inventory_import'),
+    path('employee/inventory_export/', inventory_export.inventory_export, name='inventory_export'),
+    path('employee/supplier_list/', supplier_list.supplier_list, name='supplier_list'),
+    path('employee/supplier_list/add/', supplier_list.supplier_add, name='supplier_add'),
+    path('employee/supplier_list/edit/<int:pk>/', supplier_list.supplier_edit, name='supplier_edit'),
+    path('employee/supplier_list/delete/<int:pk>/', supplier_list.supplier_delete, name='supplier_delete'),
+
+    
     # path('product-detail/', views.product_detail, name='product_detail'),
 
     # path('product/', views.product_list, name='product_list'),
