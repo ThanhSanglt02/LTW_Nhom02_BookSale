@@ -38,15 +38,16 @@ urlpatterns = [
     path('my-orders/', views.my_orders, name='my_orders'),
 
 
-
     # EMPLOYEE SALE URLS
     # path('emp/order_list/', views.order_list, name = 'emp/order_list'),
     path('emp/order_list/', views.order_list, name = 'emp/order_list'),
-    path('emp/order_details/<int:pk>/', views.order_detail, name = 'emp/detail'),
+    path('emp/order_details/<int:pk>/', views.order_detail, name = 'order_detail'),
     path('emp/order_confirm/<int:pk>/', views.order_detail, name = 'emp/confirm'),
     path('emp/order_cancel/<int:pk>/', views.order_detail, name = 'emp/cancel'),
+    path('emp/order_completed/<int:pk>/', views.order_detail, name = 'emp/completed'),
     path('emp/order_confirm_status/<int:pk>/', views.order_confirm_status, name='emp/order_confirm_status'),
     path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),  
+    
 
     # EMPLOYEE STOCK URLS
 #    path('product-detail/', views.product_detail, name='product_detail'),

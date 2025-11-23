@@ -4,6 +4,7 @@ from django.contrib import messages
 from booksale_app.utils import sum_price_order
 from django.contrib.auth.decorators import login_required
 from ..authen_view import group_required
+from django.utils import timezone
 
 # Create your views here.
 
@@ -28,29 +29,56 @@ def order_list(request):
     }
     return render(request, 'admin_temp/order/order_list.html', context)
 
+
 @login_required(login_url="/accounts/login/staff/")
 def order_detail(request, pk):
-    # Lấy thông tin đơn hàng
+    # Lấy thông tin đơn hàng + customer
     order = get_object_or_404(Order.objects.select_related('customer'), pk=pk)
-    # Lấy các sản phẩm thuộc đơn hàng đó
+
+    # Lấy danh sách item trong đơn hàng
     order_items = Order_Item.objects.select_related('product').filter(order=order)
+
+    # Tính tổng tiền
     prices = [item.product.sell_price * item.quantity for item in order_items]
     total_amount = sum_price_order(prices)
 
+
+    # XỬ LÝ UPDATE (NẾU POST)
+    if request.method == "POST":
+        shipping_date = request.POST.get("shipping_date")
+        note = request.POST.get("note")
+        order_status = request.POST.get("order_status")
+
+        # Gán lại giá trị vào model
+        order.shipping_date = shipping_date
+        order.note = note
+        order.status = order_status
+
+        order.save()
+
+        # Redirect để tránh gửi lại form khi F5
+        return redirect("emp/completed", pk=pk)
+
+    # Truyền dữ liệu qua template
     context = {
         'order': order,
         'order_items': order_items,
-        'total_amount': total_amount
+        'total_amount': total_amount,
+        'today': timezone.now().date(),
     }
 
-    # Chọn template theo trạng thái
+    # TEMPLATE THEO STATUS
     if order.status == "confirmed":
         template = 'admin_temp/order/order_detail.html'
     elif order.status == "cancelled":
         template = 'admin_temp/order/order_cancel.html'
+    elif order.status == "completed":
+        template = 'admin_temp/order/order_completed.html'
     else:
         template = 'admin_temp/order/order_confirm.html'
+
     return render(request, template, context)
+
 
 @login_required(login_url="/accounts/login/staff/")
 def order_confirm_status(request, pk):
@@ -60,8 +88,8 @@ def order_confirm_status(request, pk):
         order.status = "confirmed"
         order.save()
         messages.success(request, f"Đơn hàng #{order.id} đã được xác nhận thành công.")
-        return redirect('emp/detail', pk=order.id)
-    return redirect('emp/detail', pk=order.id)
+        return redirect('order_detail', pk=order.id)
+    return redirect('order_detail', pk=order.id)
 
 @login_required(login_url="/accounts/login/staff/")
 def order_cancel_status(request, pk):
@@ -73,30 +101,30 @@ def order_cancel_status(request, pk):
         order.cancel_reason = reason
         order.save()
 
-        return redirect('emp/detail', pk=pk)
+        return redirect('order_detail', pk=pk)
     
-
+# @login_required(login_url="/accounts/login/staff/")
 # def edit_order(request, pk = None):
 #     if pk is not None:
-#         publisher = get_object_or_404(Order, pk = pk)
+#         order = get_object_or_404(Order, pk = pk)
 #     else:
-#         publisher = None
+#         order = None
 
 #     if request.method == 'POST':
-#         form = PublisherForm(request.POST, instance=publisher)
+#         form = OrderForm(request.POST, instance=order)
 #         if form.is_valid():
 #             # luwu object vào db
 #             # updated_publisher chứa thông tin mà cái Model Publisher nó return ở hàm __str__
-#             updated_publisher = form.save()
-#             if publisher is None:
-#                 messages.success(request, "Publisher {} was created.".format(updated_publisher))
+#             updated_order = form.save()
+#             if order is None:
+#                 messages.success(request, "Order {} was created.".format(updated_order))
 #             else: 
-#                 messages.success(request, "Publisher {} was updated.".format(updated_publisher))
+#                 messages.success(request, "Order {} was updated.".format(updated_order))
 #             # mở lại trang publisher_edit với ID của publisher đã lưu. --> ban đầu chưa có pk thì sẽ đi vào đường dẫn publishers/new. Sau khi taoj mới sucess thì đường dẫn sẽ được cập nhật kèm theo pk thay vì None
 #                     # và lúc này pk đã có nên nó sẽ lấy url publishers/<int:pk>/
-#             return redirect("publisher_edit", updated_publisher.pk) #pk tương ứng với cột id trong db
+#             return redirect("publisher_edit", updated_order.pk) #pk tương ứng với cột id trong db
 #     else:
-#         form = PublisherForm(instance=publisher)
+#         form = OrderForm(instance=order)
 #     return render(request, "form_example.html", {"method": request.method, "form": form})
 
 # class HomeView(View):

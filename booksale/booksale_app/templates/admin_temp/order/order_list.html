@@ -1,165 +1,191 @@
-{% extends 'admin_temp/admin_base.html' %}
-{% load static %}
+{% extends 'admin_temp/admin_base.html' %} {% load static %}
 
 <!-- CSS -->
 {% block extra_css %}
-   <style>
-        .isActive {
-            font-weight: 600 !important;
-            color: rgba(41, 41, 232, 0.991) !important;
-            background-color: #eff6ff;
-        }
-        .tab-buttons {
-            border-bottom: 1px solid #dee2e6;
-            margin-bottom: 15px;
-        }
-        .tab-buttons .btn {
-            border: none;
-            background: none;
-            color: #6c757d;
-            font-weight: 500;
-            border-radius: 0;
-        }
-        .tab-buttons .btn.active {
-            border-bottom: 2px solid #007bff;
-            color: #007bff;
-        }
-        .filter-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .filter-bar input {
-            width: 300px;
-        }
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-        .paid { background-color: #d1e7dd; color: #0f5132; }
-        .unpaid { background-color: #f8d7da; color: #842029; }
-        .processing { background-color: #cff4fc; color: #055160; }
-        .confirmed { background-color: #fff3cd; color: #664d03; }
-        .refused { background-color: #f8d7da; color: #842029; }
-        .table thead {
-            background-color: #f1f3f5;
-            font-weight: 600;
-        }
-        .table td {
-            vertical-align: middle;
-        }
-        .pagination {
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .btn-create {
-            background-color: #007bff;
-            color: #fff;
-            font-weight: 500;
-            border-radius: 8px;
-        }
-        .table_content {
-            background-color: #ffffff;
-            padding: 30px;
-        }
+<style>
+    .isActive {
+        font-weight: 600 !important;
+        color: rgba(41, 41, 232, 0.991) !important;
+        background-color: #eff6ff;
+    }
+    .tab-buttons {
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 15px;
+    }
+    .tab-buttons .btn {
+        border: none;
+        background: none;
+        color: #6c757d;
+        font-weight: 500;
+        border-radius: 0;
+    }
+    .tab-buttons .btn.active {
+        border-bottom: 2px solid #007bff;
+        color: #007bff;
+    }
+    .filter-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+    }
+    .filter-bar input {
+        width: 300px;
+    }
+    .status-badge {
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .paid {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+    .unpaid {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+    .processing {
+        background-color: #cff4fc;
+        color: #055160;
+    }
+    .confirmed {
+        background-color: #fff3cd;
+        color: #664d03;
+    }
+    .refused {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+    .table thead {
+        background-color: #f1f3f5;
+        font-weight: 600;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .pagination {
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .btn-create {
+        background-color: #007bff;
+        color: #fff;
+        font-weight: 500;
+        border-radius: 8px;
+    }
+    .table_content {
+        background-color: #ffffff;
+        padding: 30px;
+    }
 
-        td.text-center {
-            text-align: center !important;
-        }
-
-   </style>
+    td.text-center {
+        text-align: center !important;
+    }
+</style>
 
 {% endblock %}
 
 <!-- Content -->
 {% block content %}
 
-    <main class="flex-1 bg-gray-50 p-6">
+<main class="flex-1 bg-gray-50 p-6">
+    <!-- Thanh tiêu đề -->
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-semibold text-gray-800">Danh sách đơn hàng</h1>
+        <a
+            href="#"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium inline-block"
+        >
+            + Tạo đơn hàng
+        </a>
+    </div>
 
-        <!-- Thanh tiêu đề -->
-        <div class="flex justify-between items-center mb-4">
-            <h1 class="text-2xl font-semibold text-gray-800">Danh sách đơn hàng</h1>
-            <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium inline-block">
-                + Tạo đơn hàng
-            </a>
+    <div class="table_content">
+        <!-- Tabs -->
+        <div class="tab-buttons mb-3">
+            <button class="btn active">Tất cả đơn hàng</button>
+            <button class="btn">Đơn hàng mới</button>
+            <button class="btn">Chờ xác nhận</button>
         </div>
 
-        <div class="table_content">
-            <!-- Tabs -->
-            <div class="tab-buttons mb-3">
-                <button class="btn active">Tất cả đơn hàng</button>
-                <button class="btn">Đơn hàng mới</button>
-                <button class="btn">Chờ xác nhận</button>
-            </div>
+        <!-- Filter -->
+        <div class="filter-bar">
+            <button class="btn btn-outline-secondary"><i class="bi bi-funnel"></i> Thêm điều kiện lọc</button>
+            <input type="text" class="form-control" placeholder="Tìm kiếm đơn hàng" />
+        </div>
 
-            <!-- Filter -->
-            <div class="filter-bar">
-                <button class="btn btn-outline-secondary"><i class="bi bi-funnel"></i> Thêm điều kiện lọc</button>
-                <input type="text" class="form-control" placeholder="Tìm kiếm đơn hàng">
-            </div>
-
-            <!-- Table -->
-            <table class="table table-bordered align-middle">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Ngày đặt</th>
-                        <th>Khách hàng</th>
-                        <th>Số điện thoại</th>
-                        <th>Địa chỉ</th>
-                        <th>Status</th>
-                        <th>Tổng tiền</th>
-                        <th>Chi tiết</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order_data in order_data %}
-                    <tr>
-                        <td>{{order_data.order.id}}</td>
-                        <td>{{order_data.order.order_date}}</td>
-                        <td>{{order_data.order.customer.cust_name}}</td>
-                        <td>{{order_data.order.customer.phone}}</td>
-                        <td>{{order_data.order.customer.address}}</td>
-                        <td>
-                            {% if order_data.order.status == 'confirmed' %}
-                                <span class="badge bg-success">Đã xác nhận</span>
-                            {% elif order_data.order.status == 'pending'%}
-                                <span class="badge bg-warning text-dark">Chờ xác nhận</span>
-                            {% else %}
-                                <span class="badge bg-danger text-dark">Đã hủy</span>
-                            {% endif %}
-                        </td>
-                        <td>{{order_data.total_amount}}</td>
+        <!-- Table -->
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ngày đặt</th>
+                    <th>Khách hàng</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Status</th>
+                    <th>Tổng tiền</th>
+                    <th>Chi tiết</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_data in order_data %}
+                <tr>
+                    <td>{{order_data.order.id}}</td>
+                    <td>{{order_data.order.order_date}}</td>
+                    <td>{{order_data.order.customer.cust_name}}</td>
+                    <td>{{order_data.order.customer.phone}}</td>
+                    <td>{{order_data.order.customer.address}}</td>
+                    <td>
                         {% if order_data.order.status == 'confirmed' %}
-                            <td class="text-center text-primary fw-bold"><a href="/emp/order_details/{{order_data.order.id}}">&#10132;</a></td>
-                        {% elif order_data.order.status == 'cancelled'%}
-                            <td class="text-center text-primary fw-bold"><a href="/emp/order_cancel/{{order_data.order.id}}">&#10132;</a></td>
+                        <span class="badge bg-primary">Đã xác nhận</span>
+                        {% elif order_data.order.status == 'pending'%}
+                        <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                        {% elif order_data.order.status == 'completed'%}
+                        <span class="badge bg-success">Hoàn thành</span>
                         {% else %}
-                            <td class="text-center text-primary fw-bold"><a href="/emp/order_confirm/{{order_data.order.id}}">&#10132;</a></td>
+                        <span class="badge bg-danger text-dark">Đã hủy</span>
                         {% endif %}
-                        
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </td>
+                    <td>{{order_data.total_amount}}</td>
 
-            <!-- Pagination -->
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><span class="page-link">...</span></li>
-                    <li class="page-item"><a class="page-link" href="#">10</a></li>
-                </ul>
-            </nav>
-        </div>
-    </main>
+                    <!-- Detail Order Button -->
+                    {% if order_data.order.status == 'confirmed' %}
+                    <td class="text-center text-primary fw-bold">
+                        <a href="/emp/order_details/{{order_data.order.id}}">&#10132;</a>
+                    </td>
+                    {% elif order_data.order.status == 'cancelled'%}
+                    <td class="text-center text-primary fw-bold">
+                        <a href="/emp/order_cancel/{{order_data.order.id}}">&#10132;</a>
+                    </td>
+                    {% elif order_data.order.status == 'completed'%}
+                    <td class="text-center text-primary fw-bold">
+                        <a href="/emp/order_completed/{{order_data.order.id}}">&#10132;</a>
+                    </td>
+                    {% else %}
+                    <td class="text-center text-primary fw-bold">
+                        <a href="/emp/order_confirm/{{order_data.order.id}}">&#10132;</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-        
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><span class="page-link">...</span></li>
+                <li class="page-item"><a class="page-link" href="#">10</a></li>
+            </ul>
+        </nav>
+    </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.js"></script>
 {% endblock %}
