@@ -83,13 +83,12 @@ class OrderForm(forms.ModelForm):
             'customer': forms.Select(attrs={'class': 'form-select'})
         }
 
-OrderItemFormSet = inlineformset_factory(
-    Order,
-    Order_Item,
-    fields=['product', 'quantity'],
-    extra=1,  # mặc định thêm 1 dòng mới
-    widgets={
-        'product': forms.Select(attrs={'class': 'form-select'}),
-        'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
-    }
-)
+class OrderSearchForm(forms.Form):
+    search = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            "class": "form-control search-input",
+            "placeholder": "Tìm kiếm khách hàng",
+            "style": "border-radius: 30px; background-color: #f5f7fa; border: none; height: 40px;"
+        })
+    )

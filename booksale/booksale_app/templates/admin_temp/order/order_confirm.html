@@ -1,254 +1,140 @@
-{% extends 'admin_temp/admin_base.html' %}
-{% load static %}
+{% extends 'admin_temp/admin_base.html' %} {% load static %}
 
 <!-- Content -->
 {% block content %}
 
-    <main class="flex-1 bg-gray-50 p-6">
-        <!-- Tiêu đề + nút thao tác -->
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div class="d-flex align-items-center gap-2">
+<main class="flex-1 bg-gray-50 p-6">
+    <!-- Tiêu đề + nút thao tác -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center gap-2">
             <a href="/emp/order_list" class="text-decoration-none text-dark fs-4">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <h4 class="text-2xl font-semibold text-gray-800">
                 Xác nhận đơn hàng <span class="text-primary">#{{ order.id }}</span>
             </h4>
-            </div>
-
-            <div class="d-flex gap-2">
-                <!-- Nút xác nhận -->
-                <form action="{% url 'emp/order_confirm_status' order.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-success px-4 d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-check"></i> <span>Xác nhận</span>
-                    </button>
-                </form>
-            
-                <!-- Nút hủy -->
-                <button type="button" class="btn btn-danger px-4 d-flex align-items-center gap-2" id="cancelBtn">
-                    <i class="fa-solid fa-xmark"></i> <span>Hủy</span>
-                </button>
-            
-                <!-- Form nhập lý do hủy (ban đầu ẩn hoàn toàn) -->
-                <form action="{% url 'emp/order_cancel_status' order.id %}" method="post" id="cancelForm" style="display: none;">
-                    {% csrf_token %}
-                    <div class="input-group mt-2">
-                        <input type="text" name="cancel_reason" class="form-control" placeholder="Nhập lý do hủy...">
-                        <button type="submit" class="btn btn-success d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-check"></i> <span>Xác nhận hủy</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
         </div>
 
-        <div class="row">
-            <!-- Cột bên trái: thông tin đơn hàng -->
-            <div class="col-md-7">
-              <div class="card border-0 shadow-sm rounded-4">
+        <div class="d-flex gap-2">
+            <!-- Nút xác nhận -->
+            <form action="{% url 'emp/order_confirm_status' order.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success px-4 d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-check"></i> <span>Xác nhận</span>
+                </button>
+            </form>
+
+            <form action="{% url 'emp/order_cancel_status' order.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger px-4 d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-check"></i> <span>Hủy</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Cột bên trái: thông tin đơn hàng -->
+        <div class="col-md-7">
+            <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body">
-                  <h5 class="fw-semibold mb-4">Thông tin đơn hàng <span class="text-primary">#{{ order.id }}</span></h5>
-        
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <label class="form-label text-muted small mb-1">Tên Khách Hàng</label>
-                      <input type="text" class="form-control" value="{{ order.customer.cust_name }}" readonly>
-                    </div>
-        
-                    <div class="col-md-6">
-                      <label class="form-label text-muted small mb-1">Số Điện Thoại</label>
-                      <input type="text" class="form-control" value="{{ order.customer.phone }}" readonly>
-                    </div>
-        
-                    <div class="col-md-6">
-                      <label class="form-label text-muted small mb-1">Ngày đặt</label>
-                      <input type="text" class="form-control" value="{{ order.order_date }}" readonly>
-                    </div>
-        
-                    <div class="col-md-6">
-                      <label class="form-label text-muted small mb-1">Ngày giao hàng</label>
-                      <input type="text" class="form-control" readonly>
-                    </div>
-        
-                    <div class="col-md-12">
-                      <label class="form-label text-muted small mb-1">Địa chỉ</label>
-                      <input type="text" class="form-control" value="{{ order.customer.address }}" readonly>
-                    </div>
-        
-                    <div class="col-md-12">
-                      <label class="form-label text-muted small mb-1">Ghi chú</label>
-                      <input type="text" class="form-control" value="{{ order.note }}" readonly>
-                    </div>
-        
-                    <div class="col-md-4">
-                        <label class="form-label text-muted small mb-1">Trạng thái đơn hàng</label>
-                        <!-- <select class="form-select">
+                    <h5 class="fw-semibold mb-4">
+                        Thông tin đơn hàng <span class="text-primary">#{{ order.id }}</span>
+                    </h5>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small mb-1">Tên Khách Hàng</label>
+                            <input type="text" class="form-control" value="{{ order.customer.cust_name }}" readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small mb-1">Số Điện Thoại</label>
+                            <input type="text" class="form-control" value="{{ order.customer.phone }}" readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small mb-1">Ngày đặt</label>
+                            <input type="text" class="form-control" value="{{ order.order_date }}" readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small mb-1">Ngày giao hàng</label>
+                            <input type="text" class="form-control" readonly />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label text-muted small mb-1">Địa chỉ</label>
+                            <input type="text" class="form-control" value="{{ order.customer.address }}" readonly />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label text-muted small mb-1">Ghi chú</label>
+                            <input type="text" class="form-control" value="{{ order.note }}" readonly />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small mb-1">Trạng thái đơn hàng</label>
+                            <!-- <select class="form-select">
                             <option selected>Đã xác nhận</option>
                             <option>Chờ xác nhận</option>
                         </select> -->
-                        {% if order.status == 'confirmed' %}
-                            <input type="text" class="form-control" value="Đã xác nhận" readonly>
-                        {% else %}
-                            <input type="text" class="form-control" value="Chờ xác nhận" readonly>
-                        {% endif %}
+                            {% if order.status == 'confirmed' %}
+                            <input type="text" class="form-control" value="Đã xác nhận" readonly />
+                            {% else %}
+                            <input type="text" class="form-control" value="Chờ xác nhận" readonly />
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small mb-1">Trạng thái thanh toán</label>
+                            <select class="form-select" disabled>
+                                <option selected>Đã thanh toán</option>
+                                <option>Chưa thanh toán</option>
+                            </select>
+                        </div>
                     </div>
-        
-                    <div class="col-md-4">
-                      <label class="form-label text-muted small mb-1">Trạng thái thanh toán</label>
-                      <select class="form-select" disabled>
-                        <option selected>Đã thanh toán</option>
-                        <option>Chưa thanh toán</option>
-                      </select>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
+        </div>
 
         <!-- Cột bên phải: thông tin sản phẩm -->
         <div class="col-md-5">
             <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body">
-                <h5 class="fw-semibold mb-4">Thông tin sản phẩm</h5>
-                <table class="table table-borderless align-middle">
-                    <thead class="table-light">
-                        <tr>
-                        <th>ID</th>
-                        <th>Sản phẩm</th>
-                        <th>Giá bán</th>
-                        <th>Số lượng</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in order_items %}
-                        <tr>
-                        <td>{{ item.product.id }}</td>
-                        <td>{{ item.product.product_name }}</td>    
-                        <td>{{ item.unit_price }} đ</td>
-                        <td>{{ item.quantity }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-    
-                <div class="d-flex justify-content-between mt-4">
-                    <h6 class="fw-semibold">Thành tiền</h6>
-                    <h5 class="fw-bold text-danger">{{ total_amount }} đ</h5>
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-4">Thông tin sản phẩm</h5>
+                    <table class="table table-borderless align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Sản phẩm</th>
+                                <th>Giá bán</th>
+                                <th>Số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order_items %}
+                            <tr>
+                                <td>{{ item.product.id }}</td>
+                                <td>{{ item.product.product_name }}</td>
+                                <td>{{ item.unit_price }} đ</td>
+                                <td>{{ item.quantity }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <h6 class="fw-semibold">Thành tiền</h6>
+                        <h5 class="fw-bold text-danger">{{ total_amount }} đ</h5>
+                    </div>
                 </div>
             </div>
-            </div>
         </div>
-        </div>
-
-    </main>
-
-        
+    </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const cancelBtn = document.getElementById("cancelBtn");
-    
-        cancelBtn.addEventListener("click", function () {
-            Swal.fire({
-                title: "Xác nhận hủy đơn hàng?",
-                input: "text",
-                inputLabel: "Nhập lý do hủy đơn hàng:",
-                inputPlaceholder: "Ví dụ: Khách hàng hủy đơn, hết hàng...",
-                showCancelButton: true,
-                confirmButtonText: "Xác nhận hủy",
-                cancelButtonText: "Quay lại",
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#6c757d",
-                preConfirm: (reason) => {
-                    if (!reason) {
-                        Swal.showValidationMessage("Vui lòng nhập lý do hủy!");
-                    }
-                    return reason;
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const reason = result.value;
-    
-                    // Gửi POST về Django (cần CSRF)
-                    fetch("{% url 'emp/order_cancel_status' order.id %}", {
-                        method: "POST",
-                        headers: {
-                            "X-CSRFToken": "{{ csrf_token }}",
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ cancel_reason: reason }),
-                    })
-                    .then(response => {
-                        if (!response.ok) throw new Error("Lỗi khi hủy đơn hàng!");
-                        return response.json();
-                    })
-                    .then(data => {
-                        Swal.fire({
-                            title: "Đã hủy đơn hàng!",
-                            text: `Lý do: ${reason}`,
-                            icon: "success",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            // Quay về trang chi tiết đơn hàng
-                            window.location.href = "/emp/order_details/{{ order.id }}";
-                        });
-                    })
-                    .catch(error => {
-                        Swal.fire("Lỗi!", error.message, "error");
-                    });
-                }
-            });
-        });
-    });
-</script>
 
-<!-- <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Nút "Xác nhận"
-    document.querySelector(".btn-success").addEventListener("click", function() {
-        Swal.fire({
-            title: "Xác nhận hóa đơn thành công!",
-            icon: "success",
-            confirmButtonText: "OK",
-            confirmButtonColor: "#198754"
-        });
-    });
-
-    // Nút "Từ chối"
-    document.querySelector(".btn-danger").addEventListener("click", function() {
-        Swal.fire({
-            title: "Bạn có chắc chắn hủy hóa đơn này?",
-            input: "text",
-            inputLabel: "Nhập lý do hủy đơn hàng:",
-            inputPlaceholder: "Ví dụ: Khách hàng hủy đơn, hết hàng...",
-            showCancelButton: true,
-            confirmButtonText: "Xác nhận hủy",
-            cancelButtonText: "Quay lại",
-            confirmButtonColor: "#dc3545",
-            cancelButtonColor: "#6c757d",
-            preConfirm: (reason) => {
-                if (!reason) {
-                    Swal.showValidationMessage("Vui lòng nhập lý do hủy!");
-                    return false;
-                }
-                // Gửi AJAX về server nếu cần
-                // fetch(`/emp/order_cancel/{{ order.id }}/`, {
-                //     method: "POST",
-                //     headers: {
-                //         "X-CSRFToken": "{{ csrf_token }}",
-                //         "Content-Type": "application/json"
-                //     },
-                //     body: JSON.stringify({ reason: reason })
-                // })
-                // .then(res => res.json())
-                // .then(data => console.log(data));
-            }
-        });
-    });
-});
-</script> -->
 {% endblock %}
-
