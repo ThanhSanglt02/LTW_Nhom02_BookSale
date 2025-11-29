@@ -17,7 +17,7 @@ from .user_view.buy_now import buy_now
 from .user_view.search import search_view
 from .user_view.review import submit_review
 from .user_view.profile import profile
-from .user_view.my_orders import my_orders
+from .user_view.my_orders import my_orders, buy_again
 from .user_view.form_review import review_order
 from .user_view.edit_review import edit_review
 from .user_view.delete_review import delete_review
