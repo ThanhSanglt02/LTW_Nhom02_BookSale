@@ -139,12 +139,13 @@
 
         <!-- Sidebar -->
         <div class="flex h-100">
-            <aside class="w-64 bg-white h-screen shadow-md h-auto" style="margin-top: -68px">
+            <aside class="w-64 bg-white h-screen shadow-md" style="margin-top: -68px">
                 <div class="p-6 flex items-center space-x-2 border-b">
                     <div class="w-6 h-6 bg-blue-600 rounded"></div>
                     <span class="font-semibold text-lg">BookSale</span>
                 </div>
 
+                {% if role == "NVBH" %}
                 <nav class="mt-6">
                     <ul class="space-y-2">
                         <li>
@@ -187,21 +188,66 @@
                                 <span>Quản lý đánh giá</span>
                             </a>
                         </li>
+                        <li>
+                            <a
+                                href="{% url 'emp/customer_list' %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100"
+                            >
+                                <span>Quản lý khách hàng</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
+
+                {% elif role == "NVTK" %}
+                <nav class="mt-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a
+                                href="{% url 'emp/order_list'%}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 isActive"
+                            >
+                                <span>Tồn kho</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <details>
+                                <!--open-->
+                                <summary class="flex items-center px-6 py-2 hover:bg-gray-100 rounded">
+                                    <!--font-semibold text-blue-600 bg-blue-50 rounded-->
+                                    Quản lý xuất kho
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'category_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                            >Danh mục</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'genre_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                            >Thể loại</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'product_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                            >Sản phẩm
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-6 py-2 hover:bg-gray-100">
+                                <span>Quản lý đánh giá</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                {% endif %}
             </aside>
 
             {% block content %} {% endblock %}
         </div>
-
-        <!-- <script>
-            const toggle = document.getElementById('productMenuToggle');
-            const submenu = document.getElementById('productSubmenu');
-            if (toggle && submenu) {
-                toggle.addEventListener('click', () => {
-                    submenu.classList.toggle('show');
-                });
-            }
-        </script> -->
     </body>
 </html>

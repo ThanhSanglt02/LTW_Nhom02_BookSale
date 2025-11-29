@@ -18,7 +18,7 @@ from .views.employee import inventory_overview, inventory_import, inventory_expo
 
 urlpatterns = [
 
-    # USER URLS
+    ### USER URLS
     path('', views.home_view, name='home'),
     path('cart/', views.cart, name='cart'),
     path('cart/delete/', views.delete_cart_items, name='delete_cart_items'),
@@ -42,8 +42,9 @@ urlpatterns = [
     path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
 
 
-    # EMPLOYEE SALE URLS
+    ### EMPLOYEE SALE URLS
     # path('emp/order_list/', views.order_list, name = 'emp/order_list'),
+    # Order
     path('emp/order_list/', views.order_list, name = 'emp/order_list'),
     path('emp/order_list_waiting/', views.order_list_waiting, name = 'emp/order_list_waiting'),
     path('emp/order_details/<int:pk>/', views.order_detail, name = 'order_detail'),
@@ -51,7 +52,9 @@ urlpatterns = [
     path('emp/order_cancel/<int:pk>/', views.order_detail, name = 'emp/cancel'),
     path('emp/order_completed/<int:pk>/', views.order_detail, name = 'emp/completed'),
     path('emp/order_confirm_status/<int:pk>/', views.order_confirm_status, name='emp/order_confirm_status'),
-    path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),  
+    path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),
+    # Customer 
+    path('emp/customer_list', views.customer_list, name='emp/customer_list'), 
     # CRUD sản phẩm
     path('emp/product/add/', product_add, name='product_add'),
     path('emp/product/<int:pk>/edit/', product_edit, name='product_edit'),
@@ -75,7 +78,7 @@ urlpatterns = [
 
     
 
-    # EMPLOYEE STOCK URLS
+    ### EMPLOYEE STOCK URLS
     #    path('product-detail/', views.product_detail, name='product_detail'),
     #    path('product/', views.product_list, name='product_list'),
     path('employee/inventory_overview/', inventory_overview.inventory_list, name='inventory_list'),

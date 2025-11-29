@@ -1,24 +1,17 @@
-{% extends "admin_temp/admin_base.html" %}
-{% load static %}
-
-{% block content %}
+{% extends "admin_temp/admin_base.html" %} {% load static %} {% block content %}
 <main class="flex-1 p-8 text-sm">
-
-
     {% if messages %}
-        <div class="fixed inset-0 flex items-center justify-center z-50">
-            <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg">
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            </div>
+    <div class="fixed inset-0 flex items-center justify-center z-50">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg">
+            {% for message in messages %} {{ message }} {% endfor %}
         </div>
-        <script>
-            setTimeout(() => {
-                const msg = document.querySelector('.fixed.inset-0');
-                if(msg) msg.remove();
-            }, 3000);
-        </script>
+    </div>
+    <script>
+        setTimeout(() => {
+            const msg = document.querySelector('.fixed.inset-0');
+            if (msg) msg.remove();
+        }, 3000);
+    </script>
     {% endif %}
 
     <div class="flex justify-between items-center mb-4">
@@ -28,10 +21,17 @@
         </a>
     </div>
 
-    <form method="get" class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 mb-4 border border-gray-300 rounded p-3 bg-gray-50 shadow w-full">
-        <input type="text" name="search" placeholder="Tìm kiếm danh mục..."
-               value="{{ request.GET.search }}"
-               class="bg-gray-100 border border-gray-300 rounded px-3 py-2 flex-1 focus:outline-none focus:ring-1 focus:ring-blue-300 w-full md:flex-1" />
+    <form
+        method="get"
+        class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 mb-4 border border-gray-300 rounded p-3 bg-gray-50 shadow w-full"
+    >
+        <input
+            type="text"
+            name="search"
+            placeholder="Tìm kiếm danh mục..."
+            value="{{ request.GET.search }}"
+            class="bg-gray-100 border border-gray-300 rounded px-3 py-2 flex-1 focus:outline-none focus:ring-1 focus:ring-blue-300 w-full md:flex-1"
+        />
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full md:w-auto">
             Tìm
         </button>
@@ -44,7 +44,7 @@
                 <thead>
                     <tr class="bg-gray-100 border-b">
                         <th class="p-3 w-12 text-center">
-                            <input type="checkbox" id="select_all_categories">
+                            <input type="checkbox" id="select_all_categories" />
                         </th>
                         <th class="p-3">Danh mục</th>
                         <th class="p-3 w-25 text-center">Số lượng</th>
@@ -54,10 +54,18 @@
                     {% for c in categories %}
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-2 text-center">
-                            <input type="checkbox" name="category_ids" value="{{ c.id }}" class="category-checkbox">
+                            <input type="checkbox" name="category_ids" value="{{ c.id }}" class="category-checkbox" />
                         </td>
-                        <td class="p-2 cursor-pointer" onclick="window.location.href='{% url 'category_detail' c.id %}'">{{ c.category_name }}</td>
-                        <td class="p-2 text-center font-medium text-gray-700 cursor-pointer" onclick="window.location.href='{% url 'category_detail' c.id %}'">
+                        <td
+                            class="p-2 cursor-pointer"
+                            onclick="window.location.href='{% url 'category_detail' c.id %}'"
+                        >
+                            {{ c.category_name }}
+                        </td>
+                        <td
+                            class="p-2 text-center font-medium text-gray-700 cursor-pointer"
+                            onclick="window.location.href='{% url 'category_detail' c.id %}'"
+                        >
                             {{ c.product_set.count }}
                         </td>
                     </tr>
@@ -82,18 +90,20 @@
         </div>
 
         <div class="mt-4 flex justify-start">
-            <button type="submit" class="bg-blue-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                    onclick="return confirm('Bạn có chắc chắn muốn xóa các danh mục đã chọn không?');">
+            <button
+                type="submit"
+                class="bg-blue-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                onclick="return confirm('Bạn có chắc chắn muốn xóa các danh mục đã chọn không?');"
+            >
                 Xóa Danh Mục Đã Chọn
             </button>
         </div>
     </form>
-
 </main>
 
 <script>
     // Chọn/bỏ chọn tất cả danh mục
-    document.getElementById('select_all_categories').addEventListener('click', function(e) {
+    document.getElementById('select_all_categories').addEventListener('click', function (e) {
         var checkboxes = document.querySelectorAll('.category-checkbox');
         for (var i = 0; i < checkboxes.length; i++) {
             checkboxes[i].checked = e.target.checked;
