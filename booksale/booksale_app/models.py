@@ -258,6 +258,16 @@ class Review(models.Model):
         Product,
         on_delete=models.CASCADE,
         help_text="The Book that this review is for.")
+    # Thêm phản hồi từ admin
+    reply_message = models.TextField(null=True, blank=True, help_text="Message from admin")
+    reply_staff = models.ForeignKey(
+        auth.get_user_model(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='review_replies'
+    )
+
     def __str__(self):
         return self.content
     
@@ -377,3 +387,5 @@ class ExportOrder_Item(models.Model):
         max_digits=10,
         decimal_places=2
     )
+
+
