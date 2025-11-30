@@ -1,0 +1,177 @@
+{% extends "admin_temp/admin_base.html" %}
+{% block content %}
+
+<div class="page-container">
+
+    <h2 class="page-title">Danh sách đánh giá</h2>
+
+    <div class="table-wrapper">
+
+        <table class="review-table">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Người đánh giá</th>
+                    <th>Nội dung</th>
+                    <th>Sao</th>
+                    <th>Ngày</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for rv in reviews %}
+                <tr>
+                    <td>{{ rv.product.product_name }}</td>
+                    <td>{{ rv.creator.username }}</td>
+                    <td class="text-ellip">{{ rv.content }}</td>
+                    <td>
+                        <span class="rating-stars">{{ rv.rating }} ★</span>
+                    </td>
+                    <td>{{ rv.date_created|date:"d/m/Y" }}</td>
+                    <td class="action-col">
+                        <a href="{% url 'reply_review' rv.id %}" class="btn-reply">Trả lời</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a class="page-btn" href="?page={{ page_obj.previous_page_number }}">«</a>
+        {% endif %}
+
+        <span class="page-info">
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a class="page-btn" href="?page={{ page_obj.next_page_number }}">»</a>
+        {% endif %}
+    </div>
+
+</div>
+
+<style>
+/* CENTER LAYOUT */
+.page-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+/* TABLE CARD */
+.table-wrapper {
+    width: 100%;
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 35px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.table-wrapper:hover {
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+}
+
+/* TABLE STYLING */
+.review-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 15px;
+}
+
+.review-table thead tr {
+    background: #f4f6f8;
+}
+
+.review-table th,
+.review-table td {
+    padding: 16px 18px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.review-table tbody tr:hover {
+    background: #f1f3f5;
+    transform: translateX(2px);
+}
+
+/* ELLIPSIS FOR LONG TEXT */
+.text-ellip {
+    max-width: 400px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* STYLISH BUTTON */
+.btn-reply {
+    background: linear-gradient(135deg, #4A6CF7, #6A8AFD);
+    padding: 10px 20px;
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(74,108,247,0.35);
+    transition: all 0.3s ease;
+}
+
+.btn-reply:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74,108,247,0.45);
+}
+
+/* RATING STARS */
+.rating-stars {
+    color: #f6b93b;
+    font-weight: 600;
+}
+
+/* PAGINATION */
+.pagination {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    background: #e9ecef;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.page-btn:hover {
+    background: #ced4da;
+}
+
+.page-info {
+    font-size: 15px;
+    color: #555;
+}
+</style>
+
+{% endblock %}
