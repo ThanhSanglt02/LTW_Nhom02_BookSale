@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 from booksale_app.views.admin_view.sanpham import (
-    product_list,
     product_add,
     product_edit,
     product_delete,
@@ -19,7 +18,7 @@ from .views.employee import inventory_overview, inventory_import, inventory_expo
 
 urlpatterns = [
 
-    # USER URLS
+    ### USER URLS
     path('', views.home_view, name='home'),
     path('cart/', views.cart, name='cart'),
     path('cart/delete/', views.delete_cart_items, name='delete_cart_items'),
@@ -37,22 +36,25 @@ urlpatterns = [
     path('product-detail-user/<int:product_id>/review/', views.submit_review, name='submit_review'),
     path('profile/', views.profile, name='profile'),
     path('my-orders/', views.my_orders, name='my_orders'),
+    path('buy-again/<int:order_id>/', views.buy_again, name='buy_again'),
     path('order/<int:order_id>/review/', views.review_order, name='review_order'),
     path('review/<int:review_id>/edit/', views.edit_review, name='edit_review'),
     path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
 
 
-    # EMPLOYEE SALE URLS
+    ### EMPLOYEE SALE URLS
     # path('emp/order_list/', views.order_list, name = 'emp/order_list'),
-    path('emp/order_create/', views.order_create_emp, name='emp/order_create'),
-    path('emp/order_create/item/<int:pk>/', views.order_create_emp, name='emp/order_create_item'),
+    # Order
     path('emp/order_list/', views.order_list, name = 'emp/order_list'),
+    path('emp/order_list_waiting/', views.order_list_waiting, name = 'emp/order_list_waiting'),
     path('emp/order_details/<int:pk>/', views.order_detail, name = 'order_detail'),
     path('emp/order_confirm/<int:pk>/', views.order_detail, name = 'emp/confirm'),
     path('emp/order_cancel/<int:pk>/', views.order_detail, name = 'emp/cancel'),
     path('emp/order_completed/<int:pk>/', views.order_detail, name = 'emp/completed'),
     path('emp/order_confirm_status/<int:pk>/', views.order_confirm_status, name='emp/order_confirm_status'),
-    path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),  
+    path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),
+    # Customer 
+    path('emp/customer_list', views.customer_list, name='emp/customer_list'), 
     # CRUD sản phẩm
     path('emp/product/add/', product_add, name='product_add'),
     path('emp/product/<int:pk>/edit/', product_edit, name='product_edit'),
@@ -74,9 +76,10 @@ urlpatterns = [
     path('emp/genre/<int:pk>/delete', genre.genre_delete, name='genre_delete'),
     path('emp/genre/delete/bulk/', genre.genre_bulk_delete, name='genre_bulk_delete'),
 
-    
+    path('emp/reviews/', views.review_list, name='review_list'),
+    path('emp/reviews/<int:review_id>/reply/', views.reply_review, name='reply_review'),
 
-    # EMPLOYEE STOCK URLS
+    ### EMPLOYEE STOCK URLS
     #    path('product-detail/', views.product_detail, name='product_detail'),
     #    path('product/', views.product_list, name='product_list'),
     path('employee/inventory_overview/', inventory_overview.inventory_list, name='inventory_list'),

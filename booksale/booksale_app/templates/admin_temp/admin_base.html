@@ -17,6 +17,7 @@
                 font-family: 'Segoe UI', sans-serif;
                 margin: 0;
             }
+
             /* Ẩn mũi tên dropdown mặc định của <summary> */
             summary::-webkit-details-marker {
                 display: none;
@@ -109,20 +110,18 @@
                 font-size: 18px;
                 color: #444;
             }
+            .isActive {
+                font-weight: 600 !important;
+                color: rgba(41, 41, 232, 0.991) !important;
+                background-color: #eff6ff;
+            }
         </style>
     </head>
 
     <body class="bg-gray-100 font-sans">
         <!-- ✅ Header cố định -->
         <div class="header">
-            <div class="search-box hidden md:flex items-center bg-gray-100 px-4 py-2 rounded-full w-64">
-                <i class="fa fa-search text-gray-500"></i>
-                <input
-                    type="text"
-                    placeholder="Tìm kiếm..."
-                    class="bg-transparent border-0 outline-none ml-2 text-sm w-full"
-                />
-            </div>
+            <div class=""></div>
 
             <div class="user-section">
                 <div><i class="fa fa-bell text-gray-600"></i></div>
@@ -130,7 +129,7 @@
                 {% if user.is_authenticated %}
                 <div class="user-info text-right leading-tight">
                     <p class="name font-bold text-gray-800">{{ user.username }}</p>
-                    <p class="role">NVBH</p>
+                    <p class="role">{{user.groups.all.0.name}}</p>
                 </div>
 
                 {% if user.profile.avatar %}
@@ -146,18 +145,19 @@
 
         <!-- Sidebar -->
         <div class="flex h-100">
-            <aside class="w-64 bg-white h-screen shadow-md h-auto" style="margin-top: -68px">
+            <aside class="w-64 bg-white h-screen shadow-md" style="margin-top: -68px">
                 <div class="p-6 flex items-center space-x-2 border-b">
                     <div class="w-6 h-6 bg-blue-600 rounded"></div>
                     <span class="font-semibold text-lg">BookSale</span>
                 </div>
 
+                {% if role == "NVBH" %}
                 <nav class="mt-6">
                     <ul class="space-y-2">
                         <li>
                             <a
                                 href="{% url 'emp/order_list'%}"
-                                class="flex items-center px-6 py-2 hover:bg-gray-100 isActive"
+                                class="flex items-center px-6 py-2 hover:bg-gray-10 {% if request.resolver_match.url_name == 'emp/order_list' %} isActive {% endif %}"
                             >
                                 <span>Đơn hàng</span>
                             </a>
@@ -169,6 +169,69 @@
                                 <summary class="flex items-center px-6 py-2 hover:bg-gray-100 rounded">
                                     <!--font-semibold text-blue-600 bg-blue-50 rounded-->
                                     Quản lý sản phẩm
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <a
+                                            href="{% url 'category_list' %}"
+                                            class="block px-12 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'category_list' %} isActive {% endif %}"
+                                            >Danh mục</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="{% url 'genre_list' %}"
+                                            class="block px-12 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'genre_list' %} isActive {% endif %}"
+                                            >Thể loại</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="{% url 'product_list' %}"
+                                            class="block px-12 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'product_list' %} isActive {% endif %}"
+                                            >Sản phẩm
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <a
+                                href="{% url 'review_list' %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'review_list' %} isActive {% endif %}"
+                            >
+                                <span>Quản lý đánh giá</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="{% url 'emp/customer_list' %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'emp/customer_list' %} isActive {% endif %}"
+                            >
+                                <span>Quản lý khách hàng</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                {% elif role == "NVTK" %}
+                <nav class="mt-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a
+                                href="{% url 'emp/order_list'%}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 isActive"
+                            >
+                                <span>Tồn kho</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <details>
+                                <!--open-->
+                                <summary class="flex items-center px-6 py-2 hover:bg-gray-100 rounded">
+                                    <!--font-semibold text-blue-600 bg-blue-50 rounded-->
+                                    Quản lý xuất kho
                                 </summary>
                                 <ul>
                                     <li>
@@ -196,19 +259,10 @@
                         </li>
                     </ul>
                 </nav>
+                {% endif %}
             </aside>
 
             {% block content %} {% endblock %}
         </div>
-
-        <!-- <script>
-            const toggle = document.getElementById('productMenuToggle');
-            const submenu = document.getElementById('productSubmenu');
-            if (toggle && submenu) {
-                toggle.addEventListener('click', () => {
-                    submenu.classList.toggle('show');
-                });
-            }
-        </script> -->
     </body>
 </html>

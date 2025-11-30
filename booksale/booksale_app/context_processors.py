@@ -29,18 +29,20 @@ def categories_and_cart(request):
 def global_user_context(request):
     user = request.user
 
-    # Kiểm tra nhóm KH
     is_kh = False
+    role = None
+
     if user.is_authenticated:
+        # Kiểm tra KH
         is_kh = user.groups.filter(name="KH").exists()
 
-    if is_kh:
-        try:
-            customer = Customer.objects.get(user=user)
-            cart = Cart.objects.get(customer=customer)
-        except:
-            pass
+        # Kiểm tra các role nhân viên
+        if user.groups.filter(name="NVBH").exists():
+            role = "NVBH"
+        elif user.groups.filter(name="NVTK").exists():
+            role = "NVTK"
 
     return {
         "is_kh": is_kh,
+        "role": role, 
     }

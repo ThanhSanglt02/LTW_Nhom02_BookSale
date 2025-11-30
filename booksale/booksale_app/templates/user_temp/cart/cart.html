@@ -1,6 +1,4 @@
-{% extends 'user_temp/base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'user_temp/base.html' %} {% load static %} {% block content %}
 
 <style>
     /* Breadcrumb bar */
@@ -52,7 +50,7 @@
         background: #fff;
         padding: 20px 25px;
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     }
 
     .cart-title {
@@ -77,7 +75,8 @@
         font-weight: bold;
     }
 
-    table.cart-table th, table.cart-table td {
+    table.cart-table th,
+    table.cart-table td {
         padding: 12px 10px;
         border-bottom: 1px solid #ddd;
     }
@@ -242,7 +241,7 @@
             border-radius: 8px;
             margin-bottom: 15px;
             padding: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         table.cart-table td {
@@ -255,7 +254,7 @@
 
         /* Labels cho các cột trên mobile */
         table.cart-table td:nth-child(2):before {
-            content: "Đơn giá: ";
+            content: 'Đơn giá: ';
             font-weight: bold;
             display: inline-block;
             width: 80px;
@@ -263,7 +262,7 @@
         }
 
         table.cart-table td:nth-child(3):before {
-            content: "Số lượng: ";
+            content: 'Số lượng: ';
             font-weight: bold;
             display: inline-block;
             width: 80px;
@@ -271,7 +270,7 @@
         }
 
         table.cart-table td:nth-child(4):before {
-            content: "Tổng: ";
+            content: 'Tổng: ';
             font-weight: bold;
             display: inline-block;
             width: 80px;
@@ -411,7 +410,7 @@
     <table class="cart-table">
         <thead>
             <tr>
-                <th style="width:40%;">Sản phẩm</th>
+                <th style="width: 40%">Sản phẩm</th>
                 <th>Đơn giá</th>
                 <th>Số lượng</th>
                 <th>Tổng cộng</th>
@@ -419,52 +418,69 @@
             </tr>
         </thead>
         <tbody>
-            {% if giohang %}
-                {% for sp in giohang %}
-                <tr id="row-{{ sp.id }}">
-                    <td data-label="">
-                        <div class="product-info">
-                            <input type="checkbox" class="item-checkbox" value="{{ sp.id }}" data-item-id="{{ sp.id }}">
-                            <img src="{% static 'images/'|add:sp.hinhanh %}" alt="{{ sp.ten }}">
-                            <div class="product-details">
-                                <div class="product-name">{{ sp.ten }}</div>
-                                <div class="product-description">Mô tả</div>
-                            </div>
+            {% if giohang %} {% for sp in giohang %}
+            <tr id="row-{{ sp.id }}">
+                <td data-label="">
+                    <div class="product-info">
+                        <input type="checkbox" class="item-checkbox" value="{{ sp.id }}" data-item-id="{{ sp.id }}" />
+                        <img src="{{ sp.image.url }}" alt="{{ sp.ten }}" />
+                        <div class="product-details">
+                            <div class="product-name">{{ sp.ten }}</div>
+                            <div class="product-description">Mô tả</div>
                         </div>
-                    </td>
-                    <td data-label="Đơn giá" id="dongia-{{ sp.id }}" style="color:#007bff;" data-value="{{ sp.dongia }}">{{ sp.dongia|floatformat:0 }}₫</td>
-                    <td data-label="Số lượng">
-                        <button class="qty-btn giam" data-id="{{ sp.id }}" data-max="{{ sp.max_quantity }}">−</button>
-                        <input type="text" id="soluong-{{ sp.id }}" name="quantity_{{ sp.id }}" class="qty-input" value="{{ sp.soluong }}" data-max="{{ sp.max_quantity }}" data-item-id="{{ sp.id }}" readonly>
-                        <button class="qty-btn tang" data-id="{{ sp.id }}" data-max="{{ sp.max_quantity }}">+</button>
-                        <small class="text-muted" style="display:block; font-size:11px; margin-top:4px;">Còn: {{ sp.max_quantity }}</small>
-                    </td>
-                    <td data-label="Tổng" id="tong-{{ sp.id }}" style="color:#007bff;" data-value="{{ sp.tong }}">{{ sp.tong|floatformat:0 }}₫</td>
-                    <td data-label=""><button class="delete-btn xoa-item" data-item-id="{{ sp.id }}">✖</button></td>
-                </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="5" style="padding:20px; color:#666;">Giỏ hàng của bạn hiện đang trống.</td>
-                </tr>
+                    </div>
+                </td>
+                <td data-label="Đơn giá" id="dongia-{{ sp.id }}" style="color: #007bff" data-value="{{ sp.dongia }}">
+                    {{ sp.dongia|floatformat:0 }}₫
+                </td>
+                <td data-label="Số lượng">
+                    <button class="qty-btn giam" data-id="{{ sp.id }}" data-max="{{ sp.max_quantity }}">−</button>
+                    <input
+                        type="text"
+                        id="soluong-{{ sp.id }}"
+                        name="quantity_{{ sp.id }}"
+                        class="qty-input"
+                        value="{{ sp.soluong }}"
+                        data-max="{{ sp.max_quantity }}"
+                        data-item-id="{{ sp.id }}"
+                        readonly
+                    />
+                    <button class="qty-btn tang" data-id="{{ sp.id }}" data-max="{{ sp.max_quantity }}">+</button>
+                    <small class="text-muted" style="display: block; font-size: 11px; margin-top: 4px"
+                        >Còn: {{ sp.max_quantity }}</small
+                    >
+                </td>
+                <td data-label="Tổng" id="tong-{{ sp.id }}" style="color: #007bff" data-value="{{ sp.tong }}">
+                    {{ sp.tong|floatformat:0 }}₫
+                </td>
+                <td data-label=""><button class="delete-btn xoa-item" data-item-id="{{ sp.id }}">✖</button></td>
+            </tr>
+            {% endfor %} {% else %}
+            <tr>
+                <td colspan="5" style="padding: 20px; color: #666">Giỏ hàng của bạn hiện đang trống.</td>
+            </tr>
             {% endif %}
         </tbody>
     </table>
 
     <div class="cart-footer">
         <div>
-            <input type="checkbox" id="chon-tat-ca"> <label for="chon-tat-ca">Chọn tất cả</label>
+            <input type="checkbox" id="chon-tat-ca" /> <label for="chon-tat-ca">Chọn tất cả</label>
             <button id="xoa-da-chon">Xóa</button>
         </div>
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div style="display: flex; align-items: center; gap: 10px">
             <div class="total-text">
                 Tổng cộng ({{ giohang|length }} sản phẩm):
                 <span id="tong-cong" class="total-price" data-value="{{ tong_cong }}">{{ tong_cong }}₫</span>
             </div>
-            <form method="POST" action="{% url 'proceed_to_order' %}" id="proceed-to-order-form" style="margin:0;">
-                {% csrf_token %}
-                {% for sp in giohang %}
-                    <input type="hidden" name="quantity_{{ sp.id }}" id="hidden_quantity_{{ sp.id }}" value="{{ sp.soluong }}">
+            <form method="POST" action="{% url 'proceed_to_order' %}" id="proceed-to-order-form" style="margin: 0">
+                {% csrf_token %} {% for sp in giohang %}
+                <input
+                    type="hidden"
+                    name="quantity_{{ sp.id }}"
+                    id="hidden_quantity_{{ sp.id }}"
+                    value="{{ sp.soluong }}"
+                />
                 {% endfor %}
                 <button type="submit" class="btn-buy">Mua hàng</button>
             </form>
@@ -473,240 +489,243 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const formatCurrency = num => {
-        if (typeof num === 'string') {
-            num = parseFloat(num.replace(/[^\d.-]/g, '')) || 0;
-        }
-        return num.toLocaleString('vi-VN') + '₫';
-    };
+    document.addEventListener('DOMContentLoaded', function () {
+        const formatCurrency = (num) => {
+            if (typeof num === 'string') {
+                num = parseFloat(num.replace(/[^\d.-]/g, '')) || 0;
+            }
+            return num.toLocaleString('vi-VN') + '₫';
+        };
 
-    // Format tất cả giá trị tiền khi load trang
-    document.querySelectorAll('[data-value]').forEach(element => {
-        const value = parseFloat(element.getAttribute('data-value')) || 0;
-        if (element.id && (element.id.startsWith('dongia-') || element.id.startsWith('tong-') || element.id === 'tong-cong')) {
-            element.textContent = formatCurrency(value);
-        }
-    });
+        // Format tất cả giá trị tiền khi load trang
+        document.querySelectorAll('[data-value]').forEach((element) => {
+            const value = parseFloat(element.getAttribute('data-value')) || 0;
+            if (
+                element.id &&
+                (element.id.startsWith('dongia-') || element.id.startsWith('tong-') || element.id === 'tong-cong')
+            ) {
+                element.textContent = formatCurrency(value);
+            }
+        });
 
-    // Hàm cập nhật hidden input
-    function updateHiddenInput(itemId, quantity) {
-        const hiddenInput = document.getElementById(`hidden_quantity_${itemId}`);
-        if (hiddenInput) {
-            hiddenInput.value = quantity;
+        // Hàm cập nhật hidden input
+        function updateHiddenInput(itemId, quantity) {
+            const hiddenInput = document.getElementById(`hidden_quantity_${itemId}`);
+            if (hiddenInput) {
+                hiddenInput.value = quantity;
+            }
         }
-    }
 
-    document.querySelectorAll('.tang').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const id = this.dataset.id;
-            const maxQty = parseInt(this.dataset.max) || 999999;
-            const soluong = document.getElementById(`soluong-${id}`);
-            const dongia = parseInt(document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ""));
-            let sl = parseInt(soluong.value);
-            
-            if (sl < maxQty) {
-                sl++;
-                soluong.value = sl;
-                document.getElementById(`tong-${id}`).textContent = formatCurrency(dongia * sl);
-                updateHiddenInput(id, sl);
-                capNhatTong();
+        document.querySelectorAll('.tang').forEach((btn) => {
+            btn.addEventListener('click', function () {
+                const id = this.dataset.id;
+                const maxQty = parseInt(this.dataset.max) || 999999;
+                const soluong = document.getElementById(`soluong-${id}`);
+                const dongia = parseInt(document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ''));
+                let sl = parseInt(soluong.value);
+
+                if (sl < maxQty) {
+                    sl++;
+                    soluong.value = sl;
+                    document.getElementById(`tong-${id}`).textContent = formatCurrency(dongia * sl);
+                    updateHiddenInput(id, sl);
+                    capNhatTong();
+                } else {
+                    alert(`Sản phẩm chỉ còn ${maxQty} sản phẩm!`);
+                }
+            });
+        });
+
+        document.querySelectorAll('.giam').forEach((btn) => {
+            btn.addEventListener('click', function () {
+                const id = this.dataset.id;
+                const soluong = document.getElementById(`soluong-${id}`);
+                const dongia = parseInt(document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ''));
+                let sl = parseInt(soluong.value);
+                if (sl > 1) {
+                    sl--;
+                    soluong.value = sl;
+                    document.getElementById(`tong-${id}`).textContent = formatCurrency(dongia * sl);
+                    updateHiddenInput(id, sl);
+                    capNhatTong();
+                }
+            });
+        });
+
+        // Xóa một item (dấu X)
+        document.querySelectorAll('.xoa-item').forEach((btn) => {
+            btn.addEventListener('click', function () {
+                const itemId = this.dataset.itemId;
+                if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+                    xoaItem(itemId);
+                }
+            });
+        });
+
+        // Xóa các item đã chọn
+        document.getElementById('xoa-da-chon').addEventListener('click', function () {
+            const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+            const chonTatCa = document.getElementById('chon-tat-ca').checked;
+
+            if (chonTatCa) {
+                // Xóa tất cả
+                if (confirm('Bạn có chắc muốn xóa tất cả sản phẩm trong giỏ hàng?')) {
+                    xoaTatCa();
+                }
+            } else if (checkboxes.length > 0) {
+                // Xóa các item được chọn
+                if (confirm(`Bạn có chắc muốn xóa ${checkboxes.length} sản phẩm đã chọn?`)) {
+                    const selectedIds = Array.from(checkboxes).map((cb) => cb.value);
+                    xoaNhieuItem(selectedIds);
+                }
             } else {
-                alert(`Sản phẩm chỉ còn ${maxQty} sản phẩm!`);
+                alert('Vui lòng chọn sản phẩm cần xóa');
             }
         });
-    });
 
-    document.querySelectorAll('.giam').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const id = this.dataset.id;
-            const soluong = document.getElementById(`soluong-${id}`);
-            const dongia = parseInt(document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ""));
-            let sl = parseInt(soluong.value);
-            if (sl > 1) {
-                sl--;
-                soluong.value = sl;
-                document.getElementById(`tong-${id}`).textContent = formatCurrency(dongia * sl);
-                updateHiddenInput(id, sl);
-                capNhatTong();
-            }
+        // Checkbox "Chọn tất cả"
+        document.getElementById('chon-tat-ca').addEventListener('change', function () {
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+            checkboxes.forEach((cb) => {
+                cb.checked = this.checked;
+            });
         });
-    });
 
-    // Xóa một item (dấu X)
-    document.querySelectorAll('.xoa-item').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const itemId = this.dataset.itemId;
-            if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
-                xoaItem(itemId);
+        // Hàm lấy CSRF token
+        function getCsrfToken() {
+            const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (tokenInput) {
+                return tokenInput.value;
             }
-        });
-    });
-
-    // Xóa các item đã chọn
-    document.getElementById('xoa-da-chon').addEventListener('click', function() {
-        const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-        const chonTatCa = document.getElementById('chon-tat-ca').checked;
-        
-        if (chonTatCa) {
-            // Xóa tất cả
-            if (confirm('Bạn có chắc muốn xóa tất cả sản phẩm trong giỏ hàng?')) {
-                xoaTatCa();
-            }
-        } else if (checkboxes.length > 0) {
-            // Xóa các item được chọn
-            if (confirm(`Bạn có chắc muốn xóa ${checkboxes.length} sản phẩm đã chọn?`)) {
-                const selectedIds = Array.from(checkboxes).map(cb => cb.value);
-                xoaNhieuItem(selectedIds);
-            }
-        } else {
-            alert('Vui lòng chọn sản phẩm cần xóa');
-        }
-    });
-
-    // Checkbox "Chọn tất cả"
-    document.getElementById('chon-tat-ca').addEventListener('change', function() {
-        const checkboxes = document.querySelectorAll('.item-checkbox');
-        checkboxes.forEach(cb => {
-            cb.checked = this.checked;
-        });
-    });
-
-    // Hàm lấy CSRF token
-    function getCsrfToken() {
-        const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
-        if (tokenInput) {
-            return tokenInput.value;
-        }
-        // Fallback: lấy từ cookie
-        const name = 'csrftoken';
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
+            // Fallback: lấy từ cookie
+            const name = 'csrftoken';
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
                 }
             }
+            return cookieValue;
         }
-        return cookieValue;
-    }
 
-    // Hàm xóa một item
-    function xoaItem(itemId) {
-        const formData = new FormData();
-        formData.append('item_id', itemId);
-        formData.append('csrfmiddlewaretoken', getCsrfToken());
+        // Hàm xóa một item
+        function xoaItem(itemId) {
+            const formData = new FormData();
+            formData.append('item_id', itemId);
+            formData.append('csrfmiddlewaretoken', getCsrfToken());
 
-        fetch('/cart/delete/', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById(`row-${itemId}`).remove();
-                capNhatTong();
-                // Reload trang để cập nhật số lượng sản phẩm
-                setTimeout(() => location.reload(), 500);
-            } else {
-                alert(data.message || 'Có lỗi xảy ra');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi xóa sản phẩm');
-        });
-    }
-
-    // Hàm xóa nhiều item
-    function xoaNhieuItem(itemIds) {
-        const formData = new FormData();
-        itemIds.forEach(id => {
-            formData.append('selected_items[]', id);
-        });
-        formData.append('csrfmiddlewaretoken', getCsrfToken());
-
-        fetch('/cart/delete/', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                itemIds.forEach(id => {
-                    const row = document.getElementById(`row-${id}`);
-                    if (row) row.remove();
-                });
-                capNhatTong();
-                // Reload trang để cập nhật số lượng sản phẩm
-                setTimeout(() => location.reload(), 500);
-            } else {
-                alert(data.message || 'Có lỗi xảy ra');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi xóa sản phẩm');
-        });
-    }
-
-    // Hàm xóa tất cả
-    function xoaTatCa() {
-        const formData = new FormData();
-        formData.append('delete_all', 'true');
-        formData.append('csrfmiddlewaretoken', getCsrfToken());
-
-        fetch('/cart/delete/', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Xóa tất cả rows
-                document.querySelectorAll('tbody tr').forEach(row => {
-                    if (row.id && row.id.startsWith('row-')) {
-                        row.remove();
+            fetch('/cart/delete/', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        document.getElementById(`row-${itemId}`).remove();
+                        capNhatTong();
+                        // Reload trang để cập nhật số lượng sản phẩm
+                        setTimeout(() => location.reload(), 500);
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra');
                     }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa sản phẩm');
                 });
-                capNhatTong();
-                // Reload trang
-                setTimeout(() => location.reload(), 500);
-            } else {
-                alert(data.message || 'Có lỗi xảy ra');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi xóa sản phẩm');
-        });
-    }
+        }
 
-    function capNhatTong() {
-        let tong = 0;
-        document.querySelectorAll('tbody tr').forEach(row => {
-            const tongSp = row.querySelector('td:nth-child(4)');
-            if (tongSp && !isNaN(parseInt(tongSp.textContent.replace(/\D/g, "")))) {
-                tong += parseInt(tongSp.textContent.replace(/\D/g, ""));
-            }
-        });
-        document.getElementById('tong-cong').textContent = formatCurrency(tong);
-    }
+        // Hàm xóa nhiều item
+        function xoaNhieuItem(itemIds) {
+            const formData = new FormData();
+            itemIds.forEach((id) => {
+                formData.append('selected_items[]', id);
+            });
+            formData.append('csrfmiddlewaretoken', getCsrfToken());
 
-    // Nút Mua hàng - cập nhật hidden inputs trước khi submit
-    document.getElementById('proceed-to-order-form').addEventListener('submit', function(e) {
-        // Cập nhật tất cả hidden inputs với số lượng hiện tại
-        document.querySelectorAll('.qty-input').forEach(input => {
-            const itemId = input.dataset.itemId;
-            const quantity = input.value;
-            updateHiddenInput(itemId, quantity);
+            fetch('/cart/delete/', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        itemIds.forEach((id) => {
+                            const row = document.getElementById(`row-${id}`);
+                            if (row) row.remove();
+                        });
+                        capNhatTong();
+                        // Reload trang để cập nhật số lượng sản phẩm
+                        setTimeout(() => location.reload(), 500);
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa sản phẩm');
+                });
+        }
+
+        // Hàm xóa tất cả
+        function xoaTatCa() {
+            const formData = new FormData();
+            formData.append('delete_all', 'true');
+            formData.append('csrfmiddlewaretoken', getCsrfToken());
+
+            fetch('/cart/delete/', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        // Xóa tất cả rows
+                        document.querySelectorAll('tbody tr').forEach((row) => {
+                            if (row.id && row.id.startsWith('row-')) {
+                                row.remove();
+                            }
+                        });
+                        capNhatTong();
+                        // Reload trang
+                        setTimeout(() => location.reload(), 500);
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa sản phẩm');
+                });
+        }
+
+        function capNhatTong() {
+            let tong = 0;
+            document.querySelectorAll('tbody tr').forEach((row) => {
+                const tongSp = row.querySelector('td:nth-child(4)');
+                if (tongSp && !isNaN(parseInt(tongSp.textContent.replace(/\D/g, '')))) {
+                    tong += parseInt(tongSp.textContent.replace(/\D/g, ''));
+                }
+            });
+            document.getElementById('tong-cong').textContent = formatCurrency(tong);
+        }
+
+        // Nút Mua hàng - cập nhật hidden inputs trước khi submit
+        document.getElementById('proceed-to-order-form').addEventListener('submit', function (e) {
+            // Cập nhật tất cả hidden inputs với số lượng hiện tại
+            document.querySelectorAll('.qty-input').forEach((input) => {
+                const itemId = input.dataset.itemId;
+                const quantity = input.value;
+                updateHiddenInput(itemId, quantity);
+            });
+            // Form sẽ submit tự động
         });
-        // Form sẽ submit tự động
     });
-});
 </script>
 
 {% endblock %}

@@ -407,16 +407,19 @@
         </div>
         <div class="header-filter-tabs">
             <a href="?status=all" class="header-filter-tab {% if status_filter == 'all' %}active{% endif %}">
-                Tất cả
+                Tất cả ({{ all_count }})
             </a>
             <a href="?status=pending" class="header-filter-tab {% if status_filter == 'pending' %}active{% endif %}">
-                Chờ lấy hàng
+                Chờ lấy hàng ({{ pending_count }})
             </a>
             <a href="?status=confirmed" class="header-filter-tab {% if status_filter == 'confirmed' %}active{% endif %}">
-                Hoàn thành
+                Đơn hàng đã xác nhận ({{ confirmed_count }})
+            </a>
+            <a href="?status=completed" class="header-filter-tab {% if status_filter == 'completed' %}active{% endif %}">
+                Đơn hàng đã hoàn thành ({{ completed_count }})
             </a>
             <a href="?status=cancelled" class="header-filter-tab {% if status_filter == 'cancelled' %}active{% endif %}">
-                Đã hủy
+                Đã hủy ({{ cancelled_count }})
             </a>
         </div>
     </div>
@@ -452,6 +455,8 @@
                             {% if order_data.order.status == 'pending' %}
                                 Chờ lấy hàng
                             {% elif order_data.order.status == 'confirmed' %}
+                                Đã xác nhận đơn
+                            {% elif order_data.order.status == 'completed' %}
                                 Hoàn thành đơn hàng
                             {% elif order_data.order.status == 'cancelled' %}
                                 Đã hủy
@@ -483,8 +488,8 @@
                         </div>
 
                         <div class="order-actions">
-                            {% if order_data.order.status == 'confirmed' %}
-                            <a href="#" class="btn-buy-again">Mua lại</a>
+                            {% if order_data.order.status == 'completed' %}
+                            <a href="{% url 'buy_again' order_data.order.id %}" class="btn-buy-again">Mua lại</a>
                             <a href="{% url 'review_order' order_data.order.id %}" class="btn-buy-again">Đánh giá</a>
                             {% endif %}
                             <a href="{% url 'order_confirm' order_data.order.id %}" class="btn-view-reviews">Xem chi tiết</a>

@@ -4,10 +4,10 @@ from .user_view.home import home_view
 # from .product import index as product_index, detail as product_detail
 from .admin_view.chitietsanpham import product_detail
 from .authen_view import role_redirect_view, register_view, RoleLoginView, CustomLogoutView
-from .admin_view.order_view import order_detail, order_cancel_status, order_confirm_status, order_list, order_create_emp
+from .admin_view.order_view import order_detail, order_cancel_status, order_confirm_status, order_list, order_list_waiting
+from .admin_view.customer import customer_list
 from .user_view.add_to_cart import add_to_cart
 from .admin_view.sanpham import product_list
-from .admin_view.chitietsanpham import product_detail
 from .user_view.category import category_view, category_detail_view, product_detail_user
 from .user_view.add_to_cart import add_to_cart
 from .user_view.cart import cart, delete_cart_items, proceed_to_order
@@ -17,7 +17,9 @@ from .user_view.buy_now import buy_now
 from .user_view.search import search_view
 from .user_view.review import submit_review
 from .user_view.profile import profile
-from .user_view.my_orders import my_orders
+from .user_view.my_orders import my_orders, buy_again
 from .user_view.form_review import review_order
 from .user_view.edit_review import edit_review
 from .user_view.delete_review import delete_review
+from .admin_view.review_view import review_list, reply_review
+

@@ -42,14 +42,7 @@
                 {% translate "Login" %}
             </button>
 
-            {% url 'accounts:password_reset' as password_reset_url %} {% if password_reset_url %}
-            <div class="text-center">
-                <a href="{{ password_reset_url }}" style="color: #1d6fe0; text-decoration: none"
-                    >{% translate 'Forgotten your password?' %}</a
-                >
-            </div>
-            <br />
-            {% endif %} {% if required_group == 'KH' %}
+            {% if required_group == 'KH' %}
             <div class="text-center">
                 <a href="{% url 'register' %}" style="color: #1d6fe0; text-decoration: none">Register?</a>
             </div>

@@ -444,6 +444,8 @@
         </form>
         {% elif order.status == 'cancelled' %}
         <button class="cancel-btn" disabled>Đơn đã hủy</button>
+        {% elif order.status == 'confirmed' or order.status == 'completed' %}
+        <button class="cancel-btn" disabled>Không thể hủy đơn hàng này</button>
         {% else %}
         <button class="cancel-btn" disabled>Không thể hủy đơn hàng này</button>
         {% endif %}
