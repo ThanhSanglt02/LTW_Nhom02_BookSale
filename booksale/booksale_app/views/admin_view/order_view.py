@@ -130,23 +130,11 @@ def order_detail(request, pk):
 def order_confirm_status(request, pk):
     """Cập nhật trạng thái thành đã xác nhận"""
     order = get_object_or_404(Order, pk=pk)
-    # Lấy danh sách item trong đơn hàng
-    order_items = Order_Item.objects.select_related('product').filter(order=order)
 
     if request.method == "POST":
         order.status = "confirmed"
         order.save()
 
-        # Cập nhật lại số lượng sản phẩm
-        for item in order_items:
-            product = item.product # kết nối với bảng Product thông qua khóa ngoại
-            sold_quantity = item.quantity
-
-            product.quantity = product.quantity - sold_quantity
-            if product.quantity < 0:
-                print(f"Không đủ sản phẩm: {product.name}")
-                return redirect('order_detail', pk=order.id)
-            product.save()
     return redirect('order_detail', pk=order.id)
 
 @login_required(login_url="/accounts/login/staff/")
