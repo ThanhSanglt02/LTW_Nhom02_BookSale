@@ -464,7 +464,11 @@
                         </div>
 
                         <div class="order-product-info">
-                            <img src="{% static 'images/'|add:order_data.image %}" alt="{{ order_data.product_display }}" class="order-product-image">
+                            {% if order_data.first_product and order_data.first_product.image %}
+                                <img src="{{ order_data.first_product.image.url }}" alt="{{ order_data.product_display }}" class="order-product-image">
+                            {% else %}
+                                <img src="{% static 'images/image.jpg' %}" alt="{{ order_data.product_display }}" class="order-product-image">
+                            {% endif %}
                             <div class="order-product-details">
                                 <div class="order-product-name">{{ order_data.product_display }}</div>
                                 <!-- {% if order_data.first_item %}

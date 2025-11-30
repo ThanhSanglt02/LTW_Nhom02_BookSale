@@ -49,13 +49,7 @@ def my_orders(request):
         
         # Lấy sản phẩm đầu tiên để hiển thị
         first_item = order_items.first()
-        image_name = 'image.jpg'
-        if first_item and first_item.product.image:
-            image_path = str(first_item.product.image)
-            if '/' in image_path:
-                image_name = image_path.split('/')[-1]
-            else:
-                image_name = image_path
+        first_product = first_item.product if first_item else None
         
         # Tạo tên sản phẩm (nếu có nhiều sản phẩm thì hiển thị "và X sản phẩm khác")
         product_names = [item.product.product_name for item in order_items[:1]]
@@ -70,7 +64,7 @@ def my_orders(request):
         order_list.append({
             'order': order,
             'total': total,
-            'image': image_name,
+            'first_product': first_product,  # Truyền product object để dùng image.url
             'product_display': product_display,
             'item_count': order_items.count(),
             'first_item': first_item,
