@@ -76,7 +76,7 @@ def my_orders(request):
             'first_item': first_item,
             'name': order_customer.cust_name,
             'phone': order_customer.phone or 'Chưa cập nhật',
-            'address': order_customer.address or 'Chưa cập nhật'
+            'address': order_customer.address or 'Chưa cập nhật',
         })
     
     # Đếm số lượng đơn hàng theo từng trạng thái

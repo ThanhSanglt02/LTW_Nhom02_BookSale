@@ -58,7 +58,7 @@ def order_list_waiting(request):
             ).order_by('-order_date')
     else:
         form = OrderSearchForm()
-        orders = Order.objects.select_related('customer').filter(status="confirmed").order_by('-order_date')
+        orders = Order.objects.select_related('customer').filter(status="pending").order_by('-order_date')
 
     for order in orders:
         order_items = Order_Item.objects.select_related('product').filter(order=order)

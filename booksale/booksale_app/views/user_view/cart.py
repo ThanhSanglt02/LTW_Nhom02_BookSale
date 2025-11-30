@@ -11,8 +11,6 @@ from booksale_app.models import Cart, Cart_Item, Customer, Product
 @login_required(login_url="/accounts/login/kh/")
 @group_required('KH', login_url="/accounts/login/kh/") 
 def cart(request):
-    
-   
     if not request.user.is_authenticated:
         return render(request, 'user_temp/cart/cart.html', {
             'giohang': [],
@@ -68,7 +66,8 @@ def cart(request):
             'hinhanh': image_name,
             'product_id': item.product.id,
             'cart_item_id': item.id,
-            'max_quantity': item.product.quantity  # Số lượng tối đa có sẵn
+            'max_quantity': item.product.quantity,  # Số lượng tối đa có sẵn
+            'image': item.product.image
         })
     
     

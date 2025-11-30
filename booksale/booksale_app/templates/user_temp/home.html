@@ -247,11 +247,7 @@
             <div class="product-card">
                 <div class="product-image">
                     <a href="{% url 'product_detail_user' product.id %}">
-                        {% if product.image %}
                         <img src="{{ product.image.url }}" alt="{{ product.product_name }}" />
-                        {% else %}
-                        <img src="{% static 'images/image.jpg' %}" alt="{{ product.product_name }}" />
-                        {% endif %}
                     </a>
                 </div>
 

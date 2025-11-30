@@ -43,6 +43,3 @@ def home_view(request):
     
     return render(request, 'user_temp/home.html', context)
 
-# class HomeView(View):
-#     def get(self, request):
-#         return render(request, 'home.html')
