@@ -39,7 +39,7 @@ def order_list(request):
         })
     context = {
         'order_data': order_data,
-        'form': form
+        'form': form,
     }
     return render(request, 'admin_temp/order/order_list.html', context)
 

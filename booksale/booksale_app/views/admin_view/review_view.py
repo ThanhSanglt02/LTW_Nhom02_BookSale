@@ -5,7 +5,6 @@ from django.core.paginator import Paginator
 
 from ...models import Review  # No ReplyReview import needed
 
-
 @login_required
 def review_list(request):
     qs = Review.objects.select_related("product", "creator").order_by("-date_created")

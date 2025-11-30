@@ -17,6 +17,7 @@
                 font-family: 'Segoe UI', sans-serif;
                 margin: 0;
             }
+
             /* Ẩn mũi tên dropdown mặc định của <summary> */
             summary::-webkit-details-marker {
                 display: none;
@@ -109,6 +110,11 @@
                 font-size: 18px;
                 color: #444;
             }
+            .isActive {
+                font-weight: 600 !important;
+                color: rgba(41, 41, 232, 0.991) !important;
+                background-color: #eff6ff;
+            }
         </style>
     </head>
 
@@ -123,7 +129,7 @@
                 {% if user.is_authenticated %}
                 <div class="user-info text-right leading-tight">
                     <p class="name font-bold text-gray-800">{{ user.username }}</p>
-                    <p class="role">NVBH</p>
+                    <p class="role">{{user.groups.all.0.name}}</p>
                 </div>
 
                 {% if user.profile.avatar %}
@@ -151,7 +157,7 @@
                         <li>
                             <a
                                 href="{% url 'emp/order_list'%}"
-                                class="flex items-center px-6 py-2 hover:bg-gray-100 isActive"
+                                class="flex items-center px-6 py-2 hover:bg-gray-10 {% if request.resolver_match.url_name == 'emp/order_list' %} isActive {% endif %}"
                             >
                                 <span>Đơn hàng</span>
                             </a>
@@ -166,17 +172,23 @@
                                 </summary>
                                 <ul>
                                     <li>
-                                        <a href="{% url 'category_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                        <a
+                                            href="{% url 'category_list' %}"
+                                            class="block px-12 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'category_list' %} isActive {% endif %}"
                                             >Danh mục</a
                                         >
                                     </li>
                                     <li>
-                                        <a href="{% url 'genre_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                        <a
+                                            href="{% url 'genre_list' %}"
+                                            class="block px-12 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'genre_list' %} isActive {% endif %}"
                                             >Thể loại</a
                                         >
                                     </li>
                                     <li>
-                                        <a href="{% url 'product_list' %}" class="block px-12 py-2 hover:bg-gray-100"
+                                        <a
+                                            href="{% url 'product_list' %}"
+                                            class="block px-12 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'product_list' %} isActive {% endif %}"
                                             >Sản phẩm
                                         </a>
                                     </li>
@@ -184,14 +196,17 @@
                             </details>
                         </li>
                         <li>
-                            <a href="{% url 'review_list' %}" class="flex items-center px-6 py-2 hover:bg-gray-100">
+                            <a
+                                href="{% url 'review_list' %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'review_list' %} isActive {% endif %}"
+                            >
                                 <span>Quản lý đánh giá</span>
                             </a>
                         </li>
                         <li>
                             <a
                                 href="{% url 'emp/customer_list' %}"
-                                class="flex items-center px-6 py-2 hover:bg-gray-100"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'emp/customer_list' %} isActive {% endif %}"
                             >
                                 <span>Quản lý khách hàng</span>
                             </a>
