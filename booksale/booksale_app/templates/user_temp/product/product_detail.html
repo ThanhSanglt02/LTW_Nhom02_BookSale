@@ -140,6 +140,7 @@
 .related-price { color: #e47911; font-weight: bold; margin-bottom: 5px; }
 .related-item button { background-color: #007bff; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; }
 .related-item button:hover { background-color: #0056b3; }
+
 </style>
 {% endblock %}
 
@@ -224,19 +225,26 @@
           </div>
         {% endif %}
 
+        <!-- PHẢN HỒI ADMIN -->
+        {% if review.reply_message %}
+          <div style="margin-top:10px; padding:10px; background:#f0f8ff; border-left:4px solid #007bff; border-radius:6px;">
+            <p style="font-weight:600; color:#007bff; margin-bottom:5px;">Phản hồi từ người bán:</p>
+            <p>{{ review.reply_message }}</p>
+            {% if review.reply_staff %}
+              <span style="font-size:0.85rem; color:#555;">({{ review.reply_staff.username }})</span>
+            {% endif %}
+          </div>
+        {% endif %}
+
         {% if review.creator == user %}
           <!-- Nút Sửa & Xóa -->
           <div style="margin-top:8px; display:flex; gap:8px;">
-            <!-- Nút Sửa -->
             <a href="{% url 'edit_review' review.id %}" class="btn-edit-review">Sửa</a>
-
-            <!-- Nút Xóa -->
             <form method="POST" action="{% url 'delete_review' review.id %}"
                   onsubmit="return confirm('Bạn có chắc muốn xóa đánh giá này?');"
                   style="display:inline;">
               {% csrf_token %}
-              <button type="submit" class="btn-edit-review"
-                      style="background-color:#ff4b4b;">Xóa</button>
+              <button type="submit" class="btn-edit-review" style="background-color:#ff4b4b;">Xóa</button>
             </form>
           </div>
         {% endif %}
@@ -246,6 +254,8 @@
     <p>Chưa có đánh giá nào cho sản phẩm này.</p>
   {% endif %}
 </div>
+
+
 
 </div>
 

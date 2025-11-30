@@ -1,0 +1,83 @@
+{% extends "admin_temp/admin_base.html" %}
+
+{% block content %}
+<div class="page-container w-full mx-auto p-8">
+
+    <h2 class="text-4xl font-bold mb-8 text-gray-900 text-center">Trả lời đánh giá</h2>
+
+    <div class="bg-white w-full p-8 shadow-xl rounded-3xl border border-gray-200">
+
+        <!-- Thông tin đánh giá -->
+        <div class="mb-6 space-y-3 text-lg">
+            <div class="flex">
+                <span class="font-semibold text-gray-800 w-40">Sản phẩm:</span>
+                <span>{{ review.product.product_name }}</span>
+            </div>
+            <div class="flex">
+                <span class="font-semibold text-gray-800 w-40">Khách:</span>
+                <span>{{ review.creator.username }}</span>
+            </div>
+        </div>
+
+        <!-- Nội dung đánh giá -->
+        <div class="mb-6">
+            <div class="flex mb-2">
+                <span class="font-semibold text-gray-800 w-40">Nội dung đánh giá:</span>
+            </div>
+            <p class="text-gray-900 p-4 bg-gray-50 rounded-xl border border-gray-200 text-lg">
+                {{ review.content }}
+            </p>
+        </div>
+
+        <!-- Số sao -->
+        <div class="flex items-center mb-6 text-lg">
+            <span class="font-semibold text-gray-800 w-40">Số sao:</span>
+            <div class="flex items-center">
+                {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= review.rating %}
+                        <span class="text-yellow-400 text-2xl">&#9733;</span>
+                    {% else %}
+                        <span class="text-gray-300 text-2xl">&#9733;</span>
+                    {% endif %}
+                {% endfor %}
+                <span class="ml-3 text-gray-600 font-medium">({{ review.rating }}/5)</span>
+            </div>
+        </div>
+
+        <!-- Ngày đánh giá -->
+        <div class="flex mb-8 text-lg">
+            <span class="font-semibold text-gray-800 w-40">Ngày đánh giá:</span>
+            <span>{{ review.date_created|date:"d/m/Y H:i" }}</span>
+        </div>
+
+        <!-- Form phản hồi -->
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+
+            <div>
+                <label for="message" class="block mb-3 font-semibold text-gray-800 text-lg">
+                    Nội dung phản hồi
+                </label>
+                <textarea
+                    id="message"
+                    name="message"
+                    rows="6"
+                    class="w-full border border-gray-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+                    required
+                >{{ existing_reply.message|default_if_none:"" }}</textarea>
+            </div>
+
+            <div class="flex gap-5">
+                <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-xl shadow-lg hover:bg-blue-700 text-lg font-semibold transition">
+                    Lưu phản hồi
+                </button>
+                <a href="{% url 'review_list' %}" class="bg-gray-300 text-gray-800 px-8 py-3 rounded-xl shadow-lg hover:bg-gray-400 text-lg font-semibold transition">
+                    Quay lại
+                </a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}

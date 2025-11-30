@@ -76,7 +76,8 @@ urlpatterns = [
     path('emp/genre/<int:pk>/delete', genre.genre_delete, name='genre_delete'),
     path('emp/genre/delete/bulk/', genre.genre_bulk_delete, name='genre_bulk_delete'),
 
-    
+    path('emp/reviews/', views.review_list, name='review_list'),
+    path('emp/reviews/<int:review_id>/reply/', views.reply_review, name='reply_review'),
 
     ### EMPLOYEE STOCK URLS
     #    path('product-detail/', views.product_detail, name='product_detail'),
