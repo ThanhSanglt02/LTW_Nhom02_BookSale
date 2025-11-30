@@ -93,3 +93,68 @@ OrderItemFormSet = inlineformset_factory(
         'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
     }
 )
+
+from .models import (
+    Product,
+    Genre,
+    Supplier,
+    ImportOrder,
+    ImportOrder_Item,
+    ExportOrder,
+    ExportOrder_Item
+)
+
+# ============================
+# IMPORT ORDER FORM (MASTER)
+# ============================
+class ImportOrderForm(forms.ModelForm):
+    class Meta:
+        model = ImportOrder
+        fields = ['supplier', 'note']
+        widgets = {
+            'note': forms.Textarea(attrs={'rows': 2}),
+        }
+
+
+# ============================
+# IMPORT ORDER ITEM FORM
+# ============================
+class ImportOrderItemForm(forms.ModelForm):
+    class Meta:
+        model = ImportOrder_Item
+        fields = ['product', 'quantity', 'unit_price']
+
+    # Auto tính total_price để khỏi bị lỗi
+    def clean(self):
+        cleaned_data = super().clean()
+        qty = cleaned_data.get("quantity")
+        price = cleaned_data.get("unit_price")
+
+        if qty and price:
+            cleaned_data["total_price"] = qty * price
+
+        return cleaned_data
+
+
+# ============================
+# EXPORT ORDER FORM
+# ============================
+class ExportOrderForm(forms.ModelForm):
+    class Meta:
+        model = ExportOrder
+        fields = ['order', 'reason']
+        widgets = {
+            'order': forms.Select(attrs={'class': 'form-control'}),
+            'reason': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+
+class ExportOrderItemForm(forms.ModelForm):
+    class Meta:
+        model = ExportOrder_Item
+        fields = ['product', 'quantity', 'unit_price']
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
+            'unit_price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+        }

@@ -1,59 +1,55 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from ..authen_view import group_required
-from django.db.models import Sum
-from ..authen_view import group_required
-from booksale_app.models import Product, Order_Item, ImportOrder_Item, ImportOrder
+from django.db import models
+from booksale_app.models import Product, ExportOrder_Item, ImportOrder_Item
 
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required('NVTK', login_url="/accounts/login/warehouse/") # Nếu user không thuộc NVTK → redirect về login/warehouse.
-def inventory_list(request):
-    query = request.GET.get('q', '')
-    products = Product.objects.filter(product_name__icontains=query)
 
-    data = []
-    for p in products:
-        # Đang giao dịch: các đơn chưa xác nhận hoặc chờ xác nhận
-        in_transaction = (
-            Order_Item.objects
-            .filter(product=p, order__status='pending')
-            .aggregate(total=Sum('quantity'))['total'] or 0
-        )
+def inventory_overview(request):
+    # Lấy từ khóa tìm kiếm và tab đang chọn
+    search_query = request.GET.get('search', '').strip()
+    tab = request.GET.get('tab', 'all')  # all / in / out
 
-        # Đang về kho: các phiếu nhập chưa xác nhận (giả sử cậu muốn tính như vậy)
-        incoming = (
-            ImportOrder_Item.objects
-            .filter(product=p)
-            .aggregate(total=Sum('quantity'))['total'] or 0
-        )
+    # Lọc sản phẩm theo từ khóa
+    if search_query:
+        products = Product.objects.filter(product_name__icontains=search_query)
+    else:
+        products = Product.objects.all()
 
-        # Có thể bán = tồn kho - đang giao dịch (đảm bảo không âm)
-        available = max(p.quantity - in_transaction, 0)
+    # Dữ liệu tổng hợp kho
+    inventory_data = []
+    for product in products:
+        total_imported = ImportOrder_Item.objects.filter(product=product).aggregate(
+            total_imported=models.Sum('quantity'))['total_imported'] or 0
 
-        data.append({
-            'id': p.id,
-            'name': p.product_name,
-            'stock': p.quantity,
+        total_sold = ExportOrder_Item.objects.filter(product=product).aggregate(
+            total_sold=models.Sum('quantity'))['total_sold'] or 0
+
+        stock = total_imported - total_sold
+        available = stock if stock > 0 else 0
+        low_stock_warning = stock < 2
+
+        inventory_data.append({
+            'product_code': product.id,
+            'product_name': product.product_name,
+            'total_imported': total_imported,
+            'total_sold': total_sold,
+            'stock': stock,
             'available': available,
-            'in_transaction': in_transaction,
-            'incoming': incoming,
-            'sell_price': p.sell_price,
-            'cost_price': p.cost_price,
+            'sell_price': product.sell_price,
+            'cost_price': product.cost_price,
+            'low_stock_warning': low_stock_warning,
         })
 
+    # ✅ Lọc theo tab
+    if tab == 'in':  # Còn hàng
+        inventory_data = [item for item in inventory_data if item['stock'] >= 2]
+    elif tab == 'out':  # Hết hàng
+        inventory_data = [item for item in inventory_data if item['stock'] < 2]
 
-    return render(request, 'employee/inventory/inventory_list.html', {
-        'products': data,
-        'query': query,
-        'page': 'inventory_list'
-    })
+    context = {
+        'inventory': inventory_data,
+        'search_query': search_query,
+        'active_tab': tab,
+        "page": "inventory_list",
+    }
 
-def inventory_add(request):
-    return HttpResponse("Trang thêm sản phẩm vào kho (chưa code).")
-
-def inventory_edit(request, pk):
-    return HttpResponse(f"Sửa sản phẩm có id = {pk} (chưa code).")
-
-def inventory_delete(request, pk):
-    return HttpResponse(f"Xóa sản phẩm có id = {pk} (chưa code).")
+    return render(request, 'employee/inventory/inventory_list.html', context)

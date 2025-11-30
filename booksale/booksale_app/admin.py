@@ -1,5 +1,5 @@
 from django.contrib import admin
-from booksale_app.models import (Customer, Order, Product, Category, Publisher, Order_Item, Cart, Cart_Item) 
+from booksale_app.models import (Customer, Order, Product, Category, Publisher, Order_Item, Cart, Cart_Item, ImportOrder, ImportOrder_Item, ExportOrder, ExportOrder_Item, Employee)
 
 # Register your models here.
 class CustomerAdmin(admin.ModelAdmin):
@@ -14,6 +14,14 @@ class OrderAdmin(admin.ModelAdmin):
 class CartItemAdmin(admin.ModelAdmin):
     list_display = ('product', 'cart', 'quantity', 'unit_price')
 
+
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('emp_name', 'user', 'email', 'phone', 'address')
+    search_fields = ('emp_name', 'user__username')
+
+class ImportOrderItemAdmin(admin.ModelAdmin):
+    list_display = ('product', 'quantity', 'unit_price',)
+
 # Muốn có model nào trên giao diện admin thì phải đăng ký model đó, nếu có chỉnh sửa thao tác thì phải thêm tham số class
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Order, OrderAdmin) 
@@ -23,6 +31,11 @@ admin.site.register(Category)
 admin.site.register(Order_Item)
 admin.site.register(Cart)
 admin.site.register(Cart_Item, CartItemAdmin)
+admin.site.register(ImportOrder_Item, ImportOrderItemAdmin)
+admin.site.register(Employee, EmployeeAdmin)
 
 
-
+# Các model m đang dùng khác (nếu muốn hiển thị)
+admin.site.register(ImportOrder)
+admin.site.register(ExportOrder)
+admin.site.register(ExportOrder_Item)

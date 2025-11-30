@@ -4,7 +4,7 @@
 {% block content %}
 <div class="p-6 bg-gray-50 min-h-screen">
 
-  <!-- ✅ Toast message nổi góc phải -->
+  <!-- Toast message -->
   {% if messages %}
   <div class="fixed top-4 right-4 z-50">
     {% for message in messages %}
@@ -31,7 +31,7 @@
     <table class="min-w-full border border-gray-200">
       <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
         <tr>
-          <th class="px-6 py-3 text-left">#</th>
+          <th class="px-6 py-3 text-left">ID</th>
           <th class="px-6 py-3 text-left">Tên nhà cung cấp</th>
           <th class="px-6 py-3 text-left">Email</th>
           <th class="px-6 py-3 text-left">Số điện thoại</th>
@@ -42,16 +42,30 @@
       <tbody class="divide-y divide-gray-200">
         {% for supplier in suppliers %}
         <tr class="hover:bg-gray-50 transition">
-          <td class="px-6 py-3">{{ forloop.counter }}</td>
+          <td class="px-6 py-3">NCC{{ forloop.counter|stringformat:"02d" }}</td>
           <td class="px-6 py-3 font-medium text-gray-800">{{ supplier.sup_name }}</td>
           <td class="px-6 py-3">{{ supplier.email }}</td>
           <td class="px-6 py-3">{{ supplier.phone }}</td>
           <td class="px-6 py-3">{{ supplier.address }}</td>
+
+          <!-- Nút sửa & xóa đẹp -->
           <td class="px-6 py-3 text-center">
-            <a href="{% url 'supplier_edit' supplier.id %}" class="text-blue-600 hover:underline mr-3">✏️ Sửa</a>
-            <a href="{% url 'supplier_delete' supplier.id %}"
-               class="text-red-600 hover:underline"
-               onclick="return confirm('Bạn có chắc muốn xóa nhà cung cấp này không?')">🗑️ Xóa</a>
+            <div class="flex items-center justify-center gap-3">
+
+              <a href="{% url 'supplier_edit' supplier.id %}"
+                class="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 border border-green-300
+                       rounded-lg hover:bg-green-200 transition text-sm font-medium shadow-sm">
+                ✏️ <span>Sửa</span>
+              </a>
+
+              <a href="{% url 'supplier_delete' supplier.id %}"
+                onclick="return confirm('Bạn có chắc muốn xóa nhà cung cấp này không?')"
+                class="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 border border-red-300
+                       rounded-lg hover:bg-red-200 transition text-sm font-medium shadow-sm">
+                🗑️ <span>Xóa</span>
+              </a>
+
+            </div>
           </td>
         </tr>
         {% endfor %}
@@ -71,9 +85,8 @@
   </div>
 
   {% else %}
-  <!-- ✅ Giao diện khi chưa có dữ liệu -->
+  <!-- Khi không có dữ liệu -->
   <div class="bg-white p-12 rounded-xl shadow text-center border border-gray-200 flex flex-col items-center justify-center animate-fade-in">
-    <!-- Icon SVG đẹp, căn giữa -->
     <div class="mb-5">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 text-blue-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L12 3l9 4.5M3 7.5v9l9 4.5m9-13.5v9l-9 4.5M3 16.5l9-4.5m9 4.5l-9-4.5" />
@@ -88,7 +101,7 @@
   {% endif %}
 </div>
 
-<!-- ✅ Tự động ẩn thông báo sau 3s -->
+<!-- Ẩn thông báo sau 3s -->
 <script>
   setTimeout(() => {
     document.querySelectorAll('.fixed.top-4.right-4 div').forEach(el => {
@@ -98,7 +111,6 @@
   }, 3000);
 </script>
 
-<!-- ✅ Hiệu ứng nhẹ khi trang trống xuất hiện -->
 <style>
   @keyframes fade-in {
     from { opacity: 0; transform: translateY(10px); }

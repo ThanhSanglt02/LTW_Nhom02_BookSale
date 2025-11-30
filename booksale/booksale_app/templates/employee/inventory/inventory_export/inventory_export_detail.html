@@ -1,0 +1,296 @@
+{% extends "employee/employee_base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<style>
+/* Custom CSS for better styling */
+.bg-white {
+    background-color: #ffffff;
+}
+
+.rounded-xl {
+    border-radius: 12px;
+}
+
+.shadow-lg {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.border {
+    border: 1px solid #d1d5db;
+}
+
+.text-blue-700 {
+    color: #3b82f6;
+}
+
+.text-gray-700 {
+    color: #374151;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.py-3, .px-4 {
+    padding: 0.75rem 1rem;
+}
+
+.py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.hover\:bg-gray-50:hover {
+    background-color: #f9fafb;
+}
+
+.transition {
+    transition: all 0.2s ease-in-out;
+}
+
+.table-auto {
+    table-layout: auto;
+}
+
+.border-collapse {
+    border-collapse: collapse;
+}
+
+.min-w-full {
+    min-width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.bg-gray-100 {
+    background-color: #f3f4f6;
+}
+
+.bg-green-600 {
+    background-color: #16a34a;
+}
+
+.bg-green-100 {
+    background-color: #d1fae5;
+}
+
+.text-green-700 {
+    color: #15803d;
+}
+
+.text-red-700 {
+    color: #dc2626;
+}
+
+.border-b {
+    border-bottom: 1px solid #d1d5db;
+}
+
+.pb-4 {
+    padding-bottom: 1rem;
+}
+
+.mt-6 {
+    margin-top: 1.5rem;
+}
+
+.m-4 {
+    margin: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.gap-3 {
+    gap: 0.75rem;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.table {
+    width: 100%;
+    margin-top: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f9fafb;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+.table td {
+    border-top: 1px solid #d1d5db;
+}
+
+.table .total-row td {
+    font-weight: bold;
+    background-color: #f3f4f6;
+}
+
+.no-print {
+    display: none;
+}
+
+@media print {
+    .bg-white {
+        background-color: #ffffff;
+    }
+
+    .border {
+        border: 1px solid #000;
+    }
+
+    .shadow-lg {
+        box-shadow: none;
+    }
+
+    .flex {
+        display: block;
+    }
+
+    .gap-2, .gap-3 {
+        gap: 0;
+    }
+
+    .py-3, .px-4 {
+        padding: 5px;
+    }
+
+    .table {
+        width: 100%;
+    }
+
+    .no-print {
+        display: none;
+    }
+}
+</style>
+
+<!-- HEADER -->
+<div class="px-6 py-4">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold text-blue-700 flex items-center gap-2">
+            <span class="text-2xl">📤</span> Chi tiết phiếu xuất kho
+        </h2>
+
+        <a href="{% url 'inventory_export_pdf' export.id %}"
+           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-lg transition">
+            Xuất PDF
+        </a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+
+        <!-- MESSAGES -->
+        {% if messages %}
+        <div class="mb-4">
+            {% for m in messages %}
+            <div class="px-4 py-3 rounded-lg mb-2
+                        {% if m.tags == 'success' %}
+                            bg-green-100 text-green-700 border border-green-300
+                        {% elif m.tags == 'error' %}
+                            bg-red-100 text-red-700 border border-red-300
+                        {% else %}
+                            bg-blue-100 text-blue-700 border border-blue-300
+                        {% endif %}">
+                {{ m }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- DETAILS -->
+        <div class="mb-4 border-b border-gray-300 pb-4">
+            <p><strong>Mã phiếu:</strong> #{{ export.id }}</p>
+            <p><strong>Đơn hàng:</strong> #{{ export.order.id }}</p>
+            <p><strong>Ngày tạo:</strong> {{ export.export_date|date:"d/m/Y H:i" }}</p>
+            <p><strong>Nhân viên:</strong> {{ export.employee.emp_name }}</p>
+        </div>
+
+        <!-- CUSTOMER INFO -->
+        <div class="mb-4 border-b border-gray-300 pb-4">
+            <p><strong>Thông tin khách hàng:</strong></p>
+            <ul>
+                <li><strong>Tên:</strong> {{ export.order.customer.cust_name }}</li>
+                <li><strong>Điện thoại:</strong> {{ export.order.customer.phone }}</li>
+                <li><strong>Địa chỉ:</strong> {{ export.order.customer.address }}</li>
+            </ul>
+        </div>
+
+        <!-- ORDER ITEMS -->
+        <div class="overflow-x-auto mt-6">
+            <table class="table">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 text-sm">
+                        <th class="py-3 px-4 text-left">Sản phẩm</th>
+                        <th class="py-3 px-4 text-center">Số lượng xuất</th>
+                        <th class="py-3 px-4 text-center">Đơn giá</th>
+                        <th class="py-3 px-4 text-center">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    {% for item in items %}
+                    <tr class="border-b hover:bg-gray-50 transition">
+                        <td class="py-3 px-4">{{ item.product.product_name }}</td>
+                        <td class="py-3 px-4 text-center">{{ item.quantity }}</td>
+                        <td class="py-3 px-4 text-center">{{ item.unit_price|intcomma }} đ</td>
+                        <td class="py-3 px-4 text-center">{{ item.total_price|intcomma }} đ</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="flex justify-between mt-6">
+            <p class="font-semibold">Tổng tiền:</p>
+            <p class="text-right font-semibold">{{ export.total_amount|intcomma }} đ</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends "employee/employee_base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="px-6 py-4">
+
+  <!-- HEADER -->
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-semibold text-blue-600 flex items-center gap-2">
+      <span class="text-2xl">📤</span> Phiếu xuất kho
+    </h2>
+
+    {% if export_orders %}
+      <a href="{% url 'inventory_export_create' %}"
+         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+        ➕ Tạo phiếu xuất
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="bg-white rounded-xl shadow border border-gray-200 p-6">
+
+    <!-- 🔔 MESSAGES -->
+    {% if messages %}
+      <div class="mb-4">
+        {% for m in messages %}
+          <div class="px-4 py-3 rounded-lg mb-2
+                      {% if m.tags == 'success' %}
+                        bg-green-100 text-green-700 border border-green-300
+                      {% elif m.tags == 'error' %}
+                        bg-red-100 text-red-700 border border-red-300
+                      {% else %}
+                        bg-blue-100 text-blue-700 border border-blue-300
+                      {% endif %} toast-message">
+            {{ m }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if export_orders %}
+      <!-- TABLE -->
+      <div class="overflow-x-auto fade-in">
+        <table class="min-w-full border-collapse">
+          <thead>
+            <tr class="bg-gray-100 text-gray-700 text-sm">
+              <th class="py-3 px-4 text-left">Mã phiếu</th>
+              <th class="py-3 px-4 text-left">Ngày xuất</th>
+              <th class="py-3 px-4 text-left">Khách hàng</th>
+              <th class="py-3 px-4 text-right">Tổng tiền</th>
+              <th class="py-3 px-4 text-center">Hành động</th>
+            </tr>
+          </thead>
+
+          <tbody class="text-sm">
+            {% for eo in export_orders %}
+            <tr class="border-b row-animate hover:bg-gray-50 transition">
+              <td class="py-3 px-4 font-semibold text-blue-600">#{{ eo.id }}</td>
+              <td class="py-3 px-4">{{ eo.export_date|date:"d/m/Y H:i" }}</td>
+
+              <!-- ✅ Khách hàng: tên chuẩn -->
+              <td class="py-3 px-4">{{ eo.order.customer.cust_name }}</td>
+
+              <!-- ✅ Tổng tiền của phiếu xuất -->
+              <td class="py-3 px-4 text-right font-medium">
+                {{ eo.total_amount|default:0|floatformat:0|intcomma }} đ
+              </td>
+
+              <td class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center gap-3">
+                  <a href="{% url 'inventory_export_detail' eo.id %}"
+                     class="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 border border-blue-300
+                            rounded-lg hover:bg-blue-200 transition text-sm font-medium shadow-sm">
+                    ℹ️ <span>Xem chi tiết</span>
+                  </a>
+
+                  <a href="{% url 'inventory_export_delete' eo.id %}"
+                     onclick="return confirm('Bạn có chắc muốn xóa phiếu xuất này không?')"
+                     class="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 border border-red-300
+                            rounded-lg hover:bg-red-200 transition text-sm font-medium shadow-sm">
+                    🗑️ <span>Xóa</span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    {% else %}
+      <!-- EMPTY STATE -->
+      <div class="flex flex-col items-center text-center py-16">
+        <div class="bg-blue-50 p-10 rounded-full shadow-sm mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="w-28 h-28 text-blue-500 empty-icon"
+               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 7.5l9-4.5 9 4.5M3 7.5v9l9 4.5 9-4.5v-9M3 7.5l9 4.5 9-4.5" />
+          </svg>
+        </div>
+
+        <h3 class="text-lg font-semibold text-gray-700">
+          Chưa có phiếu xuất nào
+        </h3>
+
+        <p class="text-gray-500 mt-1 mb-6">
+          Bắt đầu bằng cách tạo phiếu xuất kho mới.
+        </p>
+
+        <a href="{% url 'inventory_export_create' %}"
+           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg shadow transition">
+          ➕ Tạo phiếu xuất đầu tiên
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.empty-icon{animation:float 3s ease-in-out infinite}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+.fade-in{animation:fadeIn .7s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.row-animate{animation:rowFade .5s ease;animation-fill-mode:both}
+@keyframes rowFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.toast-message{opacity:1;animation:fadeOut 3s forwards}
+@keyframes fadeOut{0%{opacity:1;transform:translateY(0)}90%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-10px)}}
+</style>
+
+<script>
+setTimeout(()=>{document.querySelectorAll(".toast-message").forEach(el=>{
+  el.style.transition="all .5s ease-in-out";el.style.opacity="0";el.style.transform="translateY(-10px)";
+  setTimeout(()=>el.remove(),500);
+})},3000);
+</script>
+
+{% endblock %}
