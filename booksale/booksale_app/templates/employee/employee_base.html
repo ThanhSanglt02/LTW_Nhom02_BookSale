@@ -1,82 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-    <head>
-        <meta charset="utf-8" />
-        <title>Employee Dashboard</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-    </head>
+<head>
+  <meta charset="utf-8">
+  <title>Employee Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-    <body class="bg-gray-100">
-        <div class="flex">
-            <!-- Sidebar -->
-            <aside class="w-64 bg-gray-50 h-screen shadow-md">
-                <div class="p-6 border-b font-semibold text-lg text-blue-600">📚 Quản lý kho</div>
+<body class="bg-gray-100">
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-50 h-screen shadow-md">
+      <div class="p-6 border-b font-semibold text-lg text-blue-600">📚 Quản lý kho</div>
 
-                <nav class="mt-4">
-                    <ul>
-                        <li>
-                            <a
-                                href="{% url 'inventory_list' %}"
-                                class="block px-6 py-2 font-semibold rounded-md border-l-4 transition {% if page == 'inventory_list' %} bg-blue-500/10 text-blue-700 border-blue-500 {% else %} text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent {% endif %}"
-                            >
-                                📦 Tổng quan kho
-                            </a>
-                        </li>
+      <nav class="mt-4">
+        <ul>
+          <li>
+            <a href="{% url 'inventory_list' %}"
+               class="block px-6 py-2 font-semibold rounded-md border-l-4 transition
+               {% if page == 'inventory_list' %}
+                 bg-blue-500/10 text-blue-700 border-blue-500
+               {% else %}
+                 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent
+               {% endif %}">
+              📦 Tổng quan kho
+            </a>
+          </li>
 
-                        <li>
-                            <a
-                                href="{% url 'inventory_import' %}"
-                                class="block px-6 py-2 font-semibold rounded-md border-l-4 transition {% if page == 'inventory_import' %} bg-blue-500/10 text-blue-700 border-blue-500 {% else %} text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent {% endif %}"
-                            >
-                                📥 Phiếu nhập kho
-                            </a>
-                        </li>
+          <li>
+            <a href="{% url 'inventory_import_list' %}"
+               class="block px-6 py-2 font-semibold rounded-md border-l-4 transition
+               {% if page == 'inventory_import' %}
+                 bg-blue-500/10 text-blue-700 border-blue-500
+               {% else %}
+                 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent
+               {% endif %}">
+              📥 Phiếu nhập kho
+            </a>
+          </li>
 
-                        <li>
-                            <a
-                                href="{% url 'inventory_export' %}"
-                                class="block px-6 py-2 font-semibold rounded-md border-l-4 transition {% if page == 'inventory_export' %} bg-blue-500/10 text-blue-700 border-blue-500 {% else %} text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent {% endif %}"
-                            >
-                                📤 Phiếu xuất kho
-                            </a>
-                        </li>
+          <li>
+            <a href="#"
+               class="block px-6 py-2 font-semibold rounded-md border-l-4 transition
+               {% if page == 'inventory_export' %}
+                 bg-blue-500/10 text-blue-700 border-blue-500
+               {% else %}
+                 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent
+               {% endif %}">
+              📤 Phiếu xuất kho
+            </a>
+          </li>
 
-                        <li>
-                            <a
-                                href="{% url 'supplier_list' %}"
-                                class="block px-6 py-2 font-semibold rounded-md border-l-4 transition {% if page == 'supplier_list' %} bg-blue-500/10 text-blue-700 border-blue-500 {% else %} text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent {% endif %}"
-                            >
-                                👤 Nhà cung cấp
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
+          <li>
+            <a href="{% url 'supplier_list' %}"
+               class="block px-6 py-2 font-semibold rounded-md border-l-4 transition
+               {% if page == 'supplier_list' %}
+                 bg-blue-500/10 text-blue-700 border-blue-500
+               {% else %}
+                 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent
+               {% endif %}">
+              👤 Nhà cung cấp
+            </a>
+          </li>
 
-            <!-- Main content -->
-            <main class="flex-1 flex flex-col">
-                <!-- Topbar -->
-                <header class="flex justify-end items-center bg-white shadow px-8 py-3">
-                    <div class="flex items-center space-x-3">
-                        <img
-                            src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
-                            alt="avatar"
-                            class="w-9 h-9 rounded-full border"
-                        />
-                        <div class="text-right">
-                            <p class="text-sm font-semibold text-gray-800">Cao Thị Tiến</p>
-                            <p class="text-xs text-gray-500">Nhân viên kho</p>
-                        </div>
-                    </div>
-                </header>
+        </ul>
+      </nav>
+    </aside>
 
-                <!-- Content -->
-                <section class="flex-1 p-6">
-                    <div class="bg-blue-50 border border-blue-100 shadow-sm rounded-xl p-6">
-                        {% block content %} {% endblock %}
-                    </div>
-                </section>
-            </main>
+    <!-- Main content -->
+    <main class="flex-1 flex flex-col">
+      <!-- Topbar -->
+      <header class="flex justify-end items-center bg-white shadow px-8 py-3">
+        <div class="flex items-center space-x-3">
+          <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+               alt="avatar"
+               class="w-9 h-9 rounded-full border">
+
+          <div class="text-right">
+            <p class="text-sm font-semibold text-gray-800">
+              {{ request.user.get_full_name|default:request.user.username }}
+            </p>
+            <p class="text-xs text-gray-500">
+              Nhân viên kho
+            </p>
+          </div>
         </div>
-    </body>
+      </header>
+
+      <!-- Content -->
+      <section class="flex-1 p-6">
+        <div class="bg-blue-50 border border-blue-100 shadow-sm rounded-xl p-6">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </section>
+    </main>
+
+  </div>
+</body>
 </html>
