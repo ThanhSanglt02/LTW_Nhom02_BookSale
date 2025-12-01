@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms import inlineformset_factory
-from .models import Product, Genre, Supplier, Order, Order_Item, ImportOrder, ImportOrder_Item
+from .models import Product, Genre, Supplier, Order, Order_Item, ImportOrder, ImportOrder_Item, ExportOrder, ExportOrder_Item
 
 class CreateUserForm(UserCreationForm):
     class Meta:
@@ -122,3 +122,24 @@ class ImportOrderItemForm(forms.ModelForm):
             cleaned_data["total_price"] = qty * price
 
         return cleaned_data
+
+# EXPORT ORDER FORM
+class ExportOrderForm(forms.ModelForm):
+    class Meta:
+        model = ExportOrder
+        fields = ['order', 'reason']
+        widgets = {
+            'order': forms.Select(attrs={'class': 'form-control'}),
+            'reason': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+# EXPORT ORDER ITEM FORM
+class ExportOrderItemForm(forms.ModelForm):
+    class Meta:
+        model = ExportOrder_Item
+        fields = ['product', 'quantity', 'unit_price']
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
+            'unit_price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+        }
