@@ -83,7 +83,12 @@ urlpatterns = [
     #    path('product-detail/', views.product_detail, name='product_detail'),
     #    path('product/', views.product_list, name='product_list'),
     path('employee/inventory_overview/', inventory_overview.inventory_list, name='inventory_list'),
-    path('employee/inventory_import/', inventory_import.inventory_import, name='inventory_import'),
+    # --- Phiếu nhập kho ---
+    path('employee/inventory_import/', inventory_import.import_order_list, name='inventory_import_list'),
+    path('employee/inventory_import/create/', inventory_import.import_order_create, name='inventory_import_create'),
+    path('employee/inventory_import/<int:pk>/', inventory_import.import_order_detail, name='inventory_import_detail'),
+    path('employee/inventory_import/<int:pk>/delete/', inventory_import.import_order_delete, name='inventory_import_delete'),
+    path('employee/inventory_import/<int:pk>/pdf/', inventory_import.import_order_export_pdf, name='inventory_import_pdf'),
     path('employee/inventory_export/', inventory_export.inventory_export, name='inventory_export'),
     path('employee/supplier_list/', supplier_list.supplier_list, name='supplier_list'),
     path('employee/supplier_list/add/', supplier_list.supplier_add, name='supplier_add'),

@@ -1,0 +1,382 @@
+{% extends "employee/employee_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .card-wrapper {
+        background: #eaf0ff;
+        padding: 28px;
+        border-radius: 16px;
+        border: 1px solid #cdd9f0;
+        margin-top: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 18px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        color: #1a2b7c;
+    }
+
+    .flex-row {
+        display: flex;
+        gap: 25px;
+        width: 100%;
+        margin-bottom: 18px;
+    }
+
+    .flex-col {
+        width: 50%;
+    }
+
+    .form-label {
+        font-size: 15px;
+        font-weight: 700;
+        color: #2f3e63;
+        margin-bottom: 6px;
+    }
+
+    .input {
+        width: 100%;
+        height: 40px;
+        border-radius: 7px;
+        border: 1px solid #b9c4dd;
+        padding: 6px 10px;
+        font-size: 14px;
+        background: white;
+    }
+
+    textarea.input {
+        height: 95px;
+        resize: none;
+    }
+
+    .btn-add {
+        background: #fff;
+        border: 1px solid #cdd7e3;
+        padding: 7px 12px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+
+    .btn-back {
+        background: #6cb2eb;
+        color: white !important;
+        padding: 10px 20px;
+        border-radius: 7px;
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    .btn-save {
+        background: #4c6ef5;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 7px;
+        font-weight: 600;
+    }
+
+    #totalPrice {
+        font-weight: 800;
+        font-size: 20px;
+        color: #253081;
+    }
+
+    table.inventory-table {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+    }
+
+    table.inventory-table th {
+        background: #e2e8f0;
+        padding: 10px;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    table.inventory-table td {
+        padding: 8px;
+        vertical-align: middle;
+    }
+</style>
+
+<div class="card-wrapper">
+    <div class="section-title">📥 Phiếu nhập kho</div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="flex-row">
+            <div class="flex-col">
+                <label class="form-label">Mã phiếu nhập</label>
+                <input class="input" type="text" disabled value="{{ import_form.instance.id|default:'Tự động tạo khi lưu' }}">
+            </div>
+
+            <div class="flex-col">
+                <label class="form-label">Ngày nhập</label>
+                <input class="input" type="date" name="import_date"
+                    value="{% if import_form.instance.import_date %}{{ import_form.instance.import_date|date:'Y-m-d' }}{% else %}{{ today|date:'Y-m-d' }}{% endif %}">
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="flex-col">
+                <label class="form-label">Nhà cung cấp</label>
+                <select class="input" name="supplier">
+                    <option value="">-- Chọn nhà cung cấp --</option>
+                    {% for s in suppliers %}
+                        <option value="{{ s.id }}" {% if import_form.instance.supplier.id == s.id %}selected{% endif %}>
+                            {{ s.sup_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="flex-col">
+                <label class="form-label">Nhân viên nhập</label>
+                <input class="input" type="text" value="{{ request.user.username }}" disabled>
+            </div>
+        </div>
+
+        <label class="form-label">Ghi chú</label>
+        <textarea class="input" name="note">{{ import_form.instance.note }}</textarea>
+
+        <br><br>
+
+        <h6 class="section-title" style="font-size:17px;">📦 Danh sách sản phẩm nhập</h6>
+
+        <table class="table table-bordered inventory-table mt-2">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                    <th>Xóa</th>
+                </tr>
+            </thead>
+
+            <tbody id="itemTable">
+
+                {% if import_items %}
+                    {% for item in import_items %}
+                    <tr class="row-item">
+                        <td class="row-id">{{ forloop.counter }}</td>
+
+                        <td>
+                            <select class="input product-select" name="product_id[]" onchange="updatePrice(this)">
+                                <option value="">-- Chọn sản phẩm --</option>
+                                {% for p in products %}
+                                    <option value="{{ p.id }}" data-price="{{ p.cost_price }}"
+                                        {% if item.product.id == p.id %}selected{% endif %}>
+                                        {{ p.product_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+
+                        <td>
+                            <input class="input qty-input" type="number" name="quantity[]"
+                                value="{{ item.quantity }}" oninput="recalcRow(this)">
+                        </td>
+
+                        <td>
+                            <input class="input price-input" type="text" name="price[]"
+                                value="{{ item.unit_price }}" oninput="formatPrice(this); recalcRow(this);">
+                        </td>
+
+                        <td class="total-cell">{{ item.total_price }}</td>
+
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">X</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <!-- hàng mẫu lúc tạo mới -->
+                    <tr class="row-item">
+                        <td class="row-id">1</td>
+
+                        <td>
+                            <select class="input product-select" name="product_id[]" onchange="updatePrice(this)">
+                                <option value="">-- Chọn sản phẩm --</option>
+                                {% for p in products %}
+                                    <option value="{{ p.id }}" data-price="{{ p.cost_price }}">
+                                        {{ p.product_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+
+                        <td>
+                            <input class="input qty-input" type="number" name="quantity[]"
+                                value="1" oninput="recalcRow(this)">
+                        </td>
+
+                        <td>
+                            <input class="input price-input" type="text" name="price[]"
+                                value="0" oninput="formatPrice(this); recalcRow(this);">
+                        </td>
+
+                        <td class="total-cell">0</td>
+
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">X</button>
+                        </td>
+                    </tr>
+                {% endif %}
+
+            </tbody>
+        </table>
+
+        <button type="button" class="btn-add" onclick="addRow()">+ Thêm sản phẩm</button>
+
+        <div class="text-right mt-3">
+            <strong style="font-size:18px;">Tổng giá trị:</strong>
+            <span id="totalPrice">0 VND</span>
+        </div>
+
+        <div class="text-right mt-3">
+            <a href="{% url 'inventory_import_list' %}" class="btn-back">⬅ Quay lại</a>
+            <button type="submit" class="btn-save">💾 Lưu phiếu nhập</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+
+function formatMoney(num) {
+    return Number(num).toLocaleString('vi-VN');
+}
+
+function unformatMoney(str) {
+    return Number(str.replace(/\./g, "") || 0);
+}
+
+function updatePrice(selectEl) {
+    const row = selectEl.closest(".row-item");
+    const price = selectEl.options[selectEl.selectedIndex].dataset.price || 0;
+
+    const priceInput = row.querySelector(".price-input");
+    priceInput.value = formatMoney(price);
+
+    recalcRow(priceInput);
+}
+
+function recalcRow(el) {
+    const row = el.closest(".row-item");
+    const qty = Number(row.querySelector(".qty-input").value);
+    const price = unformatMoney(row.querySelector(".price-input").value);
+    const total = qty * price;
+
+    row.querySelector(".total-cell").innerText = formatMoney(total);
+    updateTotal();
+}
+
+function updateTotal() {
+    let sum = 0;
+    document.querySelectorAll(".total-cell").forEach(cell => {
+        sum += unformatMoney(cell.innerText);
+    });
+
+    document.getElementById("totalPrice").innerText = formatMoney(sum) + " VND";
+}
+
+function deleteRow(btn) {
+    btn.closest(".row-item").remove();
+    reorderRows();
+    updateTotal();
+}
+
+function reorderRows() {
+    document.querySelectorAll(".row-item").forEach((r, i) => {
+        r.querySelector(".row-id").innerText = i + 1;
+    });
+}
+
+function formatPrice(input) {
+    let val = unformatMoney(input.value);
+    input.value = formatMoney(val);
+}
+
+function addRow() {
+    const table = document.getElementById("itemTable");
+    const id = table.children.length + 1;
+
+    const newRow = document.createElement("tr");
+    newRow.classList.add("row-item");
+
+    newRow.innerHTML = `
+        <td class="row-id">${id}</td>
+        <td>
+            <select class="input product-select" name="product_id[]" onchange="updatePrice(this)">
+                <option value="">-- Chọn sản phẩm --</option>
+                {% for p in products %}
+                    <option value="{{ p.id }}" data-price="{{ p.cost_price }}">
+                        {{ p.product_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </td>
+
+        <td><input class="input qty-input" type="number" name="quantity[]" value="1" oninput="recalcRow(this)"></td>
+
+        <td><input class="input price-input" type="text" name="price[]" value="0"
+            oninput="formatPrice(this); recalcRow(this);"></td>
+
+        <td class="total-cell">0</td>
+
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">X</button></td>
+    `;
+
+    table.appendChild(newRow);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".row-item").forEach(row => {
+        const priceInput = row.querySelector(".price-input");
+        priceInput.value = formatMoney(unformatMoney(priceInput.value));
+        recalcRow(priceInput);
+    });
+});
+
+
+// UNFORMAT TRƯỚC KHI SUBMIT
+document.querySelector("form").addEventListener("submit", function() {
+
+    // Unformat đơn giá
+    document.querySelectorAll(".price-input").forEach(input => {
+        input.value = unformatMoney(input.value);
+    });
+
+    // Unformat thành tiền
+    document.querySelectorAll(".total-cell").forEach(cell => {
+        const hidden = document.createElement("input");
+        hidden.type = "hidden";
+        hidden.name = "total_price[]";
+        hidden.value = unformatMoney(cell.innerText);
+        this.appendChild(hidden);
+    });
+
+    // Unformat tổng giá trị
+    const totalStr = document.getElementById("totalPrice").innerText.replace(" VND", "");
+    const totalHidden = document.createElement("input");
+    totalHidden.type = "hidden";
+    totalHidden.name = "grand_total";
+    totalHidden.value = unformatMoney(totalStr);
+    this.appendChild(totalHidden);
+});
+
+</script>
+
+{% endblock %}
