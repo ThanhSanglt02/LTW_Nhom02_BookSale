@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.db import connection
 from booksale_app.models import Product
 
+## testing abc import cretae PR
+
 def inventory_export(request):
     """
     Trang phiếu xuất kho: chọn sản phẩm, nhập số lượng và lưu log
