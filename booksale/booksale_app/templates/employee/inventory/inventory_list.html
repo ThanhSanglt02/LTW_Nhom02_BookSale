@@ -10,48 +10,48 @@
 
   <!-- Tabs -->
   <div class="flex border-b mb-6">
-    <button class="px-4 py-2 text-blue-600 border-b-2 border-blue-600 font-medium">Tất cả</button>
-    <button class="px-4 py-2 text-gray-600 hover:text-blue-600">Còn hàng</button>
-    <button class="px-4 py-2 text-gray-600 hover:text-blue-600">Hết hàng</button>
+    <a href="?tab=all{% if search_query %}&search={{ search_query|urlencode }}{% endif %}"
+       class="px-4 py-2 {% if active_tab == 'all' %}text-blue-600 border-b-2 border-blue-600 font-medium{% else %}text-gray-600 hover:text-blue-600{% endif %}">
+       Tất cả
+    </a>
+    <a href="?tab=in{% if search_query %}&search={{ search_query|urlencode }}{% endif %}"
+       class="px-4 py-2 {% if active_tab == 'in' %}text-blue-600 border-b-2 border-blue-600 font-medium{% else %}text-gray-600 hover:text-blue-600{% endif %}">
+       Còn hàng
+    </a>
+    <a href="?tab=out{% if search_query %}&search={{ search_query|urlencode }}{% endif %}"
+       class="px-4 py-2 {% if active_tab == 'out' %}text-blue-600 border-b-2 border-blue-600 font-medium{% else %}text-gray-600 hover:text-blue-600{% endif %}">
+       Hết hàng
+    </a>
   </div>
 
-  <!-- Search + Filter -->
+  <!-- Search -->
   <div class="flex justify-between mb-4">
-    <div class="flex items-center border border-blue-200 rounded-lg w-1/3 bg-white shadow-sm hover:shadow-md transition">
+    <form method="get"
+          class="flex items-center border border-blue-200 rounded-lg w-1/3 bg-white shadow-sm hover:shadow-md transition">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-3 text-blue-400" fill="none"
            viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"/>
       </svg>
-      <input type="text" placeholder="Tìm kiếm sản phẩm"
-             class="w-full px-3 py-2 border-0 focus:ring-0 bg-transparent" />
-    </div>
-
-    <!-- Nút lọc nổi bật -->
-    <button class="flex items-center px-4 py-2 bg-blue-100 text-blue-700 font-semibold
-                   border border-blue-300 rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg
-                   hover:text-blue-800 transition">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
-           viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.29.71L15 13.41V19a1 1 0 01-.55.89l-4 2A1 1 0 019 21v-7.59L3.29 6.71A1 1 0 013 6V4z"/>
-      </svg>
-      Thêm điều kiện lọc
-    </button>
+      <input type="hidden" name="tab" value="{{ active_tab }}">
+      <input type="text" name="search" value="{{ search_query|default:'' }}"
+             placeholder="Tìm kiếm sản phẩm"
+             class="w-full px-3 py-2 border-0 focus:ring-0 bg-transparent"
+             autocomplete="off">
+    </form>
   </div>
 
   <!-- Table -->
   <div class="bg-white shadow-md rounded-xl overflow-hidden border border-blue-100">
     <table class="min-w-full text-sm text-left text-gray-700">
-      <!-- Giữ màu gốc (xám) cho tiêu đề -->
       <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
         <tr>
           <th class="px-4 py-3">ID</th>
           <th class="px-4 py-3">Tên sản phẩm</th>
+          <th class="px-4 py-3 text-center">Tổng nhập kho</th>
+          <th class="px-4 py-3 text-center">Tổng đã bán</th>
           <th class="px-4 py-3 text-center">Tồn kho</th>
-          <th class="px-4 py-3 text-center">Có thể bán</th>
-          <th class="px-4 py-3 text-center">Đang giao dịch</th>
-          <th class="px-4 py-3 text-center">Đang về kho</th>
+          <th class="px-4 py-3 text-center">Trạng thái</th>
           <th class="px-4 py-3 text-right">Giá bán</th>
           <th class="px-4 py-3 text-right">Giá vốn</th>
         </tr>
@@ -61,10 +61,16 @@
         <tr class="border-b hover:bg-blue-50 transition">
           <td class="px-4 py-3">{{ item.product_code }}</td>
           <td class="px-4 py-3">{{ item.product_name }}</td>
+          <td class="px-4 py-3 text-center">{{ item.total_imported }}</td>
+          <td class="px-4 py-3 text-center">{{ item.total_sold }}</td>
           <td class="px-4 py-3 text-center">{{ item.stock }}</td>
-          <td class="px-4 py-3 text-center">{{ item.available }}</td>
-          <td class="px-4 py-3 text-center">{{ item.in_transaction }}</td>
-          <td class="px-4 py-3 text-center">{{ item.incoming }}</td>
+          <td class="px-4 py-3 text-center">
+            {% if item.stock < 2 %}
+              <span class="text-red-500 font-semibold">Sắp hết</span>
+            {% else %}
+              <span class="text-green-500 font-semibold">Đủ hàng</span>
+            {% endif %}
+          </td>
           <td class="px-4 py-3 text-right">{{ item.sell_price }}đ</td>
           <td class="px-4 py-3 text-right">{{ item.cost_price }}đ</td>
         </tr>
@@ -74,18 +80,16 @@
       </tbody>
     </table>
   </div>
-
-  <!-- Pagination -->
-  <div class="flex justify-center mt-6">
-    <nav class="flex space-x-2 text-sm">
-      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">&lt;</a>
-      <a href="#" class="px-3 py-1 border rounded bg-blue-50 text-blue-600 font-semibold shadow-sm">1</a>
-      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">2</a>
-      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">3</a>
-      <span class="px-3 py-1">...</span>
-      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">10</a>
-      <a href="#" class="px-3 py-1 border rounded hover:bg-gray-100">&gt;</a>
-    </nav>
-  </div>
 </div>
+
+<!-- Tự động tìm sau 0.4s khi gõ -->
+<script>
+const box = document.querySelector('input[name="search"]');
+const form = box.closest('form');
+let timer;
+box.addEventListener('input', () => {
+  clearTimeout(timer);
+  timer = setTimeout(() => form.submit(), 400);
+});
+</script>
 {% endblock %}
