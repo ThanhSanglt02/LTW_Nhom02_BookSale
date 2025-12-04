@@ -18,8 +18,8 @@ from decimal import Decimal
 from datetime import datetime
 
 # LIST
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def export_order_list(request):
     exports = ExportOrder.objects.all().order_by("-id")
     return render(request, "employee/inventory/inventory_export/inventory_export_list.html", {
@@ -28,8 +28,8 @@ def export_order_list(request):
     })
 
 # CREATE
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def export_order_create(request):
     today = datetime.now().strftime("%d/%m/%Y")
     employee = request.user.employee
@@ -94,8 +94,8 @@ def export_order_create(request):
 
 
 # DETAIL
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def export_order_detail(request, pk):
     export = get_object_or_404(ExportOrder, pk=pk)
     items = ExportOrder_Item.objects.filter(exportOrder=export)
@@ -149,8 +149,8 @@ def order_detail_api(request, id):
 
 
 # DELETE
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def export_order_delete(request, pk):
     # Lấy đối tượng ExportOrder theo pk
     export = get_object_or_404(ExportOrder, pk=pk)
@@ -178,8 +178,8 @@ def export_order_delete(request, pk):
     return redirect("inventory_export_list")
 
 # EXPORT PDF
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def export_order_export_pdf(request, pk):
     export_order = get_object_or_404(ExportOrder, pk=pk)
     items = ExportOrder_Item.objects.filter(exportOrder=export_order)

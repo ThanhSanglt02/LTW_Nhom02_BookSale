@@ -28,10 +28,6 @@ urlpatterns = [
 
     path("accounts/",include(("django.contrib.auth.urls", "auth"),namespace="accounts")),
 
-    # Password reset
-    path("accounts/password_reset/done/",auth.views.PasswordResetDoneView.as_view(),name="password_reset_done",),
-    path("accounts/reset/done/",auth.views.PasswordResetCompleteView.as_view(),name="password_reset_complete",),
-
     # Role redirect sau login
     path("accounts/role_redirect/", views.role_redirect_view, name="role_redirect"),
     
@@ -45,7 +41,7 @@ urlpatterns = [
              extra_context={"required_group": "KH"}
          ),
          name="login_kh"),
-    # Login Nhân viên Bán hàng
+    # Login Nhân viên Bán hàng, NVTK
     path("accounts/login/staff/", 
          views.RoleLoginView.as_view(
              extra_context={"required_group": ["NVBH", "NVTK"]}

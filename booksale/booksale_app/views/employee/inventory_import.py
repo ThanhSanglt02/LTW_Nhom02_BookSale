@@ -25,8 +25,8 @@ from django.conf import settings
 
 
 # LIST
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def import_order_list(request):
     orders = ImportOrder.objects.all().order_by("-import_date")
 
@@ -42,8 +42,8 @@ def import_order_list(request):
 
 # CREATE
 @transaction.atomic
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def import_order_create(request):
     products = Product.objects.all()
     suppliers = Supplier.objects.all()
@@ -117,8 +117,8 @@ def import_order_create(request):
     )
 
 # DETAIL
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def import_order_detail(request, pk):
     order = get_object_or_404(ImportOrder, pk=pk)
     items = ImportOrder_Item.objects.filter(importOrder=order)
@@ -135,8 +135,8 @@ def import_order_detail(request, pk):
 
 # DELETE
 @transaction.atomic
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def import_order_delete(request, pk):
     order = get_object_or_404(ImportOrder, pk=pk)
 
@@ -160,8 +160,8 @@ def import_order_delete(request, pk):
     return redirect("inventory_import_list")
 
 # PDF EXPORT
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def import_order_export_pdf(request, pk):
     order = get_object_or_404(ImportOrder, pk=pk)
     items = ImportOrder_Item.objects.filter(importOrder=order)

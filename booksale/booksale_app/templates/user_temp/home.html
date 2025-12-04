@@ -246,15 +246,22 @@
         <div class="col-6 col-md-3 text-center mb-4">
             <div class="product-card">
                 <div class="product-image">
-                    <a href="{% url 'product_detail_user' product.id %}">
-                        <img src="{{ product.image.url }}" alt="{{ product.product_name }}" />
-                    </a>
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.product_name }}" />
+                    {% else %}
+                    <img src="/static/images/no-image.png" alt="No image" />
+                    {% endif %}
                 </div>
 
-                <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart">Thêm vào giỏ hàng</a>
+                <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart"
+                    >Thêm vào giỏ hàng</a
+                >
 
                 <div class="product-info">
-                    <a href="{% url 'product_detail_user' product.id %}" style="text-decoration: none; color: inherit">
+                    <a
+                        href="{% url 'product_detail_user' product.id %}"
+                        style="text-decoration: none; color: inherit"
+                    >
                         <p class="product-name">{{ product.product_name }}</p>
                     </a>
                     <p class="product-price">{{ product.sell_price|floatformat:0 }} VND</p>
@@ -269,7 +276,10 @@
     </div>
 
     <div class="text-center mb-4">
-        <a href="{% url 'category_detail' item.category.category_name %}" class="btn btn-outline-dark view-more">
+        <a
+            href="{% url 'category_detail' item.category.category_name %}"
+            class="btn btn-outline-dark view-more"
+        >
             Xem thêm các ấn bản {{ item.category.category_name|upper }}
         </a>
     </div>

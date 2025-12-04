@@ -8,8 +8,8 @@ from booksale_app.views.authen_view import group_required
 
 
 # DANH SÁCH NHÀ CUNG CẤP
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def supplier_list(request):
     suppliers = Supplier.objects.all().order_by('-id')
     paginator = Paginator(suppliers, 10)
@@ -23,8 +23,8 @@ def supplier_list(request):
 
 
 # THÊM NHÀ CUNG CẤP
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def supplier_add(request):
     if request.method == 'POST':
         form = SupplierForm(request.POST)
@@ -42,8 +42,8 @@ def supplier_add(request):
 
 
 # CHỈNH SỬA NHÀ CUNG CẤP
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def supplier_edit(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
 
@@ -63,8 +63,8 @@ def supplier_edit(request, pk):
 
 
 # XÓA NHÀ CUNG CẤP
-@login_required(login_url="/accounts/login/warehouse/")
-@group_required("NVTK", login_url="/accounts/login/warehouse/")
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def supplier_delete(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
     supplier.delete()
