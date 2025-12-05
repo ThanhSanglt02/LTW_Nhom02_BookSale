@@ -242,7 +242,8 @@
     <h2 class="text-center product-title">{{ item.category.category_name|upper }}</h2>
 
     <div class="row">
-        {% for product in item.products %} {% if product.quantity > 0 %}
+        {% for product in item.products %} 
+        {% if product.quantity > 0 %}
         <div class="col-6 col-md-3 text-center mb-4">
             <div class="product-card">
                 <div class="product-image">
@@ -264,7 +265,7 @@
                     >
                         <p class="product-name">{{ product.product_name }}</p>
                     </a>
-                    <p class="product-price">{{ product.sell_price|floatformat:0 }} VND</p>
+                    <p class="product-price">{{ product.sell_price|floatformat:0}} VND</p>
                 </div>
             </div>
         </div>
