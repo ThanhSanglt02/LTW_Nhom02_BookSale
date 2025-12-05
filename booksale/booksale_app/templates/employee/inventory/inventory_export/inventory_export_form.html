@@ -1,100 +1,96 @@
-{% extends "employee/employee_base.html" %}
-{% load humanize %}
-
-{% block content %}
+{% extends "employee/employee_base.html" %} {% load humanize %} {% block content %}
 
 <style>
-.order-section {
-    background: #f4f7ff;
-    padding: 20px;
-    border-radius: 14px;
-    border: 1px solid #d8e2f9;
-    margin-top: 25px;
-}
+    .order-section {
+        background: #f4f7ff;
+        padding: 20px;
+        border-radius: 14px;
+        border: 1px solid #d8e2f9;
+        margin-top: 25px;
+    }
 
-.order-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #283a80;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 15px;
-}
+    .order-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #283a80;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
 
-.order-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid #d6d9e5;
-}
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #d6d9e5;
+    }
 
-.order-table th {
-    background: #e5edff;
-    padding: 10px;
-    text-align: center;
-    font-weight: 700;
-    color: #243577;
-    font-size: 14px;
-    border-bottom: 1px solid #d6d9e5;
-}
+    .order-table th {
+        background: #e5edff;
+        padding: 10px;
+        text-align: center;
+        font-weight: 700;
+        color: #243577;
+        font-size: 14px;
+        border-bottom: 1px solid #d6d9e5;
+    }
 
-.order-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #edf0f7;
-    font-size: 14px;
-}
+    .order-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #edf0f7;
+        font-size: 14px;
+    }
 
-.order-table tr:last-child td {
-    border-bottom: none;
-}
+    .order-table tr:last-child td {
+        border-bottom: none;
+    }
 
-.order-total {
-    text-align: right;
-    margin-top: 18px;
-    font-size: 18px;
-    font-weight: 800;
-    color: #243577;
-}
+    .order-total {
+        text-align: right;
+        margin-top: 18px;
+        font-size: 18px;
+        font-weight: 800;
+        color: #243577;
+    }
 </style>
 
-
 <div class="px-6 py-5">
-
     <h2 class="text-2xl font-semibold text-blue-600 mb-6 flex items-center gap-2">
         📤 Tạo Phiếu Xuất Kho
     </h2>
 
     <div class="bg-blue-50 p-6 rounded-xl shadow border border-blue-100">
-
         <!-- Hàng 1 -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-
             <div>
                 <label class="font-medium text-gray-700">Ngày xuất kho:</label>
-                <input type="text"
-                       value="{{ today }}"
-                       class="w-full mt-1 p-2 border rounded bg-gray-100"
-                       disabled>
+                <input
+                    type="text"
+                    value="{{ today }}"
+                    class="w-full mt-1 p-2 border rounded bg-gray-100"
+                    disabled
+                />
             </div>
 
             <div>
                 <label class="font-medium text-gray-700">Nhân viên thực hiện:</label>
-                <input type="text"
-                       value="{{ employee.emp_name }}"
-                       class="w-full mt-1 p-2 border rounded bg-gray-100"
-                       disabled>
+                <input
+                    type="text"
+                    value="{{ employee.emp_name }}"
+                    class="w-full mt-1 p-2 border rounded bg-gray-100"
+                    disabled
+                />
             </div>
         </div>
 
         <!-- Chọn đơn hàng -->
         <div class="mt-2">
             <label class="font-medium text-gray-700">Đơn hàng:</label>
-            <select id="orderSelect"
-                    class="w-full mt-1 p-2 border rounded bg-white">
+            <select id="orderSelect" class="w-full mt-1 p-2 border rounded bg-white">
                 <option value="">— Chọn đơn hàng —</option>
                 {% for o in orders %}
                 <option value="{{ o.id }}">ĐH#{{ o.id }} — {{ o.customer.cust_name }}</option>
@@ -105,10 +101,12 @@
         <!-- Lý do -->
         <div class="mt-4">
             <label class="font-medium text-gray-700">Lý do xuất kho:</label>
-            <textarea id="reasonInput"
-                      class="w-full mt-1 p-2 border rounded"
-                      placeholder="Xuất theo đơn hàng..."
-                      rows="3"></textarea>
+            <textarea
+                id="reasonInput"
+                class="w-full mt-1 p-2 border rounded"
+                placeholder="Xuất theo đơn hàng..."
+                rows="3"
+            ></textarea>
         </div>
 
         <!-- Thông tin khách -->
@@ -136,73 +134,71 @@
                 <tbody id="exportItems"></tbody>
             </table>
 
-            <div class="order-total">
-                Tổng tiền: <span id="exportTotal">0 đ</span>
-            </div>
+            <div class="order-total">Tổng tiền: <span id="exportTotal">0 đ</span></div>
         </div>
 
         <!-- Submit -->
         <form method="POST" class="mt-6">
             {% csrf_token %}
-            <input type="hidden" name="order_id" id="hiddenOrderId">
-            <input type="hidden" name="reason" id="hiddenReason">
-            <input type="hidden" name="qty_submit" value="1">
+            <input type="hidden" name="order_id" id="hiddenOrderId" />
+            <input type="hidden" name="reason" id="hiddenReason" />
+            <input type="hidden" name="qty_submit" value="1" />
 
-            <button onclick="return confirmSubmit();"
-                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button
+                onclick="return confirmSubmit();"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
                 💾 Lưu phiếu xuất
             </button>
         </form>
-
     </div>
 </div>
 
 <script>
-function confirmSubmit() {
-    document.getElementById("hiddenReason").value =
-        document.getElementById("reasonInput").value;
-}
+    function confirmSubmit() {
+        document.getElementById('hiddenReason').value =
+            document.getElementById('reasonInput').value;
+    }
 
-document.getElementById("orderSelect").addEventListener("change", function () {
-    let id = this.value;
-    if (!id) return;
+    document.getElementById('orderSelect').addEventListener('change', function () {
+        let id = this.value;
+        if (!id) return;
 
-    fetch(/employee/api/order/${id}/)
-        .then(res => res.json())
-        .then(data => {
+        fetch(`/employee/api/order/${id}/`)
+            .then((res) => res.json())
+            .then((data) => {
+                // HIỆN THÔNG TIN KHÁCH
+                document.getElementById('customerInfo').classList.remove('hidden');
+                document.getElementById('cusName').innerText = data.customer.name;
+                document.getElementById('cusPhone').innerText = data.customer.phone;
+                document.getElementById('cusAddr').innerText = data.customer.address;
 
-            // HIỆN THÔNG TIN KHÁCH
-            document.getElementById("customerInfo").classList.remove("hidden");
-            document.getElementById("cusName").innerText = data.customer.name;
-            document.getElementById("cusPhone").innerText = data.customer.phone;
-            document.getElementById("cusAddr").innerText = data.customer.address;
+                // RENDER SẢN PHẨM (UI đẹp)
+                const tbody = document.getElementById('exportItems');
+                tbody.innerHTML = '';
 
-            // RENDER SẢN PHẨM (UI đẹp)
-            const tbody = document.getElementById("exportItems");
-            tbody.innerHTML = "";
+                data.items.forEach((p) => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${p.product}</td>
+                            <td style="text-align:center;">${p.quantity}</td>
+                            <td style="text-align:right;">${p.price.toLocaleString('vi-VN')}</td>
+                            <td style="text-align:right;">${p.total.toLocaleString('vi-VN')}</td>
+                        </tr>
+                    `;
+                });
 
-            data.items.forEach(p => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${p.product}</td>
-                        <td style="text-align:center;">${p.quantity}</td>
-                        <td style="text-align:right;">${p.price.toLocaleString('vi-VN')}</td>
-                        <td style="text-align:right;">${p.total.toLocaleString('vi-VN')}</td>
-                    </tr>
-                `;
+                // HIỆN BẢNG SẢN PHẨM
+                document.getElementById('productTableWrapper').classList.remove('hidden');
+
+                // TỔNG TIỀN
+                document.getElementById('exportTotal').innerText =
+                    data.total_amount.toLocaleString('vi-VN') + ' đ';
+
+                // SET ORDER ID
+                document.getElementById('hiddenOrderId').value = id;
             });
-
-            // HIỆN BẢNG SẢN PHẨM
-            document.getElementById("productTableWrapper").classList.remove("hidden");
-
-            // TỔNG TIỀN
-            document.getElementById("exportTotal").innerText =
-                data.total_amount.toLocaleString('vi-VN') + " đ";
-
-            // SET ORDER ID
-            document.getElementById("hiddenOrderId").value = id;
-        });
-});
+    });
 </script>
 
 {% endblock %}

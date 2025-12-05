@@ -37,6 +37,7 @@ def inventory_overview(request):
             'sell_price': product.sell_price,
             'cost_price': product.cost_price,
             'low_stock_warning': low_stock_warning,
+            'quantity': product.quantity,
         })
 
     # Lọc theo tab

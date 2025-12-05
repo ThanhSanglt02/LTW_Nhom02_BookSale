@@ -1,100 +1,202 @@
-<!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <title>Employee Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title></title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet"
+        />
 
-<body class="bg-gray-100">
-  <div class="flex">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-gray-50 h-screen shadow-md">
-      <div class="p-6 border-b font-semibold text-lg text-blue-600">📚 Quản lý kho</div>
+        {% block extra_css %} {% endblock %}
 
-      <nav class="mt-4">
-        <ul>
-          <li>
-            <a href="{% url 'inventory_list' %}"
-               class="block px-6 py-2 font-semibold rounded-md border-l-4 transition
-               {% if page == 'inventory_list' %}
-                 bg-blue-500/10 text-blue-700 border-blue-500
-               {% else %}
-                 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent
-               {% endif %}">
-              📦 Tổng quan kho
-            </a>
-          </li>
+        <style>
+            body {
+                background-color: #f5f6fa;
+                font-family: 'Segoe UI', sans-serif;
+                margin: 0;
+            }
 
-          <li>
-            <a href="{% url 'inventory_import_list' %}"
-               class="block px-6 py-2 font-semibold rounded-md border-l-4 transition
-               {% if page == 'inventory_import' %}
-                 bg-blue-500/10 text-blue-700 border-blue-500
-               {% else %}
-                 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent
-               {% endif %}">
-              📥 Phiếu nhập kho
-            </a>
-          </li>
+            /* Ẩn mũi tên dropdown mặc định của <summary> */
+            summary::-webkit-details-marker {
+                display: none;
+            }
+            summary::marker {
+                content: '';
+            }
 
-          <li>
-            <a href="{% url 'inventory_export_list' %}"
-               class="block px-6 py-2 font-semibold rounded-md border-l-4 transition
-               {% if page == 'inventory_export' %}
-                 bg-blue-500/10 text-blue-700 border-blue-500
-               {% else %}
-                 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent
-               {% endif %}">
-              📤 Phiếu xuất kho
-            </a>
-          </li>
+            /* Căn thẳng hàng cho chữ "Quản lý sản phẩm" */
+            details > summary {
+                display: flex;
+                align-items: center;
+                padding-left: 1.5rem; /* = px-6 */
+                padding-top: 0.5rem; /* = py-2 */
+                padding-bottom: 0.5rem;
+                cursor: pointer;
+            }
 
-          <li>
-            <a href="{% url 'supplier_list' %}"
-               class="block px-6 py-2 font-semibold rounded-md border-l-4 transition
-               {% if page == 'supplier_list' %}
-                 bg-blue-500/10 text-blue-700 border-blue-500
-               {% else %}
-                 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border-transparent
-               {% endif %}">
-              👤 Nhà cung cấp
-            </a>
-          </li>
+            .header {
+                background-color: #fff;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 25px;
+            }
 
-        </ul>
-      </nav>
-    </aside>
+            .search-box {
+                display: flex;
+                align-items: center;
+                background-color: #f3f4f6;
+                border-radius: 50px;
+                padding: 8px 16px;
+                width: 400px;
+                margin-left: 260px;
+            }
 
-    <!-- Main content -->
-    <main class="flex-1 flex flex-col">
-      <!-- Topbar -->
-      <header class="flex justify-end items-center bg-white shadow px-8 py-3">
-        <div class="flex items-center space-x-3">
-          <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
-               alt="avatar"
-               class="w-9 h-9 rounded-full border">
+            .search-box i {
+                color: #888;
+            }
 
-          <div class="text-right">
-            <p class="text-sm font-semibold text-gray-800">
-              {{ request.user.get_full_name|default:request.user.username }}
-            </p>
-            <p class="text-xs text-gray-500">
-              Nhân viên kho
-            </p>
-          </div>
+            .search-box input {
+                border: none;
+                outline: none;
+                background: transparent;
+                flex: 1;
+                font-size: 15px;
+                padding-left: 8px;
+            }
+
+            .user-section {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .user-info {
+                text-align: right;
+            }
+
+            .user-info .name {
+                font-weight: 600;
+                font-size: 15px;
+                margin: 0;
+            }
+
+            .user-info .role {
+                color: #888;
+                font-size: 13px;
+                margin: 0;
+            }
+
+            .avatar {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                border: 1px solid #ddd;
+            }
+
+            .notif {
+                background-color: #f3f4f6;
+                border-radius: 50%;
+                padding: 8px;
+                margin-right: 12px;
+                cursor: pointer;
+            }
+
+            .notif i {
+                font-size: 18px;
+                color: #444;
+            }
+            .isActive {
+                font-weight: 600 !important;
+                color: rgba(41, 41, 232, 0.991) !important;
+                background-color: #eff6ff;
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-100 font-sans">
+        <!-- ✅ Header cố định -->
+        <div class="header">
+            <div class=""></div>
+
+            <div class="user-section">
+                <div><i class="fa fa-bell text-gray-600"></i></div>
+
+                {% if user.is_authenticated %}
+                <div class="user-info text-right leading-tight">
+                    <p class="name font-bold text-gray-800">{{ user.username }}</p>
+                    <p class="role">{{user.groups.all.0.name}}</p>
+                </div>
+
+                {% if user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}" class="avatar" />
+                {% else %}
+                <img src="{% static 'images/image.jpg' %}" class="avatar" />
+                {% endif %}
+
+                <a href="{% url 'logout' %}" class="text-sm text-red-500 hover:underline ml-1"
+                    >Đăng xuất</a
+                >
+                {% endif %}
+            </div>
         </div>
-      </header>
 
-      <!-- Content -->
-      <section class="flex-1 p-6">
-        <div class="bg-blue-50 border border-blue-100 shadow-sm rounded-xl p-6">
-          {% block content %}
-          {% endblock %}
+        <!-- Sidebar -->
+        <div class="flex h-100">
+            <aside class="w-64 bg-white h-screen shadow-md" style="margin-top: -68px">
+                <div class="p-6 flex items-center space-x-2 border-b">
+                    <div class="w-6 h-6 bg-blue-600 rounded"></div>
+                    <span class="font-semibold text-lg">BookSale</span>
+                </div>
+                <nav class="mt-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a
+                                href="{% url 'inventory_list' %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-10 {% if request.resolver_match.url_name == 'inventory_list' %} isActive {% endif %}"
+                            >
+                                <span>Tổng quan kho</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="{% url 'inventory_import_list' %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'inventory_import_list' %} isActive {% endif %}"
+                            >
+                                <span>Phiếu nhập kho</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="{% url 'inventory_export_list' %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'inventory_export_list' %} isActive {% endif %}"
+                            >
+                                <span>Phiếu xuất kho</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="{% url 'supplier_list' %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'supplier_list' %} isActive {% endif %}"
+                            >
+                                <span>Nhà cung cấp</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            {% block content %} {% endblock %}
         </div>
-      </section>
-    </main>
-
-  </div>
-</body>
+    </body>
 </html>

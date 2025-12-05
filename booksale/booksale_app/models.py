@@ -301,7 +301,7 @@ class ImportOrder(models.Model):
         decimal_places=2
     )
     note = models.TextField(
-        blank=False, null=False,
+        blank=True, null=True,
         help_text = "Mô tả"
     )
     create_at = models.DateTimeField(auto_now_add=True)

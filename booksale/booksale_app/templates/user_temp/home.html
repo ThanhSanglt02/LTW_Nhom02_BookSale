@@ -242,7 +242,7 @@
     <h2 class="text-center product-title">{{ item.category.category_name|upper }}</h2>
 
     <div class="row">
-        {% for product in item.products %}
+        {% for product in item.products %} {% if product.quantity > 0 %}
         <div class="col-6 col-md-3 text-center mb-4">
             <div class="product-card">
                 <div class="product-image">
@@ -268,7 +268,7 @@
                 </div>
             </div>
         </div>
-        {% empty %}
+        {% endif %} {% empty %}
         <div class="col-12">
             <p class="text-center">Chưa có sản phẩm nào trong danh mục này</p>
         </div>

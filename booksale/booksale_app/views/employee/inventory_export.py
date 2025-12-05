@@ -2,34 +2,33 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponse, JsonResponse
+from decimal import Decimal
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from booksale_app.views.authen_view import group_required
 from booksale_app.models import ExportOrder, ExportOrder_Item, Product, Employee, Order, Order_Item
 from booksale_app.forms import ExportOrderForm
 from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from django.conf import settings
+from reportlab.pdfbase import pdfmetrics
 import os
-from decimal import Decimal
-from datetime import datetime
+from django.conf import settings
 
 # LIST
-@login_required(login_url="/accounts/login/staff/")
-@group_required("NVTK", login_url="/accounts/login/staff/")
+@login_required(login_url="/accounts/login/warehouse/")
+@group_required("NVTK", login_url="/accounts/login/warehouse/")
 def export_order_list(request):
     exports = ExportOrder.objects.all().order_by("-id")
     return render(request, "employee/inventory/inventory_export/inventory_export_list.html", {
         "export_orders": exports,
         "page": "inventory_export",
     })
-
 # CREATE
-@login_required(login_url="/accounts/login/staff/")
-@group_required("NVTK", login_url="/accounts/login/staff/")
+@login_required(login_url="/accounts/login/warehouse/")
+@group_required("NVTK", login_url="/accounts/login/warehouse/")
 def export_order_create(request):
     today = datetime.now().strftime("%d/%m/%Y")
     employee = request.user.employee
@@ -94,8 +93,8 @@ def export_order_create(request):
 
 
 # DETAIL
-@login_required(login_url="/accounts/login/staff/")
-@group_required("NVTK", login_url="/accounts/login/staff/")
+@login_required(login_url="/accounts/login/warehouse/")
+@group_required("NVTK", login_url="/accounts/login/warehouse/")
 def export_order_detail(request, pk):
     export = get_object_or_404(ExportOrder, pk=pk)
     items = ExportOrder_Item.objects.filter(exportOrder=export)
@@ -104,10 +103,6 @@ def export_order_detail(request, pk):
         "export": export,
         "items": items,
     })
-
-
-from django.http import JsonResponse
-from booksale_app.models import Order, Order_Item
 
 def order_detail_api(request, id):
     try:
@@ -149,8 +144,8 @@ def order_detail_api(request, id):
 
 
 # DELETE
-@login_required(login_url="/accounts/login/staff/")
-@group_required("NVTK", login_url="/accounts/login/staff/")
+@login_required(login_url="/accounts/login/warehouse/")
+@group_required("NVTK", login_url="/accounts/login/warehouse/")
 def export_order_delete(request, pk):
     # Lấy đối tượng ExportOrder theo pk
     export = get_object_or_404(ExportOrder, pk=pk)
@@ -168,7 +163,7 @@ def export_order_delete(request, pk):
         # Xóa tất cả các ExportOrder_Item liên quan
         items.delete()
 
-        # Cuối cùng xóa ExportOrder
+        # xóa ExportOrder
         export.delete()
 
     # Thông báo thành công
@@ -178,8 +173,8 @@ def export_order_delete(request, pk):
     return redirect("inventory_export_list")
 
 # EXPORT PDF
-@login_required(login_url="/accounts/login/staff/")
-@group_required("NVTK", login_url="/accounts/login/staff/")
+@login_required(login_url="/accounts/login/warehouse/")
+@group_required("NVTK", login_url="/accounts/login/warehouse/")
 def export_order_export_pdf(request, pk):
     export_order = get_object_or_404(ExportOrder, pk=pk)
     items = ExportOrder_Item.objects.filter(exportOrder=export_order)
@@ -203,7 +198,7 @@ def export_order_export_pdf(request, pk):
     elements.append(Paragraph(f"<b>PHIẾU XUẤT KHO #{export_order.id}</b>", styles['VNTitle']))
     elements.append(Spacer(1, 12))
 
-    # Thông tin phiếu
+    #Thông tin phiếu
     info_data = [
         ["Ngày xuất:", export_order.export_date.strftime("%d/%m/%Y %H:%M")],
         ["Nhân viên:", export_order.employee.emp_name],

@@ -167,7 +167,7 @@
     <!-- THÔNG TIN SẢN PHẨM -->
     <div class="product-info">
       <h2 class="product-title">{{ product.product_name }}</h2>
-      <p class="product-brand">Thương hiệu: {{ product.publisher.publisher_name|default:"Đang cập nhật" }}</p>
+      <p class="product-brand">Nhà xuất bản: {{ product.publisher.publisher_name|default:"Đang cập nhật" }}</p>
       <p class="product-price">
         {% if product.sell_price %}
           {{ product.sell_price|floatformat:0 }} VND

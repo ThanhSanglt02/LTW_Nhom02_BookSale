@@ -35,12 +35,19 @@ def category_add(request):
 
 def category_edit(request, pk):
     category = get_object_or_404(Category, pk=pk)
+
     if request.method == "POST":
-        category.name = request.POST.get('category_name')
+        category.category_name = request.POST.get('category_name')
         category.description = request.POST.get('description')
         category.save()
+
+        messages.success(request, "Cập nhật danh mục thành công ✅")
         return redirect('category_list')
-    return render(request, 'admin_temp/category/category_form.html', {'category': category})
+
+    return render(request, 'admin_temp/category/category_form.html', {
+        'category': category,
+        'title': 'Sửa danh mục'
+    })
 
 def category_delete(request, pk):
     category = get_object_or_404(Category, pk=pk)

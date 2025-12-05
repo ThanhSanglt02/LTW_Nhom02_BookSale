@@ -68,6 +68,7 @@ urlpatterns = [
     path("emp/category/<int:pk>/delete/", category.category_delete, name="category_delete"),
     path('emp/category/<int:pk>/', category.category_detail, name='category_detail'),
     path('emp/category/delete/bulk/', category.category_bulk_delete, name='category_bulk_delete'),
+    path('emp/category/edit/<int:pk>/', category.category_edit, name='category_edit'),
 
     path('emp/genre/', genre.genre_list, name='genre_list'),
     path('emp/genre/add/', genre.genre_add, name='genre_add'),
