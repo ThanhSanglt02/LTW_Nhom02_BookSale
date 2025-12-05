@@ -5,10 +5,17 @@ from django.core.paginator import Paginator
 
 from ...models import Review  # No ReplyReview import needed
 
+
 @login_required
 def review_list(request):
     qs = Review.objects.select_related("product", "creator").order_by("-date_created")
 
+    # Lấy rating filter
+    rating = request.GET.get("rating")
+    if rating:
+        qs = qs.filter(rating=rating)
+
+    # Phân trang sau khi đã lọc
     paginator = Paginator(qs, 12)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
@@ -16,6 +23,7 @@ def review_list(request):
     return render(request, "admin_temp/review/review_list.html", {
         "page_obj": page_obj,
         "reviews": page_obj.object_list,
+        "current_rating": rating,  # để hiển thị đúng selected trong select box
     })
 
 
