@@ -123,11 +123,11 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/', null=True, blank=True)
     cost_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
     sell_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
     quantity = models.PositiveIntegerField(default=0)
     publisher = models.ForeignKey(
@@ -181,7 +181,7 @@ class Cart_Item(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     unit_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
     added_at = models.DateTimeField(auto_now_add=True)
 
@@ -200,7 +200,7 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(
         max_digits=10,
-        decimal_places=2,
+        decimal_places=3,
         null=True,         # cho phép null
         blank=True,
     )
@@ -231,11 +231,11 @@ class Order_Item(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     unit_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
     total_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
 
 class Review(models.Model):
@@ -298,7 +298,7 @@ class ImportOrder(models.Model):
     import_date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
     note = models.TextField(
         blank=True, null=True,
@@ -334,18 +334,18 @@ class ImportOrder_Item(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     unit_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
     total_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
 
 class ExportOrder(models.Model):
     export_date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
     reason = models.TextField(
         blank=False, null=False,
@@ -381,11 +381,11 @@ class ExportOrder_Item(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     unit_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
     total_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=3
     )
 
 

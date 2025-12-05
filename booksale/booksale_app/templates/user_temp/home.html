@@ -242,8 +242,7 @@
     <h2 class="text-center product-title">{{ item.category.category_name|upper }}</h2>
 
     <div class="row">
-        {% for product in item.products %} 
-        {% if product.quantity > 0 %}
+        {% for product in item.products %} {% if product.quantity > 0 %}
         <div class="col-6 col-md-3 text-center mb-4">
             <div class="product-card">
                 <div class="product-image">
@@ -265,7 +264,7 @@
                     >
                         <p class="product-name">{{ product.product_name }}</p>
                     </a>
-                    <p class="product-price">{{ product.sell_price|floatformat:0}} VND</p>
+                    <p class="product-price">{{ product.sell_price}} VND</p>
                 </div>
             </div>
         </div>
@@ -324,15 +323,15 @@
         showSlide(0);
 
         // Format prices
-        const priceElements = document.querySelectorAll('.product-price');
-        priceElements.forEach(function (element) {
-            const text = element.textContent.trim();
-            const match = text.match(/(\d+)\s*VND/);
-            if (match) {
-                const number = parseInt(match[1]);
-                element.textContent = number.toLocaleString('vi-VN') + ' VND';
-            }
-        });
+        // const priceElements = document.querySelectorAll('.product-price');
+        // priceElements.forEach(function (element) {
+        //     const text = element.textContent.trim();
+        //     const match = text.match(/(\d+)\s*VND/);
+        //     if (match) {
+        //         const number = parseInt(match[1]);
+        //         element.textContent = number.toLocaleString('vi-VN') + ' VND';
+        //     }
+        // });
     });
 </script>
 

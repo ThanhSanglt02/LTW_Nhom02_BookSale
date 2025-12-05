@@ -44,7 +44,7 @@ def cart(request):
     
     for item in cart_items:
         # Tính tổng tiền cho từng item
-        item_total = float(item.unit_price) * item.quantity
+        item_total = item.unit_price * item.quantity
         tong_cong += item_total
         
         # Lấy tên file ảnh
@@ -60,7 +60,7 @@ def cart(request):
         giohang.append({
             'id': item.id,
             'ten': item.product.product_name,
-            'dongia': float(item.unit_price),
+            'dongia': item.unit_price,
             'soluong': item.quantity,
             'tong': item_total,  # Tổng tiền = đơn giá * số lượng
             'hinhanh': image_name,

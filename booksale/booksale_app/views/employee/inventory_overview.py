@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.db import models
 from booksale_app.models import Product, ExportOrder_Item, ImportOrder_Item
+from booksale_app.views.authen_view import group_required
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url="/accounts/login/staff/")
+@group_required("NVTK", login_url="/accounts/login/staff/")
 def inventory_overview(request):
     # Lấy từ khóa tìm kiếm và tab đang chọn
     search_query = request.GET.get('search', '').strip()

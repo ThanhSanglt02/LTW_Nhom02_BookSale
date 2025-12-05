@@ -431,7 +431,7 @@
                     </div>
                 </td>
                 <td data-label="Đơn giá" id="dongia-{{ sp.id }}" style="color: #007bff" data-value="{{ sp.dongia }}">
-                    {{ sp.dongia|floatformat:0 }}₫
+                    {{ sp.dongia }}₫
                 </td>
                 <td data-label="Số lượng">
                     <button class="qty-btn giam" data-id="{{ sp.id }}" data-max="{{ sp.max_quantity }}">−</button>
@@ -451,7 +451,7 @@
                     >
                 </td>
                 <td data-label="Tổng" id="tong-{{ sp.id }}" style="color: #007bff" data-value="{{ sp.tong }}">
-                    {{ sp.tong|floatformat:0 }}₫
+                    {{ sp.tong }}₫
                 </td>
                 <td data-label=""><button class="delete-btn xoa-item" data-item-id="{{ sp.id }}">✖</button></td>
             </tr>
@@ -498,15 +498,15 @@
         };
 
         // Format tất cả giá trị tiền khi load trang
-        document.querySelectorAll('[data-value]').forEach((element) => {
-            const value = parseFloat(element.getAttribute('data-value')) || 0;
-            if (
-                element.id &&
-                (element.id.startsWith('dongia-') || element.id.startsWith('tong-') || element.id === 'tong-cong')
-            ) {
-                element.textContent = formatCurrency(value);
-            }
-        });
+        // document.querySelectorAll('[data-value]').forEach((element) => {
+        //     const value = parseFloat(element.getAttribute('data-value')) || 0;
+        //     if (
+        //         element.id &&
+        //         (element.id.startsWith('dongia-') || element.id.startsWith('tong-') || element.id === 'tong-cong')
+        //     ) {
+        //         element.textContent = formatCurrency(value);
+        //     }
+        // });
 
         // Hàm cập nhật hidden input
         function updateHiddenInput(itemId, quantity) {

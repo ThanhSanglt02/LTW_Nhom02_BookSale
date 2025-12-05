@@ -52,14 +52,17 @@ class CustomLogoutView(LogoutView):
         user = request.user
         # Lưu kết quả vì sau khi logout user sẽ mất
         is_nvbh = False
+        is_nvtk = False
         if user.is_authenticated:
             is_nvbh = user.groups.filter(name="NVBH").exists()
+            is_nvtk = user.groups.filter(name="NVTK").exists()
+
 
         # Gọi logout gốc của Django
         response = super().dispatch(request, *args, **kwargs)
 
         # Redirect theo nhóm
-        if is_nvbh:
+        if is_nvbh or is_nvtk:
             return redirect('/accounts/login/staff')
         else:
             return redirect('/')
