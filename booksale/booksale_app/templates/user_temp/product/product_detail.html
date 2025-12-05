@@ -140,6 +140,21 @@
 .related-price { color: #e47911; font-weight: bold; margin-bottom: 5px; }
 .related-item button { background-color: #007bff; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; }
 .related-item button:hover { background-color: #0056b3; }
+    .filter-btn {
+    background: #fff;
+    border: 2px solid #ddd;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.filter-btn.active {
+    border-color: #1e90ff;
+    background: #e8f3ff;
+}
+
 
 </style>
 {% endblock %}
@@ -170,7 +185,7 @@
       <p class="product-brand">Nhà xuất bản: {{ product.publisher.publisher_name|default:"Đang cập nhật" }}</p>
       <p class="product-price">
         {% if product.sell_price %}
-          {{ product.sell_price|floatformat:0 }} VND
+          {{ product.sell_price  }} VND
         {% else %}
           Liên hệ
         {% endif %}
@@ -202,8 +217,51 @@
 <div class="review-section">
   <h4 class="tab-title">Đánh giá sản phẩm</h4>
 
-  {% if product.review_set.exists %}
-    {% for review in product.review_set.all %}
+<!-- BỘ LỌC SỐ SAO -->
+<form method="GET" style="margin: 15px 0;">
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+
+      {% for s in "54321"|make_list %}
+    <button
+        type="submit"
+        name="rating"
+        value="{{ s }}"
+        class="filter-btn {% if request.GET.rating == s %}active{% endif %}"
+    >
+        ⭐ {{ s }}
+    </button>
+{% endfor %}
+
+      {% if request.GET.rating %}
+        <a href="?">
+          <button type="button"
+                  style="
+                    background:#ff4d4d;
+                    color:#fff;
+                    border:2px solid #ff4d4d;
+                    padding:5px 14px;
+                    border-radius:6px;
+                    cursor:pointer;
+                    font-size:15px;
+                    font-weight:600;
+                    transition:0.2s;
+                  "
+                  onmouseover="this.style.background='#e60000'; this.style.borderColor='#e60000';"
+                  onmouseout="this.style.background='#ff4d4d'; this.style.borderColor='#ff4d4d';"
+          >
+            Xóa lọc
+          </button>
+        </a>
+      {% endif %}
+
+  </div>
+</form>
+<!-- END BỘ LỌC -->
+
+
+
+  {% if reviews %}
+    {% for review in reviews %}
       <div class="review-item">
         <div class="review-header" style="display:flex; justify-content:space-between; align-items:center;">
           <div>
@@ -237,7 +295,6 @@
         {% endif %}
 
         {% if review.creator == user %}
-          <!-- Nút Sửa & Xóa -->
           <div style="margin-top:8px; display:flex; gap:8px;">
             <a href="{% url 'edit_review' review.id %}" class="btn-edit-review">Sửa</a>
             <form method="POST" action="{% url 'delete_review' review.id %}"
@@ -251,11 +308,9 @@
       </div>
     {% endfor %}
   {% else %}
-    <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+    <p>Không tìm thấy đánh giá nào.</p>
   {% endif %}
 </div>
-
-
 
 </div>
 

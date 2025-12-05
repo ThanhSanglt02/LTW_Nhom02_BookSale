@@ -10,20 +10,26 @@ from ...models import Review  # No ReplyReview import needed
 def review_list(request):
     qs = Review.objects.select_related("product", "creator").order_by("-date_created")
 
-    # Lấy rating filter
+    # --- Lọc theo số sao ---
     rating = request.GET.get("rating")
     if rating:
         qs = qs.filter(rating=rating)
 
-    # Phân trang sau khi đã lọc
+    # --- Lọc theo tên khách hàng ---
+    search = request.GET.get("search", "").strip()
+    if search:
+        qs = qs.filter(creator__username__icontains=search)
+
+    # --- Phân trang ---
     paginator = Paginator(qs, 12)
-    page_number = request.GET.get("page", 1)
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
     return render(request, "admin_temp/review/review_list.html", {
         "page_obj": page_obj,
         "reviews": page_obj.object_list,
-        "current_rating": rating,  # để hiển thị đúng selected trong select box
+        "current_rating": rating,
+        "current_search": search,
     })
 
 
