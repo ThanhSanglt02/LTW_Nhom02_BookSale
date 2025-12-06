@@ -1,0 +1,69 @@
+{% extends "admin_temp/admin_base.html" %} {% load static %} 
+{% block content %}
+<main class="flex-1 bg-gray-50 p-6">
+
+    <h1 class="text-2xl font-semibold mb-6">Chi tiết khách hàng</h1>
+
+    <!-- Thông tin khách hàng -->
+    <div class="bg-white p-5 rounded-lg shadow mb-6">
+        <h2 class="text-lg font-semibold mb-4">Thông tin khách hàng</h2>
+
+        <div class="grid grid-cols-2 gap-4">
+            <p><strong>Họ tên:</strong> {{ customer.cust_name }}</p>
+            <p><strong>Email:</strong> {{ customer.email }}</p>
+            <p><strong>Số điện thoại:</strong> {{ customer.phone }}</p>
+            <p><strong>Địa chỉ:</strong> {{ customer.address }}</p>
+            <p><strong>Tổng số đơn đã mua:</strong> {{ total_orders }}</p>
+            <p><strong>Tổng tiền:</strong> {{ total_spent }} VNĐ</p>
+        </div>
+    </div>
+
+    <!-- Lịch sử mua hàng -->
+    <div class="bg-white p-5 rounded-lg shadow">
+        <h2 class="text-lg font-semibold mb-4">Lịch sử mua hàng</h2>
+
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.order_date }}</td>
+                    <td>{{ order.total_amount }} VNĐ</td>
+
+                    <td>
+                        <span class="status-badge 
+                            {% if order.status == 'completed' %} badge bg-success
+                            {% elif order.status == 'pending' %} badge bg-warning
+                            {% elif order.status == 'cancelled' %} badge bg-danger
+                            {% elif order.status == 'confirmed' %} badge bg-primary
+                            {% endif %}
+                        ">
+                            {{ order.get_status_display }}
+                        </span>
+                    </td>
+
+
+                    <td class="text-center">
+                        <a href="/emp/order_details/{{order.id}}" class="text-primary">→</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">Khách hàng chưa có đơn hàng nào.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</main>
+{% endblock %}

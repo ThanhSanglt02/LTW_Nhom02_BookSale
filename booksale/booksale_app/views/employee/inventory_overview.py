@@ -45,9 +45,9 @@ def inventory_overview(request):
 
     # Lọc theo tab
     if tab == 'in':  # Còn hàng
-        inventory_data = [item for item in inventory_data if item['stock'] >= 2]
+        inventory_data = [item for item in inventory_data if item['quantity'] >= 2]
     elif tab == 'out':  # Hết hàng
-        inventory_data = [item for item in inventory_data if item['stock'] < 2]
+        inventory_data = [item for item in inventory_data if item['quantity'] == 0]
 
     context = {
         'inventory': inventory_data,

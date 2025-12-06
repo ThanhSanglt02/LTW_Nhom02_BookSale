@@ -47,6 +47,26 @@ def export_order_create(request):
         selected_order = Order.objects.get(id=order_id)
         order_items = selected_order.order_item_set.all()
 
+        # Kiểm tra tồn kho trước khi tạo phiếu xuất
+        insufficient_stock = False
+        for item in order_items:
+            qty = item.quantity
+            if item.product.quantity < qty:
+                insufficient_stock = True
+                break
+
+        if insufficient_stock:
+            # Nếu không đủ hàng, hiển thị thông báo lỗi và không tạo phiếu xuất
+            messages.error(request, "Tồn kho không đủ để xuất tất cả sản phẩm.")
+            return render(request, "employee/inventory/inventory_export/inventory_export_form.html", {
+                "orders": Order.objects.all(),
+                "selected_order": selected_order,
+                "products": products,
+                "edit_mode": False,
+                "today": today,
+                "employee": employee,
+            })
+
         with transaction.atomic():
             export = ExportOrder.objects.create(
                 order=selected_order,
@@ -58,7 +78,6 @@ def export_order_create(request):
 
             for item in order_items:
                 qty = item.quantity
-                print("So luong", qty)
                 price = item.unit_price
 
                 ExportOrder_Item.objects.create(

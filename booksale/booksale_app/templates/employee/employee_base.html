@@ -155,7 +155,6 @@
         <div class="flex h-100">
             <aside class="w-64 bg-white h-screen shadow-md" style="margin-top: -68px">
                 <div class="p-6 flex items-center space-x-2 border-b">
-                    <div class="w-6 h-6 bg-blue-600 rounded"></div>
                     <span class="font-semibold text-lg">BookSale</span>
                 </div>
                 <nav class="mt-6">
@@ -171,7 +170,7 @@
                         <li>
                             <a
                                 href="{% url 'inventory_import_list' %}"
-                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'inventory_import_list' %} isActive {% endif %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name in 'inventory_import_list inventory_import_create inventory_import_detail' %} isActive {% endif %}"
                             >
                                 <span>Phiếu nhập kho</span>
                             </a>
@@ -179,7 +178,7 @@
                         <li>
                             <a
                                 href="{% url 'inventory_export_list' %}"
-                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'inventory_export_list' %} isActive {% endif %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name in 'inventory_export_list inventory_export_create inventory_export_detail' %} isActive {% endif %}"
                             >
                                 <span>Phiếu xuất kho</span>
                             </a>
@@ -187,7 +186,7 @@
                         <li>
                             <a
                                 href="{% url 'supplier_list' %}"
-                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name == 'supplier_list' %} isActive {% endif %}"
+                                class="flex items-center px-6 py-2 hover:bg-gray-100 {% if request.resolver_match.url_name in 'supplier_list supplier_add supplier_edit' %} isActive {% endif %}"
                             >
                                 <span>Nhà cung cấp</span>
                             </a>

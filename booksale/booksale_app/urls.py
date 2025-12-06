@@ -54,7 +54,9 @@ urlpatterns = [
     path('emp/order_confirm_status/<int:pk>/', views.order_confirm_status, name='emp/order_confirm_status'),
     path('emp/order_cancel_status/<int:pk>/', views.order_cancel_status, name='emp/order_cancel_status'),
     # Customer 
-    path('emp/customer_list', views.customer_list, name='emp/customer_list'), 
+    path('emp/customer_list', views.customer_list, name='emp/customer_list'),
+    path('emp/customer_order_history/<int:pk>', views.customer_order_history, name='emp/customer_order_history'),
+
     # CRUD sản phẩm
     path('emp/product/add/', product_add, name='product_add'),
     path('emp/product/<int:pk>/edit/', product_edit, name='product_edit'),
