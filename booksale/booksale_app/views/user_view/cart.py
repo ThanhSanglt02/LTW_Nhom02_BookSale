@@ -73,7 +73,7 @@ def cart(request):
     
     return render(request, 'user_temp/cart/cart.html', {
         'giohang': giohang,
-        'tong_cong': int(tong_cong), 
+        'tong_cong': tong_cong, 
         
     })
 

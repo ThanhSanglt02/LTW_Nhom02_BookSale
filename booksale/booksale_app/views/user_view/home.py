@@ -29,7 +29,7 @@ def home_view(request):
     # Lấy products theo từng category (4 sản phẩm đầu tiên mỗi category)
     categories_with_products = []
     for category in categories:
-        products = Product.objects.filter(category=category)[:4]  # Lấy 4 sản phẩm đầu tiên
+        products = Product.objects.filter(category=category) 
         categories_with_products.append({
             'category': category,
             'products': products

@@ -422,7 +422,12 @@
             <tr id="row-{{ sp.id }}">
                 <td data-label="">
                     <div class="product-info">
-                        <input type="checkbox" class="item-checkbox" value="{{ sp.id }}" data-item-id="{{ sp.id }}" />
+                        <input
+                            type="checkbox"
+                            class="item-checkbox"
+                            value="{{ sp.id }}"
+                            data-item-id="{{ sp.id }}"
+                        />
                         <img src="{{ sp.image.url }}" alt="{{ sp.ten }}" />
                         <div class="product-details">
                             <div class="product-name">{{ sp.ten }}</div>
@@ -430,11 +435,22 @@
                         </div>
                     </div>
                 </td>
-                <td data-label="Đơn giá" id="dongia-{{ sp.id }}" style="color: #007bff" data-value="{{ sp.dongia }}">
+                <td
+                    data-label="Đơn giá"
+                    id="dongia-{{ sp.id }}"
+                    style="color: #007bff"
+                    data-value="{{ sp.dongia }}"
+                >
                     {{ sp.dongia }}₫
                 </td>
                 <td data-label="Số lượng">
-                    <button class="qty-btn giam" data-id="{{ sp.id }}" data-max="{{ sp.max_quantity }}">−</button>
+                    <button
+                        class="qty-btn giam"
+                        data-id="{{ sp.id }}"
+                        data-max="{{ sp.max_quantity }}"
+                    >
+                        −
+                    </button>
                     <input
                         type="text"
                         id="soluong-{{ sp.id }}"
@@ -445,19 +461,36 @@
                         data-item-id="{{ sp.id }}"
                         readonly
                     />
-                    <button class="qty-btn tang" data-id="{{ sp.id }}" data-max="{{ sp.max_quantity }}">+</button>
-                    <small class="text-muted" style="display: block; font-size: 11px; margin-top: 4px"
+                    <button
+                        class="qty-btn tang"
+                        data-id="{{ sp.id }}"
+                        data-max="{{ sp.max_quantity }}"
+                    >
+                        +
+                    </button>
+                    <small
+                        class="text-muted"
+                        style="display: block; font-size: 11px; margin-top: 4px"
                         >Còn: {{ sp.max_quantity }}</small
                     >
                 </td>
-                <td data-label="Tổng" id="tong-{{ sp.id }}" style="color: #007bff" data-value="{{ sp.tong }}">
+                <td
+                    data-label="Tổng"
+                    id="tong-{{ sp.id }}"
+                    style="color: #007bff"
+                    data-value="{{ sp.tong }}"
+                >
                     {{ sp.tong }}₫
                 </td>
-                <td data-label=""><button class="delete-btn xoa-item" data-item-id="{{ sp.id }}">✖</button></td>
+                <td data-label="">
+                    <button class="delete-btn xoa-item" data-item-id="{{ sp.id }}">✖</button>
+                </td>
             </tr>
             {% endfor %} {% else %}
             <tr>
-                <td colspan="5" style="padding: 20px; color: #666">Giỏ hàng của bạn hiện đang trống.</td>
+                <td colspan="5" style="padding: 20px; color: #666">
+                    Giỏ hàng của bạn hiện đang trống.
+                </td>
             </tr>
             {% endif %}
         </tbody>
@@ -471,9 +504,16 @@
         <div style="display: flex; align-items: center; gap: 10px">
             <div class="total-text">
                 Tổng cộng ({{ giohang|length }} sản phẩm):
-                <span id="tong-cong" class="total-price" data-value="{{ tong_cong }}">{{ tong_cong }}₫</span>
+                <span id="tong-cong" class="total-price" data-value="{{ tong_cong }}"
+                    >{{ tong_cong }}₫</span
+                >
             </div>
-            <form method="POST" action="{% url 'proceed_to_order' %}" id="proceed-to-order-form" style="margin: 0">
+            <form
+                method="POST"
+                action="{% url 'proceed_to_order' %}"
+                id="proceed-to-order-form"
+                style="margin: 0"
+            >
                 {% csrf_token %} {% for sp in giohang %}
                 <input
                     type="hidden"
@@ -521,7 +561,9 @@
                 const id = this.dataset.id;
                 const maxQty = parseInt(this.dataset.max) || 999999;
                 const soluong = document.getElementById(`soluong-${id}`);
-                const dongia = parseInt(document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ''));
+                const dongia = parseInt(
+                    document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ''),
+                );
                 let sl = parseInt(soluong.value);
 
                 if (sl < maxQty) {
@@ -540,7 +582,9 @@
             btn.addEventListener('click', function () {
                 const id = this.dataset.id;
                 const soluong = document.getElementById(`soluong-${id}`);
-                const dongia = parseInt(document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ''));
+                const dongia = parseInt(
+                    document.getElementById(`dongia-${id}`).textContent.replace(/\D/g, ''),
+                );
                 let sl = parseInt(soluong.value);
                 if (sl > 1) {
                     sl--;

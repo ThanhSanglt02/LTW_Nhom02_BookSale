@@ -429,7 +429,8 @@
                     {% for sp in giohang %}
                     <!-- Chi tiết sản phẩm -->
                     <div class="product-detail">
-                        <img src="{% static 'images/'|add:sp.hinhanh %}" alt="{{ sp.ten }}">
+                        <img src="{{sp.product.image.url}}" alt="{{ sp.ten }}">
+                        
                         <div class="product-info">
                             <div class="product-title">{{ sp.ten }}</div>
                             <div class="product-meta">
@@ -438,13 +439,13 @@
                                 {% endif %}
                             </div>
                             <div class="product-price-row">
-                                <span class="product-price" data-value="{{ sp.dongia }}">{{ sp.dongia|floatformat:0 }}₫</span>
+                                <span class="product-price" data-value="{{ sp.dongia }}">{{ sp.dongia }}₫</span>
                                 <div class="quantity-control">
                                     <span style="font-weight: 600; color: #666;">x{{ sp.soluong }}</span>
                                 </div>
                             </div>
                             <div style="text-align: right; margin-top: 10px;">
-                                <strong style="color: #007bff;">Tổng: <span data-value="{{ sp.tong }}">{{ sp.tong|floatformat:0 }}₫</span></strong>
+                                <strong style="color: #007bff;">Tổng: <span data-value="{{ sp.tong }}">{{ sp.tong}}₫</span></strong>
                             </div>
                         </div>
                     </div>
@@ -460,7 +461,7 @@
                 <div class="order-summary">
                     <div class="summary-row">
                         <span>Tạm tính:</span>
-                        <span class="summary-value" id="subtotal" data-value="{{ tong_cong }}">{{ tong_cong|floatformat:0 }}₫</span>
+                        <span class="summary-value" id="subtotal" data-value="{{ tong_cong }}">{{ tong_cong }}₫</span>
                     </div>
                     <div class="summary-row">
                         <span>Phí vận chuyển:</span>
@@ -468,7 +469,7 @@
                     </div>
                     <div class="summary-row total">
                         <span>Tổng:</span>
-                        <span class="summary-value total-price" id="total" data-value="{{ tong_cong }}">{{ tong_cong|floatformat:0 }}₫</span>
+                        <span class="summary-value total-price" id="total" data-value="{{ tong_cong }}">{{ tong_cong }}₫</span>
                     </div>
                 </div>
             </div>
@@ -485,11 +486,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return num.toLocaleString('vi-VN') + '₫';
     };
 
-    // Format tất cả giá trị tiền khi load trang
-    document.querySelectorAll('[data-value]').forEach(element => {
-        const value = parseFloat(element.getAttribute('data-value')) || 0;
-        element.textContent = formatCurrency(value);
-    });
+    // // Format tất cả giá trị tiền khi load trang
+    // document.querySelectorAll('[data-value]').forEach(element => {
+    //     const value = parseFloat(element.getAttribute('data-value')) || 0;
+    //     element.textContent = formatCurrency(value);
+    // });
 
     // Validate form trước khi submit
     const checkoutForm = document.getElementById('checkout-form');

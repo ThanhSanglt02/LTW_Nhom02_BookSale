@@ -1,12 +1,8 @@
-import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from booksale_app.models import Product, Category, Genre, Publisher
 from booksale_app.forms import ProductForm
-
-from django.conf import settings
-
 
 
 @login_required(login_url='login')

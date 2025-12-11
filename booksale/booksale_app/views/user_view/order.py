@@ -42,7 +42,7 @@ def order(request):
     tong_cong = 0
     
     for item in cart_items:
-        item_total = float(item.unit_price) * item.quantity
+        item_total = item.unit_price * item.quantity
         tong_cong += item_total
         
         # Lấy tên file ảnh
@@ -57,7 +57,7 @@ def order(request):
         giohang.append({
             'id': item.id,
             'ten': item.product.product_name,
-            'dongia': float(item.unit_price),
+            'dongia': item.unit_price,
             'soluong': item.quantity,
             'tong': item_total,
             'hinhanh': image_name,
@@ -68,7 +68,7 @@ def order(request):
     
     return render(request, 'user_temp/order/order.html', {
         'giohang': giohang,
-        'tong_cong': int(tong_cong),
+        'tong_cong': tong_cong,
         'customer': customer
     })
 
@@ -151,8 +151,8 @@ def create_order(request):
                 total_price=item_total
             )
             
-            # Giảm số lượng sản phẩm trong kho
-            cart_item.product.quantity -= cart_item.quantity
+            # # Giảm số lượng sản phẩm trong kho
+            # cart_item.product.quantity -= cart_item.quantity
             cart_item.product.save()
         
         # Xóa tất cả Cart_Item
