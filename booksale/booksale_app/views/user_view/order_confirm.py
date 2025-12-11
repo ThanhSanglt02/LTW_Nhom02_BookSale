@@ -23,7 +23,7 @@ def order_confirm(request, order_id):
     tam_tinh = 0
     
     for item in order_items:
-        item_total = float(item.total_price)
+        item_total = item.total_price
         tam_tinh += item_total
         
         # Lấy tên file ảnh
@@ -38,7 +38,7 @@ def order_confirm(request, order_id):
         products.append({
             'id': item.id,
             'ten': item.product.product_name,
-            'dongia': float(item.unit_price),
+            'dongia': item.unit_price,
             'soluong': item.quantity,
             'tong': item_total,
             'hinhanh': image_name,
@@ -52,9 +52,9 @@ def order_confirm(request, order_id):
         'order': order,
         'products': products,
         'customer': customer,
-        'tam_tinh': int(tam_tinh),
+        'tam_tinh': tam_tinh,
         'phi_van_chuyen': phi_van_chuyen,
-        'tong_cong': int(tong_cong)
+        'tong_cong': tong_cong
     }
 
     return render(request, 'user_temp/order_confirm/order_confirm.html', context)

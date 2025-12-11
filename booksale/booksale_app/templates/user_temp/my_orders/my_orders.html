@@ -488,7 +488,7 @@
                         </div>
 
                         <div class="order-total" data-value="{{ order_data.total }}">
-                            Thành tiền: {{ order_data.total|floatformat:0 }}₫
+                            Thành tiền: {{ order_data.total }}₫
                         </div>
 
                         <div class="order-actions">
@@ -521,26 +521,26 @@ document.addEventListener('DOMContentLoaded', function() {
         return num.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + '₫';
     };
 
-    // Format giá tiền
-    document.querySelectorAll('[data-value]').forEach(element => {
-        const value = parseFloat(element.getAttribute('data-value')) || 0;
-        const currentText = element.textContent;
-        // Chỉ format nếu chưa được format
-        if (!currentText.includes('.')) {
-            element.textContent = formatCurrency(value);
-        } else {
-            // Nếu đã có dấu chấm, chỉ cần đảm bảo format đúng
-            const price = parseFloat(currentText.replace(/[^\d.-]/g, '')) || 0;
-            element.textContent = formatCurrency(price);
-        }
-    });
+    // // Format giá tiền
+    // document.querySelectorAll('[data-value]').forEach(element => {
+    //     const value = parseFloat(element.getAttribute('data-value')) || 0;
+    //     const currentText = element.textContent;
+    //     // Chỉ format nếu chưa được format
+    //     if (!currentText.includes('.')) {
+    //         element.textContent = formatCurrency(value);
+    //     } else {
+    //         // Nếu đã có dấu chấm, chỉ cần đảm bảo format đúng
+    //         const price = parseFloat(currentText.replace(/[^\d.-]/g, '')) || 0;
+    //         element.textContent = formatCurrency(price);
+    //     }
+    // });
 
-    // Format order-total
-    document.querySelectorAll('.order-total').forEach(element => {
-        const value = parseFloat(element.getAttribute('data-value')) || 0;
-        const formatted = formatCurrency(value);
-        element.innerHTML = 'Thành tiền: <span>' + formatted + '</span>';
-    });
+    // // Format order-total
+    // document.querySelectorAll('.order-total').forEach(element => {
+    //     const value = parseFloat(element.getAttribute('data-value')) || 0;
+    //     const formatted = formatCurrency(value);
+    //     element.innerHTML = 'Thành tiền: <span>' + formatted + '</span>';
+    // });
 });
 </script>
 {% endblock %}

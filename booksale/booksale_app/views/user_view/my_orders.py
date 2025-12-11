@@ -45,7 +45,7 @@ def my_orders(request):
         order_items = Order_Item.objects.filter(order=order).select_related('product')
         
         # Tính tổng tiền
-        total = float(order.total_amount)
+        total = order.total_amount
         
         # Lấy sản phẩm đầu tiên để hiển thị
         first_item = order_items.first()

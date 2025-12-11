@@ -396,15 +396,15 @@
         {% if products %}
             {% for product in products %}
             <div class="product-item">
-                <img src="{% static 'images/'|add:product.hinhanh %}" alt="{{ product.ten }}" class="product-image">
+                <img src="{{product.product.image.url}}" alt="{{ product.ten }}" class="product-image">
                 <div class="product-info">
                     <div class="product-title">{{ product.ten }}</div>
                     {% if product.product.publisher %}
                     <div class="product-detail">Nhà xuất bản: {{ product.product.publisher.publisher_name }}</div>
                     {% endif %}
-                    <div class="product-detail">Đơn giá: <span data-value="{{ product.dongia }}">{{ product.dongia|floatformat:0 }}₫</span></div>
+                    <div class="product-detail">Đơn giá: <span data-value="{{ product.dongia }}">{{ product.dongia }}₫</span></div>
                     <div class="product-detail">Số lượng: {{ product.soluong }}</div>
-                    <div class="product-price">Tổng: <span data-value="{{ product.tong }}">{{ product.tong|floatformat:0 }}₫</span></div>
+                    <div class="product-price">Tổng: <span data-value="{{ product.tong }}">{{ product.tong}}₫</span></div>
                 </div>
             </div>
             {% if not forloop.last %}
@@ -418,7 +418,7 @@
         <div class="price-summary">
             <div class="price-row">
                 <span class="price-label">Tạm tính:</span>
-                <span class="price-value" id="subtotal" data-value="{{ tam_tinh }}">{{ tam_tinh|floatformat:0 }}₫</span>
+                <span class="price-value" id="subtotal" data-value="{{ tam_tinh }}">{{ tam_tinh }}₫</span>
             </div>
             <div class="price-row">
                 <span class="price-label">Phí vận chuyển:</span>
@@ -426,13 +426,13 @@
                     {% if phi_van_chuyen == 0 %}
                         Miễn phí
                     {% else %}
-                        <span data-value="{{ phi_van_chuyen }}">{{ phi_van_chuyen|floatformat:0 }}₫</span>
+                        <span data-value="{{ phi_van_chuyen }}">{{ phi_van_chuyen}}₫</span>
                     {% endif %}
                 </span>
             </div>
             <div class="price-row total">
                 <span class="price-label">Tổng:</span>
-                <span class="price-value" id="total" data-value="{{ tong_cong }}">{{ tong_cong|floatformat:0 }}₫</span>
+                <span class="price-value" id="total" data-value="{{ tong_cong }}">{{ tong_cong}}₫</span>
             </div>
         </div>
 
@@ -462,10 +462,10 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Format tất cả giá trị tiền khi load trang
-    document.querySelectorAll('[data-value]').forEach(element => {
-        const value = parseFloat(element.getAttribute('data-value')) || 0;
-        element.textContent = formatCurrency(value);
-    });
+    // document.querySelectorAll('[data-value]').forEach(element => {
+    //     const value = parseFloat(element.getAttribute('data-value')) || 0;
+    //     element.textContent = formatCurrency(value);
+    // });
 
     // Xử lý form hủy đơn hàng
     const cancelOrderForm = document.getElementById('cancel-order-form');
