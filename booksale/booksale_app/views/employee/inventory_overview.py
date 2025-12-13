@@ -20,26 +20,26 @@ def inventory_overview(request):
     # Dữ liệu tổng hợp kho
     inventory_data = []
     for product in products:
-        total_imported = ImportOrder_Item.objects.filter(product=product).aggregate(
-            total_imported=models.Sum('quantity'))['total_imported'] or 0
+        # total_imported = ImportOrder_Item.objects.filter(product=product).aggregate(
+        #     total_imported=models.Sum('quantity'))['total_imported'] or 0
 
         total_sold = ExportOrder_Item.objects.filter(product=product).aggregate(
             total_sold=models.Sum('quantity'))['total_sold'] or 0
 
-        stock = total_imported - total_sold
-        available = stock if stock > 0 else 0
-        low_stock_warning = stock < 2
+        # stock = total_imported - total_sold
+        # available = stock if stock > 0 else 0
+        # low_stock_warning = stock < 2
 
         inventory_data.append({
             'product_code': product.id,
             'product_name': product.product_name,
-            'total_imported': total_imported,
+            # 'total_imported': total_imported,
             'total_sold': total_sold,
-            'stock': stock,
-            'available': available,
+            # 'stock': stock,
+            # 'available': available,
             'sell_price': product.sell_price,
             'cost_price': product.cost_price,
-            'low_stock_warning': low_stock_warning,
+            # 'low_stock_warning': low_stock_warning,
             'quantity': product.quantity,
         })
 

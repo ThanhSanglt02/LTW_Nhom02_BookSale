@@ -83,7 +83,7 @@
                     <h5 class="card-title">{{ product.product_name }}</h5>
 
                     <p class="product-price">
-                        {{ product.sell_price|floatformat:0 }} VND
+                        {{ product.sell_price }} VND
                     </p>
 
                     <a href="{% url 'product_detail_user' product.id %}" class="btn btn-primary btn-detail">

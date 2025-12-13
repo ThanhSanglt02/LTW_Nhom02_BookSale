@@ -277,18 +277,4 @@
     </div>
 </div>
 
-<script>
-// Tự động ẩn alert sau 5 giây
-document.addEventListener('DOMContentLoaded', function() {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(function(alert) {
-        // Tự động ẩn sau 5 giây
-        setTimeout(function() {
-            $(alert).fadeOut('slow', function() {
-                $(this).alert('close');
-            });
-        }, 5000);
-    });
-});
-</script>
 {% endblock %}

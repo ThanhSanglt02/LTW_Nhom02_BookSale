@@ -25,7 +25,9 @@ class Customer(models.Model):
         help_text = "Địa chi"
     )
     dob = models.DateField(
-        verbose_name="Ngày sinh"
+        verbose_name="Ngày sinh",
+        blank=True, null=True
+
     )
     avatar = models.ImageField(upload_to='customers/', null=True, blank=True)
     create_at = models.DateTimeField(

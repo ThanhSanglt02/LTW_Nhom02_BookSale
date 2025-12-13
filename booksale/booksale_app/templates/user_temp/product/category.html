@@ -213,48 +213,56 @@
 
 
 {% block content %}
+<!-- Container chứa toàn bộ layout trang -->
 <div class="container-fluid">
     <!-- Sidebar -->
+        <!-- Sidebar trái, chứa danh mục + liên hệ -->
     <div class="sidebar">
         <h5>DANH MỤC SẢN PHẨM</h5>
-        {% for cat in categories %}
-            <a href="{% url 'category_detail' cat.category_name %}">{{ cat.category_name }}</a>
-        {% empty %}
+                {% for cat in categories %} <!-- Lặp qua tất cả danh mục được truyền từ view -->
+                        <!-- Link dẫn đến trang chi tiết danh mục -->
+                                <!-- Link xem thêm toàn bộ sản phẩm trong danh mục -->
+                    <a href="{% url 'category_detail' cat.category_name %}">{{ cat.category_name }}</a>
+                            {% empty %} <!-- Nếu danh mục không có sản phẩm nào -->
             <p class="text-center text-muted">Chưa có danh mục nào.</p>
         {% endfor %}
         <h5 class="mt-4">THÔNG TIN LIÊN HỆ</h5>
     </div>
 
     <!-- Main content -->
-    <div class="main-content">
-        {% for cat in categories %}
+        <!-- Khu vực hiển thị sản phẩm chính -->
+    <div class="main-content"> <!-- Khối nội dung chính-->
+        {% for cat in categories %} <!-- Lặp qua tất cả danh mục được truyền từ view -->
+        <!-- Khối hiển thị 1 danh mục và danh sách sản phẩm thuộc danh mục đó -->
             <div id="cat{{ cat.id }}" class="category mb-5">
-                <h3 class="category-title">{{ cat.category_name }}</h3>
+                <h3 class="category-title">{{ cat.category_name }}</h3><!-- Hiển thị tên danh mục -->
                 <div class="row">
-                    {% for product in cat.product_set.all %}
-                        <div class="col-md-3 col-6">
-                            <div class="product-card">
-                                <a href="{% url 'product_detail_user' product.id %}">
-                                    {% if product.image %}
-                                        <img src="{{ product.image.url }}" alt="{{ product.product_name }}">
-                                    {% else %}
-                                        <img src="{% static 'images/default.jpg' %}" alt="Không có ảnh">
-                                    {% endif %}
-                                    <p class="product-name">{{ product.product_name }}</p>
-                                    <p class="product-price">{{ product.sell_price }} VND</p>
-                                </a>
-                                <!-- FORM Thêm vào giỏ hàng -->
-                                <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-cart-form">
-                                    {% csrf_token %}
-                                    <button type="submit" class="add-cart-btn">Thêm vào giỏ hàng</button>
-                                </form>
-                            </div>
+                    {% for product in cat.product_set.all %} <!-- Lấy tất cả sản phẩm thuộc danh mục này -->
+                    <div class="col-md-3 col-6"> <!-- Thẻ card chứa thông tin 1 sản phẩm -->
+                        <div class="product-card">
+                            <a href="{% url 'product_detail_user' product.id %}">
+                                {% if product.image %} <!-- Nếu sản phẩm có ảnh -->
+                                <img src="{{ product.image.url }}" alt="{{ product.product_name }}">
+                                {% else %} <!-- Nếu không có ảnh -->
+                                <img src="{% static 'images/default.jpg' %}" alt="Không có ảnh">
+                                {% endif %}
+                                <!-- Tên sản phẩm -->
+                                <p class="product-name">{{ product.product_name }}</p>
+                                <!-- Giá sản phẩm -->
+                                <p class="product-price">{{ product.sell_price }} VND</p>
+                            </a>
+                            <!-- FORM Thêm vào giỏ hàng -->
+                            <!-- Form thêm sản phẩm vào giỏ hàng -->
+                            <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-cart-form">
+                                {% csrf_token %}
+                                <button type="submit" class="add-cart-btn">Thêm vào giỏ hàng</button>
+                            </form>
                         </div>
+                    </div>
                     {% empty %}
-                        <p class="text-center text-muted">Chưa có sản phẩm nào trong danh mục này.</p>
+                    <p class="text-center text-muted">Chưa có sản phẩm nào trong danh mục này.</p>
                     {% endfor %}
                 </div>
-
                 <div class="text-center">
                     <a href="{% url 'category_detail' cat.category_name %}" class="view-more">
                         Xem thêm các ấn bản {{ cat.category_name }}
@@ -262,7 +270,7 @@
                 </div>
             </div>
         {% empty %}
-            <p class="text-center text-muted">Không có danh mục sản phẩm nào để hiển thị.</p>
+        <p class="text-center text-muted">Không có danh mục sản phẩm nào để hiển thị.</p>
         {% endfor %}
     </div>
 </div>

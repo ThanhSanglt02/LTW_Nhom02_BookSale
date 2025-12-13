@@ -5,14 +5,12 @@
 
     <form method="POST" enctype="multipart/form-data" class="review-form">
         {% csrf_token %}
-
         <div class="review-card">
-
             <h2 class="title">Đánh giá sản phẩm</h2>
             <p class="subtitle">Hãy đánh giá các sản phẩm bạn đã mua</p>
 
             {% for item in products %}
-            <div class="product-block" data-index="{{ forloop.counter }}">
+            <div class="product-block" data-index="{{ forloop.counter }}"><!-- vòng lặp số thứ tự -->
 
                 <!-- TÊN SÁCH NỔI BẬT -->
                 <h3 class="product-name">
@@ -56,7 +54,7 @@
                 <input type="file"
                        name="image_{{ forloop.counter }}"
                        class="input-file"
-                       onchange="previewImage(event, {{ forloop.counter }})">
+                       onchange="previewImage(event, '{{ forloop.counter }}')">
 
                 <!-- Preview -->
                 <div class="image-preview" id="previewBox_{{ forloop.counter }}" style="display:none;">
@@ -126,7 +124,7 @@ document.querySelector(".review-form")?.addEventListener("submit", function(e){
     const blocks = document.querySelectorAll(".product-block");
     blocks.forEach(block => {
         const idx = block.getAttribute("data-index");
-        const content = block.querySelector(`textarea[name="content_${idx}"]`).value.trim();
+        const content = block.querySelector(textarea[name="content_${idx}"]).value.trim();
         const rating = block.querySelector(`input[name="rating_${idx}"]:checked`);
         const errorDiv = block.querySelector(`#error_${idx}`);
         if(!content || !rating) {

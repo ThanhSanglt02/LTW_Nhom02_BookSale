@@ -73,7 +73,7 @@ def import_order_create(request):
                     continue
 
                 product = get_object_or_404(Product, id=product_ids[i])
-                qty = int(quantities[i])
+                qty = quantities[i]
 
                 # XỬ LÝ GIÁ HỢP LỆ
                 price_str = prices[i].replace(".", "").replace(",", "")

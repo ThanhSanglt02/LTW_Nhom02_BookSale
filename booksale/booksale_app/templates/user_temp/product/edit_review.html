@@ -38,8 +38,7 @@
 
                 <!-- Ảnh đánh giá -->
                 <label class="label">Ảnh đính kèm:</label>
-                <input type="file" name="images" class="input-file" multiple onchange="previewImages(event)">
-
+                <input type="file" name="image" class="input-file" onchange="previewImages(event)">
                 <div class="image-preview-wrapper" id="previewWrapper">
                     {% if review.image %}
                         <div class="image-preview">
@@ -54,12 +53,8 @@
             <!-- Nút cập nhật -->
             <div style="display:flex; gap:10px; margin-top:15px;">
                 <button type="submit" class="submit-btn">Cập nhật đánh giá</button>
-                </form>
-            </div>
-
-        </div>
-
     </form>
+</div>
 
 </div>
 

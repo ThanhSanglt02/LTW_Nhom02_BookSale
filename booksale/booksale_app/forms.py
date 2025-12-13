@@ -86,6 +86,7 @@ class OrderForm(forms.ModelForm):
 class OrderSearchForm(forms.Form):
     search = forms.CharField(
         max_length=100,
+        required=False,
         widget=forms.TextInput(attrs={
             "class": "form-control search-input",
             "placeholder": "Tìm kiếm khách hàng",

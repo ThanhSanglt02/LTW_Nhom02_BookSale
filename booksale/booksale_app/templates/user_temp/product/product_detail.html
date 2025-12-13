@@ -1,353 +1,297 @@
 {% extends "user_temp/base.html" %}
 {% load static %}
-
-{% block title %}{{ product.product_name }} - Chi tiết sản phẩm{% endblock %}
-
 {% block extra_css %}
 <style>
-/* ======= KHUNG CHUNG ======= */
-.product-page { margin-top: 120px; padding-bottom: 50px; }
-.product-main { display: flex; flex-wrap: wrap; gap: 40px; }
+    /* ======= KHUNG CHUNG ======= */
+    .product-page { margin-top: 120px; padding-bottom: 50px; }
+    .product-main { display: flex; flex-wrap: wrap; gap: 40px; }
 
-/* ======= ẢNH SẢN PHẨM ======= */
-.product-img-main {
-    flex: 1;
-    min-width: 320px;
-    text-align: center;
-    background: #fff;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    transition: 0.3s;
-}
-.product-img-main img {
-    width: 100%;
-    max-width: 420px;
-    border-radius: 12px;
-    object-fit: contain;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.product-img-main img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 22px rgba(0,0,0,0.15);
-}
-
-/* ======= THUMBNAILS ======= */
-.thumb-list {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 15px;
-    flex-wrap: wrap;
-}
-.thumb-list img {
-    width: 70px;
-    height: 70px;
-    border-radius: 8px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: 0.3s;
-    object-fit: cover;
-}
-.thumb-list img:hover,
-.thumb-list img.active {
-    border-color: #007bff;
-    transform: scale(1.1);
-}
-
-/* ======= THÔNG TIN SẢN PHẨM ======= */
-.product-info { flex: 2; min-width: 250px; display: flex; flex-direction: column; justify-content: flex-start; }
-.product-title { font-size: 2rem; font-weight: 700; color: #232f3e; margin-bottom: 10px; }
-.product-brand { color: #555; margin-bottom: 10px; }
-.product-price { color: #e47911; font-size: 1.6rem; font-weight: bold; margin-bottom: 20px; }
-
-/* Nút mua ngay */
-.btn-buy { background-color: #007bff; color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-.btn-buy:hover { background-color: #0056b3; }
-
-/* Nút thêm vào giỏ hàng */
-.btn-add-cart {
-    background-color: white;
-    color: #007bff;
-    border: 2px solid #007bff;
-    padding: 12px 30px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.3s;
-}
-.btn-add-cart:hover {
-    background-color: #007bff;
-    color: white;
-}
-
-/* Nút sửa đánh giá */
-.btn-edit-review {
-    display: inline-block;
-    padding: 6px 12px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: all 0.3s;
-    margin-top: 8px;
-}
-.btn-edit-review:hover {
-    background-color: #0056b3;
-    color: white;
-}
-
-/* ======= TAB MÔ TẢ ======= */
-.tab-section { margin-top: 50px; }
-.tab-title { font-weight: 700; border-bottom: 2px solid #007bff; display: inline-block; margin-bottom: 15px; }
-.product-desc { line-height: 1.6; color: #333; font-size: 1rem; }
-
-/* ======= ĐÁNH GIÁ ======= */
-.review-section { margin-top: 50px; }
-.review-item { border-bottom: 1px solid #eee; padding: 15px 0; }
-.review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-.review-user { font-weight: 600; }
-.review-stars { color: #ffc107; }
-.review-date { color: #999; font-size: 0.85rem; }
-
-/* ======= SẢN PHẨM TƯƠNG TỰ ======= */
-.related-section { margin-top: 60px; }
-.related-title { font-weight: 700; font-size: 1.3rem; text-align: center; margin-bottom: 25px; }
-.related-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 22px; }
-.related-item {
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    text-align: center;
-    padding: 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.related-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-}
-.related-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-.related-item h6 { margin: 0 0 5px; font-size: 0.95rem; color: #333; }
-.related-price { color: #e47911; font-weight: bold; margin-bottom: 5px; }
-.related-item button { background-color: #007bff; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; }
-.related-item button:hover { background-color: #0056b3; }
-    .filter-btn {
-    background: #fff;
-    border: 2px solid #ddd;
-    padding: 5px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: 0.2s;
-}
-
-.filter-btn.active {
-    border-color: #1e90ff;
-    background: #e8f3ff;
-}
-
-
-</style>
-{% endblock %}
-
-{% block content %}
-<div class="container product-page">
-  <div class="product-main">
-    <!-- ẢNH SẢN PHẨM -->
-    <div class="product-img-main">
-      <img id="mainImg"
-           src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default-product.jpg' %}{% endif %}"
-           alt="{{ product.product_name }}">
-      <div class="thumb-list">
-        {% if product.image %}
-          <img src="{{ product.image.url }}" class="active" onclick="changeImage(this)">
-        {% else %}
-          <img src="{% static 'images/default-product.jpg' %}" class="active" onclick="changeImage(this)">
-        {% endif %}
-        {% for img in product.extra_images.all %}
-          <img src="{{ img.image.url }}" onclick="changeImage(this)">
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- THÔNG TIN SẢN PHẨM -->
-    <div class="product-info">
-      <h2 class="product-title">{{ product.product_name }}</h2>
-      <p class="product-brand">Nhà xuất bản: {{ product.publisher.publisher_name|default:"Đang cập nhật" }}</p>
-      <p class="product-price">
-        {% if product.sell_price %}
-          {{ product.sell_price  }} VND
-        {% else %}
-          Liên hệ
-        {% endif %}
-      </p>
-
-      <!-- Nút thêm vào giỏ hàng & mua ngay -->
-      <div style="display:flex; gap:10px;">
-        <form method="POST" action="{% url 'add_to_cart' product.id %}">
-          {% csrf_token %}
-          <button type="submit" class="btn-add-cart">Thêm vào giỏ hàng</button>
-        </form>
-        <form method="POST" action="{% url 'buy_now' product.id %}">
-          {% csrf_token %}
-          <button type="submit" class="btn-buy">Mua ngay</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- MÔ TẢ SẢN PHẨM -->
-  <div class="tab-section">
-    <h4 class="tab-title">Tóm tắt</h4>
-    <p class="product-desc">{{ product.description|linebreaks }}</p>
-  </div>
-
-
-<!-- ĐÁNH GIÁ SẢN PHẨM -->
-<!-- ĐÁNH GIÁ SẢN PHẨM -->
-<div class="review-section">
-  <h4 class="tab-title">Đánh giá sản phẩm</h4>
-
-<!-- BỘ LỌC SỐ SAO -->
-<form method="GET" style="margin: 15px 0;">
-  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-
-      {% for s in "54321"|make_list %}
-    <button
-        type="submit"
-        name="rating"
-        value="{{ s }}"
-        class="filter-btn {% if request.GET.rating == s %}active{% endif %}"
-    >
-        ⭐ {{ s }}
-    </button>
-{% endfor %}
-
-      {% if request.GET.rating %}
-        <a href="?">
-          <button type="button"
-                  style="
-                    background:#ff4d4d;
-                    color:#fff;
-                    border:2px solid #ff4d4d;
-                    padding:5px 14px;
-                    border-radius:6px;
-                    cursor:pointer;
-                    font-size:15px;
-                    font-weight:600;
-                    transition:0.2s;
-                  "
-                  onmouseover="this.style.background='#e60000'; this.style.borderColor='#e60000';"
-                  onmouseout="this.style.background='#ff4d4d'; this.style.borderColor='#ff4d4d';"
-          >
-            Xóa lọc
-          </button>
-        </a>
-      {% endif %}
-
-  </div>
-</form>
-<!-- END BỘ LỌC -->
+    /* ======= ẢNH SẢN PHẨM ======= */
+    .product-img-main {
+        flex: 1;
+        min-width: 320px;
+        text-align: center;
+        background: #fff;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        transition: 0.3s;
+    }
+    .product-img-main img {
+        width: 100%;
+        max-width: 420px;
+        border-radius: 12px;
+        object-fit: contain;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .product-img-main img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+    }
 
 
 
-  {% if reviews %}
-    {% for review in reviews %}
-      <div class="review-item">
-        <div class="review-header" style="display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <span class="review-user">{{ review.creator.username }}</span>
-            <span class="review-date">{{ review.date_created|date:"Y-m-d H:i" }}</span>
-          </div>
-          <div class="review-stars">
-            {% for i in "12345"|make_list %}
-              {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
-            {% endfor %}
-          </div>
+    /* ======= THÔNG TIN SẢN PHẨM ======= */
+    .product-info { flex: 2; min-width: 250px; display: flex; flex-direction: column; justify-content: flex-start; }
+    .product-title { font-size: 2rem; font-weight: 700; color: #232f3e; margin-bottom: 10px; }
+    .product-brand { color: #555; margin-bottom: 10px; }
+    .product-price { color: #e47911; font-size: 1.6rem; font-weight: bold; margin-bottom: 20px; }
+
+    /* Nút mua ngay */
+    .btn-buy { background-color: #007bff; color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+    .btn-buy:hover { background-color: #0056b3; }
+
+    /* Nút thêm vào giỏ hàng */
+    .btn-add-cart {
+        background-color: white;
+        color: #007bff;
+        border: 2px solid #007bff;
+        padding: 12px 30px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+    .btn-add-cart:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    /* Nút sửa đánh giá */
+    .btn-edit-review {
+        display: inline-block;
+        padding: 6px 12px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: all 0.3s;
+        margin-top: 8px;
+    }
+    .btn-edit-review:hover {
+        background-color: #0056b3;
+        color: white;
+    }
+
+    /* ======= TAB MÔ TẢ ======= */
+    .tab-section { margin-top: 50px; }
+    .tab-title { font-weight: 700; border-bottom: 2px solid #007bff; display: inline-block; margin-bottom: 15px; }
+    .product-desc { line-height: 1.6; color: #333; font-size: 1rem; }
+
+    /* ======= ĐÁNH GIÁ ======= */
+    .review-section { margin-top: 50px; }
+    .review-item { border-bottom: 1px solid #eee; padding: 15px 0; }
+    .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+    .review-user { font-weight: 600; }
+    .review-stars { color: #ffc107; }
+    .review-date { color: #999; font-size: 0.85rem; }
+
+    /* ======= SẢN PHẨM TƯƠNG TỰ ======= */
+    .related-section { margin-top: 60px; }
+    .related-title { font-weight: 700; font-size: 1.3rem; text-align: center; margin-bottom: 25px; }
+    .related-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 22px; }
+    .related-item {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        text-align: center;
+        padding: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .related-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .related-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    .related-item h6 { margin: 0 0 5px; font-size: 0.95rem; color: #333; }
+    .related-price { color: #e47911; font-weight: bold; margin-bottom: 5px; }
+    .related-item button { background-color: #007bff; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; }
+    .related-item button:hover { background-color: #0056b3; }
+        .filter-btn {
+        background: #fff;
+        border: 2px solid #ddd;
+        padding: 5px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: 0.2s;
+    }
+
+    .filter-btn.active {
+        border-color: #1e90ff;
+        background: #e8f3ff;
+    }
+
+
+    </style>
+    {% endblock %}
+
+    {% block content %}
+    <div class="container product-page">
+      <div class="product-main">
+        <!-- ẢNH SẢN PHẨM -->
+        <div class="product-img-main">
+          <img id="mainImg"
+               src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default-product.jpg' %}{% endif %}"
+               alt="{{ product.product_name }}">
         </div>
 
-        <p>{{ review.content }}</p>
+        <!-- THÔNG TIN SẢN PHẨM -->
+        <div class="product-info">
+          <h2 class="product-title">{{ product.product_name }}</h2><!-- Lấy tên sp từ database -->
+          <p class="product-brand">Nhà xuất bản: {{ product.publisher.publisher_name|default:"Đang cập nhật" }}</p>
+          <!-- Lấy tên NXB từ database hoặc nếu k có mặc định sẽ là đang cập nhật -->
+          <p class="product-price">{{ product.sell_price}} VND </p>
 
-        {% if review.image %}
-          <div class="review-image-wrapper" style="margin-top:10px;">
-            <img src="{{ review.image.url }}" alt="Ảnh đánh giá" style="max-width:150px; border-radius:8px;">
-          </div>
-        {% endif %}
-
-        <!-- PHẢN HỒI ADMIN -->
-        {% if review.reply_message %}
-          <div style="margin-top:10px; padding:10px; background:#f0f8ff; border-left:4px solid #007bff; border-radius:6px;">
-            <p style="font-weight:600; color:#007bff; margin-bottom:5px;">Phản hồi từ người bán:</p>
-            <p>{{ review.reply_message }}</p>
-            {% if review.reply_staff %}
-              <span style="font-size:0.85rem; color:#555;">({{ review.reply_staff.username }})</span>
-            {% endif %}
-          </div>
-        {% endif %}
-
-        {% if review.creator == user %}
-          <div style="margin-top:8px; display:flex; gap:8px;">
-            <a href="{% url 'edit_review' review.id %}" class="btn-edit-review">Sửa</a>
-            <form method="POST" action="{% url 'delete_review' review.id %}"
-                  onsubmit="return confirm('Bạn có chắc muốn xóa đánh giá này?');"
-                  style="display:inline;">
+          <!-- Nút thêm vào giỏ hàng & mua ngay -->
+          <div style="display:flex; gap:10px;">
+            <form method="POST" action="{% url 'add_to_cart' product.id %}"><!-- Thêm sản phẩm vào giỏ hàng rồi ở lại trang-->
               {% csrf_token %}
-              <button type="submit" class="btn-edit-review" style="background-color:#ff4b4b;">Xóa</button>
+              <button type="submit" class="btn-add-cart">Thêm vào giỏ hàng</button>
+            </form>
+            <form method="POST" action="{% url 'buy_now' product.id %}"><!-- Thêm sản phẩm vào giỏ hàng rồi đến trang thanh toán-->
+              {% csrf_token %}
+              <button type="submit" class="btn-buy">Mua ngay</button>
             </form>
           </div>
-        {% endif %}
-      </div>
-    {% endfor %}
-  {% else %}
-    <p>Không tìm thấy đánh giá nào.</p>
-  {% endif %}
-</div>
-
-</div>
-
-
-  <!-- SẢN PHẨM TƯƠNG TỰ -->
-  <div class="related-section">
-    <h4 class="related-title">SẢN PHẨM TƯƠNG TỰ</h4>
-    <div class="related-list">
-      {% for item in related_products %}
-        <div class="related-item">
-          <a href="{% url 'product_detail_user' item.id %}">
-            <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static 'images/default-product.jpg' %}{% endif %}" alt="{{ item.product_name }}">
-            <h6>{{ item.product_name|truncatechars:50 }}</h6>
-          </a>
-          <p class="related-price">
-            {% if item.sell_price %}
-              {{ item.sell_price|floatformat:0 }} VND
-            {% else %}
-              Liên hệ
-            {% endif %}
-          </p>
-          <form method="POST" action="{% url 'add_to_cart' item.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn-buy">Thêm vào giỏ hàng</button>
-          </form>
         </div>
-      {% endfor %}
-    </div>
-  </div>
-</div>
+      </div>
 
-<script>
-// Click thumbnail thay ảnh chính & active border
-function changeImage(el) {
-    document.getElementById('mainImg').src = el.src;
-    document.querySelectorAll('.thumb-list img').forEach(img => img.classList.remove('active'));
-    el.classList.add('active');
-}
-</script>
+      <!-- MÔ TẢ SẢN PHẨM -->
+      <div class="tab-section">
+        <h4 class="tab-title">Tóm tắt</h4>
+        <p class="product-desc">{{ product.description|linebreaks }}</p><!--Lấy nội dung mô tả từ database-->
+      </div>
+
+    <!-- ĐÁNH GIÁ SẢN PHẨM -->
+    <div class="review-section">
+      <h4 class="tab-title">Đánh giá sản phẩm</h4>
+
+    <!-- BỘ LỌC SỐ SAO -->
+    <form method="GET" style="margin: 15px 0;">
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            {% for s in "54321"|make_list %}
+            <button
+                    type="submit"
+                    name="rating"
+                    value="{{ s }}"
+                    class="filter-btn {% if request.GET.rating == s %}active{% endif %}"
+            >
+                ⭐ {{ s }}
+            </button>
+            {% endfor %}
+
+          {% if request.GET.rating %} <!-- Nó kiểm tra xem URL hiện tại có tham số rating hay không
+          nếu có khi bấm vào sẽ hiển thị k có lọc-->
+            <a href="?">
+              <button type="button"
+                      style="
+                        background:#ff4d4d;
+                        color:#fff;
+                        border:2px solid #ff4d4d;
+                        padding:5px 14px;
+                        border-radius:6px;
+                        cursor:pointer;
+                        font-size:15px;
+                        font-weight:600;
+                        transition:0.2s;
+                      "
+                      onmouseover="this.style.background='#e60000'; this.style.borderColor='#e60000';"
+                      onmouseout="this.style.background='#ff4d4d'; this.style.borderColor='#ff4d4d';"
+              >
+                Xóa lọc
+              </button>
+            </a>
+          {% endif %}
+
+      </div>
+    </form>
+    <!-- END BỘ LỌC -->
+
+
+
+      {% if reviews %} <!-- Kiểm tra có đánh giá hay không -->
+        {% for review in reviews %} <!-- Nếu có → lặp qua từng đánh giá -->
+          <div class="review-item"> <!-- Hiển thị thông tin người dùng + ngày -->
+            <div class="review-header" style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <span class="review-user">{{ review.creator.username }}</span>
+                <span class="review-date">{{ review.date_created|date:"Y-m-d H:i" }}</span>
+              </div>
+              <div class="review-stars"> <!-- Hiển thị sao theo rating
+              forloop.counter = số thứ tự vòng lặp (1,2,3,4,5…)
+              Dùng nó để biết đang in ngôi sao thứ mấy
+              So với review.rating để quyết định in ★ hay ☆-->
+                {% for i in "12345"|make_list %}
+                  {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <p>{{ review.content }}</p>  <!-- Hiển thị nội dung đánh giá -->
+            {% if review.image %} <!-- Nếu có ảnh → hiển thị ảnh -->
+              <div class="review-image-wrapper" style="margin-top:10px;">
+                <img src="{{ review.image.url }}" alt="Ảnh đánh giá" style="max-width:150px; border-radius:8px;">
+              </div>
+            {% endif %}
+
+            <!-- PHẢN HỒI TỪ NGƯỜI BÁN -->
+            {% if review.reply_message %}
+              <div style="margin-top:10px; padding:10px; background:#f0f8ff; border-left:4px solid #007bff; border-radius:6px;">
+                <p style="font-weight:600; color:#007bff; margin-bottom:5px;">Phản hồi từ người bán:</p>
+                <p>{{ review.reply_message }}</p>
+                {% if review.reply_staff %}
+                  <span style="font-size:0.85rem; color:#555;">({{ review.reply_staff.username }})</span>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if review.creator == user %}
+              <div style="margin-top:8px; display:flex; gap:8px;">
+                  <a href="{% url 'edit_review' review.id %}" class="btn-edit-review">Sửa</a>
+                  <form method="POST" action="{% url 'delete_review' review.id %}"
+                      onsubmit="return confirm('Bạn có chắc muốn xóa đánh giá này?');"
+                      style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-edit-review" style="background-color:#ff4b4b;">Xóa</button>
+                </form>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>Không tìm thấy đánh giá nào.</p>
+      {% endif %}
+    </div>
+
+    </div>
+
+
+      <!-- SẢN PHẨM TƯƠNG TỰ -->
+      <div class="related-section">
+        <h4 class="related-title">SẢN PHẨM TƯƠNG TỰ</h4>
+        <div class="related-list">
+          {% for item in related_products %}
+            <div class="related-item">
+              <a href="{% url 'product_detail_user' item.id %}">
+                <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static 'images/default-product.jpg' %}{% endif %}" alt="{{ item.product_name }}">
+                <h6>{{ item.product_name|truncatechars:50 }}</h6>
+              </a>
+                <p class="product-price">{{ item.sell_price }} VND</p>
+              <form method="POST" action="{% url 'add_to_cart' item.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-buy">Thêm vào giỏ hàng</button>
+              </form>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
 {% endblock %}

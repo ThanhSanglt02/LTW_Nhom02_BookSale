@@ -142,12 +142,8 @@
                         <tr class="border-b hover:bg-gray-50 transition">
                             <td class="py-3 px-4">{{ item.product.product_name }}</td>
                             <td class="py-3 px-4 text-center">{{ item.quantity }}</td>
-                            <td class="py-3 px-4 text-center">
-                                {{ item.unit_price|intcomma }} đ
-                            </td>
-                            <td class="py-3 px-4 text-center">
-                                {{ item.total_price|intcomma }} đ
-                            </td>
+                            <td class="py-3 px-4 text-center">{{ item.unit_price }} đ</td>
+                            <td class="py-3 px-4 text-center">{{ item.total_price }} đ</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -157,7 +153,7 @@
             <!-- Tổng tiền -->
             <div class="flex justify-between mt-6">
                 <p class="font-semibold">Tổng tiền:</p>
-                <p class="font-semibold">{{ order.total_amount|intcomma }} đ</p>
+                <p class="font-semibold">{{ order.total_amount }} đ</p>
             </div>
         </div>
     </div>

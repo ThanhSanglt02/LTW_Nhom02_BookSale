@@ -13,20 +13,21 @@ from django.db.models import Q
 @group_required('NVBH', login_url="/accounts/login/staff/") # Nếu user không thuộc NVBH → redirect về login staff.
 def order_list(request):
     order_data = []
+    orders = Order.objects.select_related('customer').order_by('-order_date')
     # Lấy dữ liệu từ form
     if 'submit_input' in request.GET:  # kiểm tra có submit không
         form = OrderSearchForm(request.GET)
         if form.is_valid():
             search_value = form.cleaned_data['search'] 
-            # select_related('customer') để lấy luôn thông tin khách hàng
-            orders = Order.objects.select_related('customer').filter(
-                #lọc các đơn hàng mà tên khách hàng chứa "Nguyen"
-                Q(customer__cust_name__icontains=search_value) |
-                Q(customer__phone__icontains=search_value)
-            ).order_by('-order_date')
+            if search_value:
+                # select_related('customer') để lấy luôn thông tin khách hàng
+                orders = Order.objects.select_related('customer').filter(
+                    #lọc các đơn hàng mà tên khách hàng chứa "cust_name"
+                    Q(customer__cust_name__icontains=search_value) |
+                    Q(customer__phone__icontains=search_value)
+                ).order_by('-order_date')
     else:
         form = OrderSearchForm()
-        orders = Order.objects.select_related('customer').order_by('-order_date')
 
     for order in orders:
         order_items = Order_Item.objects.select_related('product').filter(order=order)
@@ -45,20 +46,22 @@ def order_list(request):
 
 def order_list_waiting(request):
     order_data = []
+    orders = Order.objects.select_related('customer').filter(status="pending").order_by('-order_date')
+
     # Lấy dữ liệu từ form
     if 'submit_input' in request.GET:  # kiểm tra có submit không
         form = OrderSearchForm(request.GET)
         if form.is_valid():
             search_value = form.cleaned_data['search'] 
-            # select_related('customer') để lấy luôn thông tin khách hàng
-            orders = Order.objects.select_related('customer').filter(
-                #lọc các đơn hàng mà tên khách hàng chứa "Nguyen"
-                (Q(customer__cust_name__icontains=search_value) |
-                Q(customer__phone__icontains=search_value)), status="confirmed"
-            ).order_by('-order_date')
+            if search_value:
+                # select_related('customer') để lấy luôn thông tin khách hàng
+                orders = Order.objects.select_related('customer').filter(
+                    #lọc các đơn hàng mà tên khách hàng chứa "Nguyen"
+                    (Q(customer__cust_name__icontains=search_value) |
+                    Q(customer__phone__icontains=search_value)), status="pending"
+                ).order_by('-order_date')
     else:
         form = OrderSearchForm()
-        orders = Order.objects.select_related('customer').filter(status="pending").order_by('-order_date')
 
     for order in orders:
         order_items = Order_Item.objects.select_related('product').filter(order=order)
